@@ -1,0 +1,57 @@
+path
+{
+	transition: .6s fill;
+	fill: #D3D3D3;
+}
+
+.state
+{
+	fill:#D3D3D3;
+}
+
+path:hover 
+{
+	fill: #aaaaaa;
+}
+
+body
+{
+  background-color: #2E4053;
+}
+
+#resetbut
+{
+	display: none;
+}
+
+p 
+{
+	color:#D3D3D3;
+	font-family:arial;
+	font-size:26px;
+	display:inline;
+}
+
+h1
+{
+	color:#D3D3D3;
+	font-family:arial;
+	display:inline
+}
+
+#click
+{
+    color: #EFC050;
+}
+
+#timer
+{
+	font-family: courier;
+	font-weight: bold;
+}
+
+#perc
+{
+	font-family: courier;
+	font-weight: bold;
+}
