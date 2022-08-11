@@ -1,5 +1,5 @@
 var Typer={
-	text: null,
+	text:null,
 	accessCountimer:null,
 	index:0,
 	speed:2,
@@ -101,7 +101,7 @@ Typer.speed=3;
 Typer.file="NicPJones.txt";
 Typer.init();
 
-var timer = setInterval("t();", 30);
+var timer = setInterval("t();", 15);
 function t() {
 	Typer.addText({"keyCode": 123748});
 
