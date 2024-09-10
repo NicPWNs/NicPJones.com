@@ -40,7 +40,7 @@ interface Certification {
   name: string;
   issueDate: string;
   expirationDate: string | null;
-  verificationLink: string;
+  verificationLink?: string;
   icon: JSX.Element;
 }
 
@@ -257,14 +257,12 @@ export default function Component() {
       name: "ISACA CMMI Associate",
       issueDate: "2024",
       expirationDate: "2027",
-      verificationLink: "#",
       icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
     {
       name: "ITIL v4 Foundation",
       issueDate: "2019",
       expirationDate: null,
-      verificationLink: "#",
       icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
   ];
@@ -983,14 +981,16 @@ export default function Component() {
                           ? `Expires: ${cert.expirationDate}`
                           : "Does not expire"}
                       </div>
-                      <a
-                        href={cert.verificationLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs flex items-center text-blue-400 hover:underline"
-                      >
-                        Verify <ExternalLink className="w-3 h-3 ml-1" />
-                      </a>
+                      {cert.verificationLink && (
+                        <a
+                          href={cert.verificationLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs flex items-center text-blue-400 hover:underline"
+                        >
+                          Verify <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      )}
                     </div>
                   ))}
                 </div>
