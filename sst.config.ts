@@ -15,7 +15,13 @@ export default $config({
     new sst.aws.Nextjs("MyWeb", {
       domain: {
         name: "nicpjones.com",
-        redirects: ["www.nicpjones.com"],
+        redirects: [
+          "www.nicpjones.com",
+          "nicpwns.com",
+          "www.nicpwns.com",
+          "npj.wtf",
+          "nicjones.org",
+        ],
       },
     });
   },
