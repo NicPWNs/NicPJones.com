@@ -114,131 +114,156 @@ export default function Component() {
   const awardsNodeRef = useRef<HTMLDivElement>(null);
   const bountiesNodeRef = useRef<HTMLDivElement>(null);
   const projectsNodeRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const certifications: Certification[] = [
     {
-      name: "CompTIA ITF+",
-      issueDate: "2017",
-      expirationDate: null,
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
-    },
-    {
-      name: "CompTIA A+",
-      issueDate: "2017",
-      expirationDate: "2025",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
-    },
-    {
-      name: "CompTIA Network+",
-      issueDate: "2017",
-      expirationDate: "2025",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
-    },
-    {
-      name: "CompTIA Security+",
-      issueDate: "2019",
-      expirationDate: "2025",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
-    },
-    {
-      name: "ITIL v4 Foundation",
-      issueDate: "2019",
-      expirationDate: null,
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faGraduationCap} />,
-    },
-    {
-      name: "AWS Certified Cloud Practitioner",
-      issueDate: "2019",
-      expirationDate: "2026",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faAws} />,
-    },
-    {
-      name: "AWS Certified Solutions Architect Associate",
-      issueDate: "2020",
-      expirationDate: "2026",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faAws} />,
-    },
-    {
-      name: "Azure Fundamentals (AZ-900)",
-      issueDate: "2020",
-      expirationDate: null,
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faMicrosoft} />,
-    },
-    {
-      name: "Azure Security Engineer Associate (AZ-500)",
-      issueDate: "2020",
-      expirationDate: "2026",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faMicrosoft} />,
-    },
-    {
-      name: "CEH",
-      issueDate: "2020",
-      expirationDate: "2026",
-      verificationLink: "#",
+      name: "ISC2 CISSP",
+      issueDate: "2024",
+      expirationDate: "2027",
+      verificationLink:
+        "https://www.credly.com/badges/560ed8db-b774-4e82-8739-16e3d4f5ef3f",
       icon: <FontAwesomeIcon icon={faShield} />,
     },
     {
       name: "OSCP",
       issueDate: "2021",
       expirationDate: null,
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/c854a9a8-65d6-49e0-99cc-4185431ffbe1",
       icon: <FontAwesomeIcon icon={faShield} />,
+    },
+    {
+      name: "CompTIA Security+",
+      issueDate: "2019",
+      expirationDate: "2025",
+      verificationLink:
+        "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
+      icon: <FontAwesomeIcon icon={faCertificate} />,
     },
     {
       name: "ISC2 CC",
       issueDate: "2022",
       expirationDate: "2025",
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/aecc6db8-b949-4ab3-aa00-9838934663e7",
       icon: <FontAwesomeIcon icon={faShield} />,
+    },
+    {
+      name: "CEH",
+      issueDate: "2020",
+      expirationDate: "2026",
+      verificationLink:
+        "https://aspen.eccouncil.org/VerifyBadge?type=certification&a=kwThnOZRxPYI9uNmvx1awPJNuF+UI30UkmnnwhXV4vE=",
+      icon: <FontAwesomeIcon icon={faShield} />,
+    },
+    {
+      name: "CompTIA CySA+",
+      issueDate: "2022",
+      expirationDate: "2025",
+      verificationLink:
+        "https://www.credly.com/badges/facfd8f5-5a14-4882-9abb-8ec3700753c6",
+      icon: <FontAwesomeIcon icon={faCertificate} />,
     },
     {
       name: "AWS Certified Security Specialty",
       issueDate: "2022",
       expirationDate: "2025",
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/d39908cf-2441-4b2d-9713-b69c96f0b422",
       icon: <FontAwesomeIcon icon={faAws} />,
     },
     {
       name: "AWS Certified Solutions Architect Professional",
       issueDate: "2023",
       expirationDate: "2026",
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/41c69366-9c82-4a9a-808c-ba752a0e9da2",
       icon: <FontAwesomeIcon icon={faAws} />,
     },
     {
-      name: "ISC2 CISSP",
-      issueDate: "2024",
-      expirationDate: "2027",
-      verificationLink: "#",
-      icon: <FontAwesomeIcon icon={faShield} />,
+      name: "AWS Certified Solutions Architect Associate",
+      issueDate: "2020",
+      expirationDate: "2026",
+      verificationLink:
+        "https://www.credly.com/badges/2683baf7-4512-4afd-b5e2-41a294fe4a9f",
+      icon: <FontAwesomeIcon icon={faAws} />,
+    },
+    {
+      name: "AWS Certified Cloud Practitioner",
+      issueDate: "2019",
+      expirationDate: "2026",
+      verificationLink:
+        "https://www.credly.com/badges/257fb17c-7afb-40e2-9d84-2270199b555b",
+      icon: <FontAwesomeIcon icon={faAws} />,
+    },
+    {
+      name: "Azure Security Engineer Associate (AZ-500)",
+      issueDate: "2020",
+      expirationDate: "2026",
+      verificationLink:
+        "https://learn.microsoft.com/api/credentials/share/en-us/NicPJones/3192E98671159E7B?sharingId=D82E446A8052F8AA",
+      icon: <FontAwesomeIcon icon={faMicrosoft} />,
+    },
+    {
+      name: "Azure Fundamentals (AZ-900)",
+      issueDate: "2020",
+      expirationDate: null,
+      verificationLink:
+        "https://learn.microsoft.com/api/credentials/share/en-us/NicPJones/85F4F1A7BD1BECC7?sharingId=D82E446A8052F8AA",
+      icon: <FontAwesomeIcon icon={faMicrosoft} />,
+    },
+    {
+      name: "CompTIA Network+",
+      issueDate: "2017",
+      expirationDate: "2025",
+      verificationLink:
+        "https://www.credly.com/badges/f63e1a16-90f8-407f-bab7-54c0307e1109",
+      icon: <FontAwesomeIcon icon={faCertificate} />,
+    },
+    {
+      name: "CompTIA A+",
+      issueDate: "2017",
+      expirationDate: "2025",
+      verificationLink:
+        "https://www.credly.com/badges/78ab4d15-6dfe-4cae-81d3-736fa15d216d",
+      icon: <FontAwesomeIcon icon={faCertificate} />,
+    },
+    {
+      name: "CompTIA ITF+",
+      issueDate: "2017",
+      expirationDate: null,
+      verificationLink:
+        "https://www.credly.com/badges/f44688b9-39af-4ccb-a299-b4f312f784d8",
+      icon: <FontAwesomeIcon icon={faCertificate} />,
     },
     {
       name: "GitHub Foundations",
       issueDate: "2024",
       expirationDate: "2027",
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/708d4cbb-14c9-4df2-ac99-5c244d60b5e5",
       icon: <FontAwesomeIcon icon={faGithub} />,
     },
     {
       name: "GitHub Actions",
       issueDate: "2024",
       expirationDate: "2027",
-      verificationLink: "#",
+      verificationLink:
+        "https://www.credly.com/badges/27b80a71-a37d-48a9-8da5-5a25d66632b7",
       icon: <FontAwesomeIcon icon={faGithub} />,
     },
     {
       name: "ISACA CMMI Associate",
       issueDate: "2024",
       expirationDate: "2027",
+      verificationLink: "#",
+      icon: <FontAwesomeIcon icon={faGraduationCap} />,
+    },
+    {
+      name: "ITIL v4 Foundation",
+      issueDate: "2019",
+      expirationDate: null,
       verificationLink: "#",
       icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
@@ -476,12 +501,12 @@ export default function Component() {
   const bounties: Bounty[] = [
     {
       platform: "Huntr",
-      cve: "CVE-2024-12345",
-      description:
-        "EXAMPLE Critical SQL Injection vulnerability in user authentication system",
-      reward: "$5,000",
+      cve: "CVE-2024-8098",
+      description: "Python Code Injection",
+      reward: "$900",
       date: "August 2024",
-      reportLink: "https://hackerone.com/reports/123456",
+      reportLink:
+        "https://huntr.com/bounties/083bb3f0-dd51-4d8c-bf17-7110ea730f5a",
     },
   ];
 
@@ -542,7 +567,7 @@ export default function Component() {
                 onClick={() => setShowCertifications(true)}
                 className="text-purple-400 hover:underline text-left"
               >
-                Certifications
+                Certs
               </button>
               <button
                 onClick={() => setShowEducation(true)}
@@ -631,6 +656,14 @@ export default function Component() {
               HackerRank
             </a>
             <a
+              href="https://stackoverflow.com/users/21022536/nicpwns"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              StackOverflow
+            </a>
+            <a
               href="https://steamcommunity.com/id/nicpwns2"
               target="_blank"
               rel="noopener noreferrer"
@@ -658,17 +691,20 @@ export default function Component() {
   );
 
   useEffect(() => {
-    const updateWindowSize = () => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth <= 768;
+      setIsMobile(newIsMobile);
+      setIsExpanded(newIsMobile);
       setWindowSize({
         width: Math.min(800, window.innerWidth - 32),
         height: Math.min(600, window.innerHeight - 32),
       });
     };
 
-    updateWindowSize();
-    window.addEventListener("resize", updateWindowSize);
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", updateWindowSize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -857,7 +893,7 @@ export default function Component() {
               <div
                 className={`text-sm font-semibold ${
                   isDarkMode ? "text-gray-300" : "text-gray-700"
-                } flex-1 text-center`}
+                } flex-1 text-center whitespace-nowrap`}
                 aria-label="Website Title"
               >
                 NicPJones.com
@@ -916,7 +952,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Certifications
                 </div>
@@ -1016,7 +1052,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Education
                 </div>
@@ -1111,7 +1147,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Work Experience
                 </div>
@@ -1213,7 +1249,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Awards
                 </div>
@@ -1288,7 +1324,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Bug Bounties
                 </div>
@@ -1370,7 +1406,7 @@ export default function Component() {
                 <div
                   className={`text-sm font-semibold ${
                     isDarkMode ? "text-gray-300" : "text-gray-700"
-                  } flex-1 text-center`}
+                  } flex-1 text-center whitespace-nowrap`}
                 >
                   Projects
                 </div>
