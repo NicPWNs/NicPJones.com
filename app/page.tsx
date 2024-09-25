@@ -423,12 +423,17 @@ export default function Component() {
   ];
 
   const awards: Award[] = [
-    { name: "Parsons Cyber CTF", date: "June 2024", description: "2nd Place" },
+    {
+      name: "Parsons Cyber CTF",
+      date: "September 2024",
+      description: "2nd Place",
+    },
     {
       name: "Mike Sterling 5K Run",
       date: "August 2024",
       description: "3rd Place",
     },
+    { name: "Parsons Cyber CTF", date: "June 2024", description: "2nd Place" },
     {
       name: "CT Cubed CTF @ DEFCON",
       date: "August 2023",
