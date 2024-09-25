@@ -547,7 +547,7 @@ export default function Component() {
 
   const information = useMemo(
     () => [
-      { command: "whoam", response: "Nic Jones (NicPWNs)" },
+      { command: "whoami", response: "Nic Jones (NicPWNs)" },
       {
         command: "cat About.txt",
         response: (
