@@ -48,8 +48,8 @@ interface Education {
   institution: string;
   degree: string;
   period: string;
-  gpa: string;
-  notes: string[];
+  gpa: string | null;
+  notes: string[] | null;
 }
 
 interface WorkExperience {
@@ -268,6 +268,13 @@ export default function Component() {
   ];
 
   const educationInfo: Education[] = [
+    {
+      institution: "SANS Technology Institute",
+      degree: "M.S. in Information Security Engineering",
+      period: "October 2024 - Current",
+      gpa: null,
+      notes: null,
+    },
     {
       institution: "Wilmington University",
       degree: "M.S. in Cybersecurity",
