@@ -272,7 +272,7 @@ export default function Component() {
       institution: "SANS Technology Institute",
       degree: "M.S. in Information Security Engineering",
       period: "October 2024 - Current",
-      gpa: null,
+      gpa: "Pending",
       notes: [""],
     },
     {
