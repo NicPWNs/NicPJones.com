@@ -49,7 +49,7 @@ interface Education {
   degree: string;
   period: string;
   gpa: string | null;
-  notes: string[] | null;
+  notes: string[];
 }
 
 interface WorkExperience {
@@ -273,7 +273,7 @@ export default function Component() {
       degree: "M.S. in Information Security Engineering",
       period: "October 2024 - Current",
       gpa: null,
-      notes: null,
+      notes: [""],
     },
     {
       institution: "Wilmington University",
