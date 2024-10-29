@@ -526,7 +526,7 @@ export default function Component() {
       period: "July 2024 - September 2024",
       description:
         "An app to add FCC Amateur Radio Licenses to Apple Wallet and Google Wallet.",
-      skills: ["Web Development", "Apple Wallet", "Google Wallet"],
+      skills: ["Next.JS", "TypeScript", "SST", "Apple Wallet", "Google Wallet"],
       link: "https://github.com/NicPWNs/hamradiowallet.com",
     },
     {
