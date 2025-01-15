@@ -25,13 +25,12 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import {
   faShield,
-  faCertificate,
   faGraduationCap,
   faBriefcase,
   faTrophy,
   faCode,
 } from "@fortawesome/free-solid-svg-icons";
-import { siComptia, siIsc2, siAmazonwebservices } from "simple-icons";
+import { siComptia, siIsc2 } from "simple-icons";
 
 config.autoAddCss = false;
 
@@ -122,7 +121,11 @@ export default function Component() {
       expirationDate: "2027",
       verificationLink:
         "https://www.credly.com/badges/560ed8db-b774-4e82-8739-16e3d4f5ef3f",
-      icon: <FontAwesomeIcon icon={faShield} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siIsc2.path} />
+        </svg>
+      ),
     },
     {
       name: "OSCP",
@@ -150,7 +153,11 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/aecc6db8-b949-4ab3-aa00-9838934663e7",
-      icon: <FontAwesomeIcon icon={faShield} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siIsc2.path} />
+        </svg>
+      ),
     },
     {
       name: "CEH",
@@ -632,7 +639,7 @@ export default function Component() {
                 onClick={() => setShowExploits(true)}
                 className="text-purple-400 hover:underline text-left"
               >
-                CVEs/Exploits
+                CVEs & Exploits
               </button>
             </div>
           </>
@@ -1353,7 +1360,7 @@ export default function Component() {
                     )}
                     role="button"
                     tabIndex={0}
-                    aria-label="Close CVEs/Exploits"
+                    aria-label="Close CVEs & Exploits"
                   >
                     <X className="w-2 h-2 text-red-800 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
@@ -1363,7 +1370,7 @@ export default function Component() {
                     isDarkMode ? "text-gray-300" : "text-gray-700"
                   } flex-1 text-center whitespace-nowrap`}
                 >
-                  CVEs and Exploits
+                  CVEs & Exploits
                 </div>
                 <div className="flex-1"></div>
               </div>
