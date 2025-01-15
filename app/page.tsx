@@ -70,7 +70,7 @@ interface Award {
   description?: string;
 }
 
-interface Bounty {
+interface Exploit {
   platform: string;
   cve: string;
   description: string;
@@ -100,20 +100,20 @@ export default function Component() {
   const [showEducation, setShowEducation] = useState(false);
   const [showExperience, setShowExperience] = useState(false);
   const [showAwards, setShowAwards] = useState(false);
-  const [showBounties, setShowBounties] = useState(false);
+  const [showExploits, setShowExploits] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [certPosition, setCertPosition] = useState({ x: 20, y: 20 });
   const [eduPosition, setEduPosition] = useState({ x: 20, y: 20 });
   const [expPosition, setExpPosition] = useState({ x: 20, y: 20 });
   const [awardsPosition, setAwardsPosition] = useState({ x: 20, y: 20 });
-  const [bountiesPosition, setBountiesPosition] = useState({ x: 20, y: 20 });
+  const [exploitsPosition, setExploitsPosition] = useState({ x: 20, y: 20 });
   const [projectsPosition, setProjectsPosition] = useState({ x: 20, y: 20 });
   const nodeRef = useRef<HTMLDivElement>(null);
   const certNodeRef = useRef<HTMLDivElement>(null);
   const eduNodeRef = useRef<HTMLDivElement>(null);
   const expNodeRef = useRef<HTMLDivElement>(null);
   const awardsNodeRef = useRef<HTMLDivElement>(null);
-  const bountiesNodeRef = useRef<HTMLDivElement>(null);
+  const exploitsNodeRef = useRef<HTMLDivElement>(null);
   const projectsNodeRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -517,7 +517,7 @@ export default function Component() {
     },
   ];
 
-  const bounties: Bounty[] = [
+  const exploits: Exploit[] = [
     {
       platform: "Huntr",
       cve: "CVE-2024-8098",
@@ -613,10 +613,10 @@ export default function Component() {
                 Projects
               </button>
               <button
-                onClick={() => setShowBounties(true)}
+                onClick={() => setShowExploits(true)}
                 className="text-purple-400 hover:underline text-left"
               >
-                Bounties
+                CVEs/Exploits
               </button>
             </div>
           </>
@@ -817,8 +817,8 @@ export default function Component() {
     setAwardsPosition({ x: data.x, y: data.y });
   };
 
-  const handleBountiesDrag = (e: DraggableEvent, data: DraggableData) => {
-    setBountiesPosition({ x: data.x, y: data.y });
+  const handleExploitsDrag = (e: DraggableEvent, data: DraggableData) => {
+    setExploitsPosition({ x: data.x, y: data.y });
   };
 
   const handleProjectsDrag = (e: DraggableEvent, data: DraggableData) => {
@@ -1307,15 +1307,15 @@ export default function Component() {
         </Draggable>
       )}
 
-      {showBounties && (
+      {showExploits && (
         <Draggable
-          nodeRef={bountiesNodeRef}
-          handle=".bounties-drag-handle"
+          nodeRef={exploitsNodeRef}
+          handle=".exploits-drag-handle"
           bounds="parent"
-          position={bountiesPosition}
-          onDrag={handleBountiesDrag}
+          position={exploitsPosition}
+          onDrag={handleExploitsDrag}
         >
-          <div ref={bountiesNodeRef} className="fixed">
+          <div ref={exploitsNodeRef} className="fixed">
             <div
               className={`${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -1324,20 +1324,20 @@ export default function Component() {
               <div
                 className={`${
                   isDarkMode ? "bg-gray-700" : "bg-gray-200"
-                } px-4 py-2 flex items-center bounties-drag-handle cursor-move`}
+                } px-4 py-2 flex items-center exploits-drag-handle cursor-move`}
               >
                 <div className="flex items-center space-x-2 flex-1">
                   <div
                     className="w-4 h-4 rounded-full bg-red-500 flex items-center justify-center cursor-pointer group"
                     onClick={handleButtonInteraction(() =>
-                      setShowBounties(false)
+                      setShowExploits(false)
                     )}
                     onTouchStart={handleButtonInteraction(() =>
-                      setShowBounties(false)
+                      setShowExploits(false)
                     )}
                     role="button"
                     tabIndex={0}
-                    aria-label="Close Bounties"
+                    aria-label="Close CVEs/Exploits"
                   >
                     <X className="w-2 h-2 text-red-800 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
@@ -1347,13 +1347,13 @@ export default function Component() {
                     isDarkMode ? "text-gray-300" : "text-gray-700"
                   } flex-1 text-center whitespace-nowrap`}
                 >
-                  Bug Bounties
+                  CVE Assignments and Exploits
                 </div>
                 <div className="flex-1"></div>
               </div>
               <div className="p-4 overflow-auto max-h-[70vh]">
                 <div className="space-y-4">
-                  {bounties.map((bounty, index) => (
+                  {exploits.map((exploit, index) => (
                     <div
                       key={index}
                       className={`p-3 rounded-lg ${
@@ -1364,16 +1364,16 @@ export default function Component() {
                     >
                       <div className="flex items-center mb-2">
                         <Bug className="w-5 h-5 text-green-500 mr-2" />
-                        <div className="font-semibold">{bounty.cve}</div>
+                        <div className="font-semibold">{exploit.cve}</div>
                       </div>
-                      <div className="text-sm mb-1">{bounty.platform}</div>
-                      <div className="text-sm mb-1">{bounty.description}</div>
+                      <div className="text-sm mb-1">{exploit.platform}</div>
+                      <div className="text-sm mb-1">{exploit.description}</div>
                       <div className="text-sm mb-1">
-                        Reward: {bounty.reward}
+                        Reward: {exploit.reward}
                       </div>
-                      <div className="text-sm mb-1">{bounty.date}</div>
+                      <div className="text-sm mb-1">{exploit.date}</div>
                       <a
-                        href={bounty.reportLink}
+                        href={exploit.reportLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs flex items-center text-blue-400 hover:underline"
