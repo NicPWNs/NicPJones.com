@@ -140,7 +140,14 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
-      icon: <svg role="img" viewBox="0 0 24 24" {...siComptia} />,
+      icon: (
+        <svg
+          role="img"
+          viewBox="0 0 24 24"
+          {...siComptia}
+          style={{ fill: "currentColor" }}
+        />
+      ),
     },
     {
       name: "ISC2 CC",
