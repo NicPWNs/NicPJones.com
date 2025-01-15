@@ -141,12 +141,9 @@ export default function Component() {
       verificationLink:
         "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
       icon: (
-        <svg
-          role="img"
-          viewBox="0 0 24 24"
-          {...siComptia}
-          style={{ fill: "currentColor" }}
-        />
+        <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+          <path d={siComptia.path} />
+        </svg>
       ),
     },
     {
