@@ -550,6 +550,30 @@ export default function Component() {
       reportLink:
         "https://github.com/NicPWNs/MEGABOT/security/advisories/GHSA-vhxp-4hwq-w3p2",
     },
+    {
+      cve: "Exploit for CVE-2022-25765",
+      description: "pdfkit Command Injection",
+      date: "February 2023",
+      reportLink: "https://github.com/UNICORDev/exploit-CVE-2022-25765",
+    },
+    {
+      cve: "Exploit for CVE-2021-22204",
+      description: "ExifTool Arbitrary Code Execution",
+      date: "May 2022",
+      reportLink: "https://github.com/UNICORDev/exploit-CVE-2021-22204",
+    },
+    {
+      cve: "Exploit for CVE-2020-5844",
+      description: "Pandora FMS Remote Code Execution",
+      date: "May 2022",
+      reportLink: "https://github.com/UNICORDev/exploit-CVE-2020-5844",
+    },
+    {
+      cve: "Exploit for CVE-2021-3560",
+      description: "Polkit Local Privilege Escalation",
+      date: "May 2022",
+      reportLink: "https://github.com/UNICORDev/exploit-CVE-2021-3560",
+    },
   ];
 
   const projects: Project[] = [
