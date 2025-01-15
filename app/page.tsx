@@ -74,6 +74,7 @@ interface Exploit {
   description: string;
   date: string;
   reportLink: string;
+  cveLink?: string;
 }
 
 interface Project {
@@ -549,6 +550,7 @@ export default function Component() {
       date: "August 2024",
       reportLink:
         "https://github.com/NicPWNs/MEGABOT/security/advisories/GHSA-vhxp-4hwq-w3p2",
+      cveLink: "https://nvd.nist.gov/vuln/detail/CVE-2024-43404",
     },
     {
       cve: "Exploit for CVE-2022-25765",
@@ -1424,7 +1426,7 @@ export default function Component() {
                         View Report <ExternalLink className="w-3 h-3 ml-1" />
                       </a>
                       <a
-                        href={"https://nvd.nist.gov/vuln/detail/" + exploit.cve}
+                        href={exploit.cveLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs flex items-center text-blue-400 hover:underline"
