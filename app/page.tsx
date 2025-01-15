@@ -31,6 +31,7 @@ import {
   faTrophy,
   faCode,
 } from "@fortawesome/free-solid-svg-icons";
+import { siComptia, siIsc2, siAmazonwebservices } from "simple-icons";
 
 config.autoAddCss = false;
 
@@ -139,7 +140,7 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
+      icon: <svg role="img" viewBox="0 0 24 24" {...siComptia} />,
     },
     {
       name: "ISC2 CC",
@@ -164,6 +165,14 @@ export default function Component() {
       verificationLink:
         "https://www.credly.com/badges/facfd8f5-5a14-4882-9abb-8ec3700753c6",
       icon: <FontAwesomeIcon icon={faCertificate} />,
+    },
+    {
+      name: "GIAC Security Essentials (GSEC)",
+      issueDate: "2024",
+      expirationDate: "2028",
+      verificationLink:
+        "https://www.credly.com/badges/77b0aae3-1ab5-4c49-b9eb-2cdcf9362642",
+      icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
     {
       name: "AWS Certified Security Specialty",
@@ -272,8 +281,8 @@ export default function Component() {
       institution: "SANS Technology Institute",
       degree: "M.S. in Information Security Engineering",
       period: "October 2024 - Current",
-      gpa: "Pending",
-      notes: [""],
+      gpa: "4.0",
+      notes: ["National Cyber League (NCL) Fall 2024 Scholarship Winner"],
     },
     {
       institution: "Wilmington University",
