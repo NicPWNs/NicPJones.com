@@ -1425,14 +1425,17 @@ export default function Component() {
                       >
                         View Report <ExternalLink className="w-3 h-3 ml-1" />
                       </a>
-                      <a
-                        href={exploit.cveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs flex items-center text-blue-400 hover:underline"
-                      >
-                        View NIST NVD <ExternalLink className="w-3 h-3 ml-1" />
-                      </a>
+                      {exploit.cveLink && (
+                        <a
+                          href={exploit.cveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs flex items-center text-blue-400 hover:underline"
+                        >
+                          View NIST NVD{" "}
+                          <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      )}
                     </div>
                   ))}
                 </div>
