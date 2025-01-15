@@ -139,7 +139,7 @@ export default function Component() {
       verificationLink:
         "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
       icon: (
-        <svg viewBox="0 0 48 48" className="fill-current">
+        <svg viewBox="0 0 24 24" className="fill-current">
           <path d={siComptia.path} />
         </svg>
       ),
@@ -166,7 +166,11 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/facfd8f5-5a14-4882-9abb-8ec3700753c6",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siComptia.path} />
+        </svg>
+      ),
     },
     {
       name: "GIAC Security Essentials (GSEC)",
@@ -230,7 +234,11 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/f63e1a16-90f8-407f-bab7-54c0307e1109",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siComptia.path} />
+        </svg>
+      ),
     },
     {
       name: "CompTIA A+",
@@ -238,7 +246,11 @@ export default function Component() {
       expirationDate: "2025",
       verificationLink:
         "https://www.credly.com/badges/78ab4d15-6dfe-4cae-81d3-736fa15d216d",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siComptia.path} />
+        </svg>
+      ),
     },
     {
       name: "CompTIA ITF+",
@@ -246,7 +258,11 @@ export default function Component() {
       expirationDate: null,
       verificationLink:
         "https://www.credly.com/badges/f44688b9-39af-4ccb-a299-b4f312f784d8",
-      icon: <FontAwesomeIcon icon={faCertificate} />,
+      icon: (
+        <svg viewBox="0 0 24 24" className="fill-current">
+          <path d={siComptia.path} />
+        </svg>
+      ),
     },
     {
       name: "GitHub Foundations",
