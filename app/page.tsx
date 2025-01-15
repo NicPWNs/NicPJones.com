@@ -71,10 +71,8 @@ interface Award {
 }
 
 interface Exploit {
-  platform: string;
   cve: string;
   description: string;
-  reward: string;
   date: string;
   reportLink: string;
 }
@@ -523,13 +521,11 @@ export default function Component() {
 
   const exploits: Exploit[] = [
     {
-      platform: "Huntr",
-      cve: "CVE-2024-8098",
+      cve: "CVE-2024-43404",
       description: "Python Code Injection",
-      reward: "$900",
       date: "August 2024",
       reportLink:
-        "https://huntr.com/bounties/083bb3f0-dd51-4d8c-bf17-7110ea730f5a",
+        "https://github.com/NicPWNs/MEGABOT/security/advisories/GHSA-vhxp-4hwq-w3p2",
     },
   ];
 
@@ -1351,7 +1347,7 @@ export default function Component() {
                     isDarkMode ? "text-gray-300" : "text-gray-700"
                   } flex-1 text-center whitespace-nowrap`}
                 >
-                  CVE Assignments and Exploits
+                  CVEs and Exploits
                 </div>
                 <div className="flex-1"></div>
               </div>
@@ -1370,11 +1366,7 @@ export default function Component() {
                         <Bug className="w-5 h-5 text-green-500 mr-2" />
                         <div className="font-semibold">{exploit.cve}</div>
                       </div>
-                      <div className="text-sm mb-1">{exploit.platform}</div>
                       <div className="text-sm mb-1">{exploit.description}</div>
-                      <div className="text-sm mb-1">
-                        Reward: {exploit.reward}
-                      </div>
                       <div className="text-sm mb-1">{exploit.date}</div>
                       <a
                         href={exploit.reportLink}
@@ -1383,6 +1375,14 @@ export default function Component() {
                         className="text-xs flex items-center text-blue-400 hover:underline"
                       >
                         View Report <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                      <a
+                        href={"https://nvd.nist.gov/vuln/detail/" + exploit.cve}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs flex items-center text-blue-400 hover:underline"
+                      >
+                        View NIST NVD <ExternalLink className="w-3 h-3 ml-1" />
                       </a>
                     </div>
                   ))}
