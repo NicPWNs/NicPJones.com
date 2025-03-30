@@ -41,7 +41,7 @@ interface Certification {
   issueDate: string;
   expirationDate: string | null;
   verificationLink?: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
 }
 
 interface Education {
@@ -86,7 +86,7 @@ interface Project {
 }
 
 export default function Component() {
-  const [displayedText, setDisplayedText] = useState<JSX.Element[]>([]);
+  const [displayedText, setDisplayedText] = useState<React.JSX.Element[]>([]);
   const [currentLine, setCurrentLine] = useState(0);
   const [currentChar, setCurrentChar] = useState(0);
   const [isTypingCommand, setIsTypingCommand] = useState(true);
@@ -106,13 +106,13 @@ export default function Component() {
   const [awardsPosition, setAwardsPosition] = useState({ x: 20, y: 20 });
   const [exploitsPosition, setExploitsPosition] = useState({ x: 20, y: 20 });
   const [projectsPosition, setProjectsPosition] = useState({ x: 20, y: 20 });
-  const nodeRef = useRef<HTMLDivElement>(null);
-  const certNodeRef = useRef<HTMLDivElement>(null);
-  const eduNodeRef = useRef<HTMLDivElement>(null);
-  const expNodeRef = useRef<HTMLDivElement>(null);
-  const awardsNodeRef = useRef<HTMLDivElement>(null);
-  const exploitsNodeRef = useRef<HTMLDivElement>(null);
-  const projectsNodeRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef<HTMLDivElement>(null!);
+  const certNodeRef = useRef<HTMLDivElement>(null!);
+  const eduNodeRef = useRef<HTMLDivElement>(null!);
+  const expNodeRef = useRef<HTMLDivElement>(null!);
+  const awardsNodeRef = useRef<HTMLDivElement>(null!);
+  const exploitsNodeRef = useRef<HTMLDivElement>(null!);
+  const projectsNodeRef = useRef<HTMLDivElement>(null!);
   const [isMobile, setIsMobile] = useState(false);
 
   const certifications: Certification[] = [
@@ -186,6 +186,14 @@ export default function Component() {
       expirationDate: "2028",
       verificationLink:
         "https://www.credly.com/badges/77b0aae3-1ab5-4c49-b9eb-2cdcf9362642",
+      icon: <FontAwesomeIcon icon={faGraduationCap} />,
+    },
+    {
+      name: "GIAC Certified Incident Handler (GCIH)",
+      issueDate: "2025",
+      expirationDate: "2029",
+      verificationLink:
+        "https://www.credly.com/badges/18b1719d-757b-41e7-a03d-f7efb4420c49",
       icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
     {
