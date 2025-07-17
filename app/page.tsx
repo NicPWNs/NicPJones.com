@@ -316,7 +316,10 @@ export default function Component() {
       degree: "M.S. in Information Security Engineering",
       period: "October 2024 - Current",
       gpa: "4.0",
-      notes: ["National Cyber League (NCL) Fall 2024 Scholarship Winner"],
+      notes: [
+        "National Cyber League (NCL) Fall 2024 Scholarship Winner",
+        "National Cyber League (NCL) Spring 2025 Scholarship Winner",
+      ],
     },
     {
       institution: "Wilmington University",
@@ -356,7 +359,7 @@ export default function Component() {
           title: "Information Security Manager",
           period: "January 2024 – Present",
           responsibilities: [
-            "Develop and execute T-Rex information security strategy and manage information security analyst(s).",
+            "Develop and execute T-Rex information security strategy and manage information security analysts.",
           ],
         },
         {
