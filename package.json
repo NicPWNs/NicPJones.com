@@ -13,6 +13,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tailwindcss/postcss": "^4.0.3",
     "fortawesome": "^0.0.1-security",
     "lucide-react": "^0.439.0",
     "next": "14.2.30",
