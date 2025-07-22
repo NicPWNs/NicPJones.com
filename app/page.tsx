@@ -197,6 +197,14 @@ export default function Component() {
       icon: <FontAwesomeIcon icon={faGraduationCap} />,
     },
     {
+      name: "GIAC Strategic Planning, Policy, and Leadership (GSTRT)",
+      issueDate: "2025",
+      expirationDate: "2029",
+      verificationLink:
+        "https://www.credly.com/badges/f72400c8-9501-4533-8cde-4f4359562925",
+      icon: <FontAwesomeIcon icon={faGraduationCap} />,
+    },
+    {
       name: "AWS Certified Security Specialty",
       issueDate: "2022",
       expirationDate: "2025",
@@ -476,6 +484,11 @@ export default function Component() {
   ];
 
   const awards: Award[] = [
+    {
+      name: "SANSFIRE 2025 Core NetWars Tournament",
+      date: "July 2025",
+      description: "1st Place",
+    },
     {
       name: "Parsons Cyber CTF",
       date: "September 2024",
