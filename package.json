@@ -13,16 +13,21 @@
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@pulumi/aws": "^7.15.0",
+    "@pulumi/docker-build": "^0.0.15",
+    "@pulumi/pulumi": "^3.214.1",
+    "@pulumi/tls": "^5.2.3",
     "@tailwindcss/postcss": "^4.0.3",
     "autoprefixer": "^10.4.21",
     "fortawesome": "^0.0.1-security",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
+    "pulumi": "^0.0.1",
     "react": "^19",
     "react-dom": "^19",
     "react-draggable": "^4.4.6",
     "simple-icons": "^16.1.0",
-    "sst": "3.1.49"
+    "sst": "^3.17.25"
   },
   "devDependencies": {
     "@types/node": "^24",
