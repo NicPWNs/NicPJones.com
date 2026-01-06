@@ -30,7 +30,7 @@
     "sst": "^3.17.25"
   },
   "devDependencies": {
-    "@types/node": "^24",
+    "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
