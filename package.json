@@ -15,7 +15,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@pulumi/aws": "^7.16.0",
     "@pulumi/docker-build": "^0.0.15",
-    "@pulumi/pulumi": "^3.214.1",
+    "@pulumi/pulumi": "^3.215.0",
     "@pulumi/tls": "^5.2.3",
     "@tailwindcss/postcss": "^4.0.3",
     "autoprefixer": "^10.4.21",
