@@ -26,7 +26,7 @@
     "react": "^19",
     "react-dom": "^19",
     "react-draggable": "^4.4.6",
-    "simple-icons": "^16.5.0",
+    "simple-icons": "^16.6.0",
     "sst": "^3.17.25"
   },
   "devDependencies": {
