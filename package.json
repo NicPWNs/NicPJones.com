@@ -15,19 +15,19 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@pulumi/aws": "^7.16.0",
     "@pulumi/docker-build": "^0.0.15",
-    "@pulumi/pulumi": "^3.216.0",
+    "@pulumi/pulumi": "^3.217.0",
     "@pulumi/tls": "^5.2.3",
     "@tailwindcss/postcss": "^4.0.3",
     "autoprefixer": "^10.4.21",
     "fortawesome": "^0.0.1-security",
-    "lucide-react": "^0.562.0",
+    "lucide-react": "^0.563.0",
     "next": "16.1.4",
     "pulumi": "^0.0.1",
     "react": "^19",
     "react-dom": "^19",
     "react-draggable": "^4.4.6",
-    "simple-icons": "^16.6.0",
-    "sst": "^3.17.25"
+    "simple-icons": "^16.6.1",
+    "sst": "^3.17.38"
   },
   "devDependencies": {
     "@types/node": "^25",
