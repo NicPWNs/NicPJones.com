@@ -26,7 +26,7 @@
         "./*"
       ]
     },
-    "target": "ES2017"
+    "target": "ES2020"
   },
   "include": [
     "next-env.d.ts",
@@ -37,8 +37,6 @@
   ],
   "exclude": [
     "node_modules",
-    "sst.config.ts",
-    "sst.config.ts",
     "sst.config.ts"
   ]
 }
