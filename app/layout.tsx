@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Nicholas Jones | Cybersecurity Professional",
+  title: "Nic Jones",
   description:
     "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing. Information Security Manager at T-Rex Solutions.",
   keywords: [
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://nicpjones.com",
-    title: "Nicholas Jones | Cybersecurity Professional",
+    title: "Nic Jones",
     description:
       "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing.",
     siteName: "NicPJones.com",
   },
   twitter: {
     card: "summary",
-    title: "Nicholas Jones | Cybersecurity Professional",
+    title: "Nic Jones",
     description:
       "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing.",
   },
