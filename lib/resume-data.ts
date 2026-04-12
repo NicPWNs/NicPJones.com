@@ -139,6 +139,7 @@ export function transformAwards(awards: JsonResumeAward[]): Award[] {
     name: award.title,
     date: formatDate(award.date),
     description: award.summary,
+    link: award.url,
   }));
 }
 

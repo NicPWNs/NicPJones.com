@@ -30,6 +30,7 @@ export interface Award {
   name: string;
   date: string;
   description?: string;
+  link?: string;
 }
 
 export interface Exploit {
@@ -83,6 +84,7 @@ export interface JsonResumeAward {
   date: string;
   awarder?: string;
   summary?: string;
+  url?: string;
 }
 
 export interface JsonResumePublication {

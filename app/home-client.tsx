@@ -833,6 +833,16 @@ export default function HomeClient({
                       {award.description && (
                         <div className="text-sm">{award.description}</div>
                       )}
+                      {award.link && (
+                        <a
+                          href={award.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs flex items-center text-blue-400 hover:underline mt-2"
+                        >
+                          View <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      )}
                     </div>
                   ))}
                 </div>
