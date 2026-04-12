@@ -8,6 +8,7 @@ export default $config({
       home: "aws",
       providers: {
         aws: { region: "us-east-1" },
+        cloudflare: true,
       },
     };
   },
@@ -15,6 +16,7 @@ export default $config({
     new sst.aws.Nextjs("MyWeb", {
       domain: {
         name: "nicpjones.com",
+        dns: sst.cloudflare.dns(),
         redirects: [
           "www.nicpjones.com",
           "nicpwns.com",
