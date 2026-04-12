@@ -17,11 +17,11 @@ export default function NotFound() {
   const terminalLines = [
     { text: "$ curl -I https://nicpjones.com" + (typeof window !== "undefined" ? window.location.pathname : ""), delay: 0 },
     { text: "HTTP/2 404", delay: 800, color: "text-red-400" },
-    { text: "content-type: text/html", delay: 1000 },
-    { text: "x-error: page-not-found", delay: 1100 },
+    { text: "content-type: text/html", delay: 1000, color: "text-blue-400" },
+    { text: "x-error: page-not-found", delay: 1100, color: "text-blue-400" },
     { text: "", delay: 1300 },
     { text: "$ echo \"The page you're looking for doesn't exist.\"", delay: 1500 },
-    { text: "The page you're looking for doesn't exist.", delay: 2200, color: "text-yellow-400" },
+    { text: "The page you're looking for doesn't exist.", delay: 2200, color: "text-blue-400" },
     { text: "", delay: 2500 },
   ];
 
