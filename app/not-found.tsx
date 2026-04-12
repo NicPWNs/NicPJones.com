@@ -4,21 +4,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 const GLITCH_CHARS = "!@#$%^&*()_+-=[]{}|;:',.<>?/~`0123456789ABCDEFabcdef";
-const MATRIX_CHARS = "01";
-
-interface MatrixDrop {
-  x: number;
-  y: number;
-  speed: number;
-  chars: string[];
-  length: number;
-}
 
 export default function NotFound() {
   const [typedText, setTypedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
   const [glitchText, setGlitchText] = useState("404");
-  const [matrixDrops, setMatrixDrops] = useState<MatrixDrop[]>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [showPrompt, setShowPrompt] = useState(false);
@@ -74,35 +64,6 @@ export default function NotFound() {
     return () => clearInterval(interval);
   }, []);
 
-  // Matrix rain
-  useEffect(() => {
-    const drops: MatrixDrop[] = Array.from({ length: 15 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * -100,
-      speed: 0.5 + Math.random() * 1.5,
-      length: 5 + Math.floor(Math.random() * 15),
-      chars: Array.from(
-        { length: 5 + Math.floor(Math.random() * 15) },
-        () => MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)]
-      ),
-    }));
-    setMatrixDrops(drops);
-
-    const interval = setInterval(() => {
-      setMatrixDrops((prev) =>
-        prev.map((drop) => ({
-          ...drop,
-          y: drop.y > 110 ? -10 : drop.y + drop.speed,
-          chars: drop.chars.map((c) =>
-            Math.random() > 0.9
-              ? MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)]
-              : c
-          ),
-        }))
-      );
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleCommand = useCallback(
     (cmd: string) => {
@@ -163,35 +124,8 @@ export default function NotFound() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 text-green-400 font-mono overflow-hidden relative">
-      {/* Matrix rain background */}
-      <div className="absolute inset-0 overflow-hidden opacity-15 pointer-events-none">
-        {matrixDrops.map((drop, i) => (
-          <div
-            key={i}
-            className="absolute text-xs leading-tight"
-            style={{
-              left: `${drop.x}%`,
-              top: `${drop.y}%`,
-              transform: "translateX(-50%)",
-            }}
-          >
-            {drop.chars.map((char, j) => (
-              <div
-                key={j}
-                style={{
-                  opacity: 1 - j / drop.chars.length,
-                  color: j === 0 ? "#fff" : undefined,
-                }}
-              >
-                {char}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="min-h-screen bg-gray-900 font-mono">
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
         {/* Glitchy 404 */}
         <div className="mb-8 select-none">
           <h1
@@ -207,38 +141,50 @@ export default function NotFound() {
 
         {/* Terminal window */}
         <div className="w-full max-w-2xl">
-          <div className="bg-gray-800 rounded-t-lg px-4 py-2 flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500" />
-            <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="ml-2 text-gray-400 text-sm">
-              guest@nicpjones.com: ~
-            </span>
+          <div className="bg-gray-700 rounded-t-lg px-2 sm:px-4 py-2 flex items-center">
+            <div className="flex items-center space-x-2 flex-1">
+              <div className="w-4 h-4 rounded-full bg-red-500" />
+              <div className="w-4 h-4 rounded-full bg-yellow-500" />
+              <div className="w-4 h-4 rounded-full bg-green-500" />
+            </div>
+            <div className="text-sm font-semibold text-gray-300 flex-1 text-center whitespace-nowrap">
+              404 - Not Found
+            </div>
+            <div className="flex-1" />
           </div>
-          <div className="bg-black/80 backdrop-blur-sm rounded-b-lg p-4 text-sm min-h-[300px] max-h-[400px] overflow-y-auto border border-gray-700 border-t-0">
+          <div className="bg-gray-800 rounded-b-lg p-2 sm:p-4 text-sm min-h-[300px] max-h-[400px] overflow-y-auto">
             {/* Animated terminal output */}
             {terminalLines.slice(0, visibleLines).map((line, i) => (
-              <div key={i} className={`${line.color || "text-green-400"} whitespace-pre-wrap`}>
-                {line.text}
+              <div key={i} className="whitespace-pre-wrap">
+                {line.text.startsWith("$") ? (
+                  <>
+                    <span className="text-red-500">$ </span>
+                    <span className="text-yellow-500">{line.text.slice(2)}</span>
+                  </>
+                ) : (
+                  <span className={line.color || "text-gray-100"}>{line.text}</span>
+                )}
               </div>
             ))}
 
             {/* Command history */}
             {commandHistory.map((line, i) => (
-              <div
-                key={`hist-${i}`}
-                className={`whitespace-pre-wrap ${
-                  line.startsWith("$") ? "text-green-400" : "text-gray-300"
-                }`}
-              >
-                {line}
+              <div key={`hist-${i}`} className="whitespace-pre-wrap">
+                {line.startsWith("$") ? (
+                  <>
+                    <span className="text-red-500">$ </span>
+                    <span className="text-yellow-500">{line.slice(2)}</span>
+                  </>
+                ) : (
+                  <span className="text-gray-100">{line}</span>
+                )}
               </div>
             ))}
 
             {/* Interactive prompt */}
             {showPrompt && (
               <div className="flex items-center">
-                <span className="text-green-400 mr-2">$</span>
+                <span className="text-red-500 mr-1">$ </span>
                 <input
                   type="text"
                   value={currentInput}
@@ -246,16 +192,12 @@ export default function NotFound() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleCommand(currentInput);
                   }}
-                  className="bg-transparent outline-none text-green-400 flex-1 caret-green-400"
+                  className="bg-transparent outline-none text-yellow-500 flex-1 caret-yellow-500"
                   autoFocus
                   spellCheck={false}
                   aria-label="Terminal input"
                 />
-                <span
-                  className={`w-2 h-4 bg-green-400 ${
-                    showCursor ? "opacity-100" : "opacity-0"
-                  }`}
-                />
+                <span className="inline-block w-2 h-4 bg-gray-100 ml-1 animate-pulse" />
               </div>
             )}
           </div>
@@ -264,7 +206,7 @@ export default function NotFound() {
         {/* Go home button */}
         <Link
           href="/"
-          className="mt-6 px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 hover:bg-green-500/30 hover:border-green-400 transition-all duration-200"
+          className="mt-6 px-6 py-3 bg-gray-800 border border-gray-700 rounded-lg text-yellow-500 hover:bg-gray-700 hover:border-gray-600 transition-all duration-200"
         >
           cd /home
         </Link>
