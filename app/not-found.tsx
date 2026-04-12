@@ -273,17 +273,11 @@ export default function NotFound() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") handleCommand(currentInput);
                       }}
-                      className="bg-transparent outline-none text-yellow-500 caret-transparent w-0 flex-shrink-0"
-                      style={{ width: currentInput.length + "ch" }}
+                      className={`bg-transparent outline-none text-yellow-500 ${isDarkMode ? "caret-gray-100" : "caret-gray-700"}`}
                       autoFocus
                       spellCheck={false}
                       aria-label="Terminal input"
                     />
-                    <span
-                      className={`inline-block w-2 h-4 ${
-                        isDarkMode ? "bg-gray-100" : "bg-gray-700"
-                      } ml-1 animate-pulse`}
-                    ></span>
                   </>
                 )}
 
