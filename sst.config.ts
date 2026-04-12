@@ -22,7 +22,9 @@ export default $config({
           "nicpwns.com",
           "www.nicpwns.com",
           "npj.wtf",
+          "www.npj.wtf",
           "nicjones.org",
+          "www.nicjones.org",
         ],
       },
     });
