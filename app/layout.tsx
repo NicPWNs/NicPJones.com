@@ -35,14 +35,14 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://nicpjones.com'),
   title: 'NicPJones / NicPWNs',
   description:
-    'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards, filed as a dossier.',
+    'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards.',
   openGraph: {
     type: 'website',
     url: 'https://nicpjones.com',
     siteName: 'NicPJones',
     title: 'NicPJones / NicPWNs',
     description:
-      'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards, filed as a dossier.',
+      'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards.',
   },
   twitter: {
     card: 'summary_large_image',

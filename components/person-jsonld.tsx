@@ -7,6 +7,7 @@ export function PersonJsonLd({ resume }: { resume: Resume }) {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://nicpjones.com/#person",
     name: b.name,
     alternateName: "NicPWNs",
     url: b.url || "https://nicpjones.com",

@@ -139,7 +139,32 @@ export function FolderStage({
 
           {/* Label tab — the notch on the top-left that carries the header,
               riding up above the folder body. */}
-          <div className="absolute left-0 top-0 z-[1] flex h-[4.25rem] w-fit max-w-full items-center rounded-t-2xl bg-manila-deep px-5 sm:px-7">
+          <div
+            className={`absolute left-0 top-0 z-[5] flex h-[4.25rem] w-fit max-w-full items-center rounded-t-2xl bg-manila-deep px-5 sm:px-7 ${
+              open ? "cursor-pointer" : ""
+            }`}
+            role={open ? "button" : undefined}
+            aria-label={open ? "Close file" : undefined}
+            tabIndex={open ? 0 : -1}
+            onClick={
+              open
+                ? (e) => {
+                    e.stopPropagation()
+                    handleClose()
+                  }
+                : undefined
+            }
+            onKeyDown={
+              open
+                ? (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault()
+                      handleClose()
+                    }
+                  }
+                : undefined
+            }
+          >
             <h1
               className={`font-marker text-2xl leading-none tracking-tight text-ink sm:text-3xl lg:text-4xl ${
                 initiallyOpen ? "" : "animate-marker-write"
@@ -241,7 +266,7 @@ export function FolderStage({
           <button
             type="button"
             onClick={handleOpen}
-            aria-label="Open the dossier on Nic P. Jones"
+            aria-label="Open the file on Nic P. Jones"
             aria-expanded={open}
             tabIndex={open ? -1 : 0}
             className="group absolute inset-x-0 bottom-0 top-[15%] z-[4] origin-bottom cursor-pointer rounded-2xl text-left transition-[transform,opacity] duration-[1400ms] ease-[cubic-bezier(0.66,0,0.2,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-paper/70 motion-reduce:transition-none"

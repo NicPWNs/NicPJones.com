@@ -25,7 +25,7 @@ export default function NotFound() {
           className="mt-8 inline-flex items-center gap-2 border-2 border-ink px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
         >
           <span aria-hidden="true">←</span>
-          Return to the dossier
+          Return home
         </Link>
       </div>
     </main>

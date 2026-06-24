@@ -28,19 +28,12 @@ function FilterChip({
     <button
       type="button"
       onClick={onClick}
-      className="cursor-pointer rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
-      style={
+      className={`cursor-pointer font-hand text-2xl leading-none transition-all ${
         active
-          ? {
-              backgroundColor: `var(${colorVar})`,
-              borderColor: `var(${colorVar})`,
-              color: "var(--color-page)",
-            }
-          : {
-              borderColor: "color-mix(in srgb, var(--color-ink) 25%, transparent)",
-              color: "var(--color-ink-soft)",
-            }
-      }
+          ? "underline decoration-2 underline-offset-4"
+          : "opacity-55 hover:opacity-100"
+      }`}
+      style={{ color: active ? `var(${colorVar})` : "var(--color-ink)" }}
     >
       {label}
     </button>
@@ -91,7 +84,7 @@ export function NotesSection({
       </p>
 
       {allTags.length > 0 && (
-        <div className="mb-6 flex flex-wrap gap-2">
+        <div className="mb-6 flex flex-wrap items-baseline gap-x-5 gap-y-1">
           <FilterChip
             label="All"
             active={active === null}

