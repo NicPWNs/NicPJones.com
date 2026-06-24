@@ -6,6 +6,7 @@ import {
   Libre_Baskerville,
   Permanent_Marker,
 } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import { ConsoleEgg } from '@/components/console-egg'
 
@@ -79,6 +80,11 @@ export default function RootLayout({
       <body className="font-sans antialiased caret-transparent">
         <ConsoleEgg />
         {children}
+        <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          strategy="afterInteractive"
+          data-cf-beacon='{"token": "28cad44fb813469db03865215a6489f6"}'
+        />
       </body>
     </html>
   )
