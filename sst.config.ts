@@ -8,7 +8,7 @@ export default $config({
       home: "aws",
       providers: {
         aws: { region: "us-east-1" },
-        cloudflare: "6.14.0",
+        cloudflare: "6.17.0",
       },
     };
   },
@@ -17,6 +17,7 @@ export default $config({
       domain: {
         name: "nicpjones.com",
         dns: sst.cloudflare.dns(),
+        aliases: ["blog.nicpwns.com"],
         redirects: [
           "www.nicpjones.com",
           "nicpwns.com",

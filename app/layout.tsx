@@ -50,7 +50,11 @@ export const metadata: Metadata = {
       'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder.',
   },
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-icon.png',
   },
 }
 
