@@ -13,24 +13,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^7.2.0",
-    "@fortawesome/free-brands-svg-icons": "^7.2.0",
-    "@fortawesome/free-solid-svg-icons": "^7.2.0",
-    "@fortawesome/react-fontawesome": "^3.3.1",
     "@pulumi/aws": "^7.32.0",
     "@pulumi/docker-build": "^0.0.18",
     "@pulumi/pulumi": "^3.244.0",
     "@pulumi/tls": "^5.5.0",
     "@tailwindcss/postcss": "^4.3.0",
     "autoprefixer": "^10.5.0",
-    "fortawesome": "^0.0.1-security",
-    "lucide-react": "^1.17.0",
+    "marked": "^18.0.5",
     "next": "16.2.7",
     "pulumi": "^3.244.0",
     "react": "^19",
     "react-dom": "^19",
-    "react-draggable": "^4.6.0",
-    "simple-icons": "^16.22.0",
     "sst": "^4.15.2"
   },
   "devDependencies": {

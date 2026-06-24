@@ -1,0 +1,696 @@
+{
+  "basics": {
+    "name": "Nicholas (Nic) Jones",
+    "label": "Information Security Manager @ T-Rex",
+    "image": "",
+    "email": "nic@nicpjones.com",
+    "phone": "(302) 245-3700",
+    "url": "https://nicpjones.com",
+    "summary": "Cybersecurity professional with experience working for leading technology companies in core security, networking, and cloud spaces. Exceptional communication, writing, and organization skills with proven ability to work in teams and independently.",
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "Washington",
+      "countryCode": "US",
+      "region": "D.C."
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "NicPJones",
+        "url": "https://linkedin.com/in/NicPJones"
+      },
+      {
+        "network": "GitHub",
+        "username": "NicPWNs",
+        "url": "https://github.com/NicPWNs"
+      },
+      {
+        "network": "Blog",
+        "username": "NicPWNs",
+        "url": "https://blog.nicpwns.com/"
+      },
+      {
+        "network": "Credly",
+        "username": "nicpjones",
+        "url": "https://www.credly.com/users/nicpjones/badges"
+      },
+      {
+        "network": "HackTheBox",
+        "username": "NicPWNs",
+        "url": "https://app.hackthebox.eu/profile/72382"
+      },
+      {
+        "network": "HackerRank",
+        "username": "nicpwns",
+        "url": "https://www.hackerrank.com/nicpwns"
+      },
+      {
+        "network": "StackOverflow",
+        "username": "NicPWNs",
+        "url": "https://stackoverflow.com/users/21022536/nicpwns"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "T-Rex Solutions, LLC",
+      "position": "Information Security Manager",
+      "url": "https://www.trexsolutionsllc.com",
+      "startDate": "2024-01-01",
+      "summary": "Current role managing information security strategy and analysts.",
+      "highlights": [
+        "Develop and execute T-Rex information security strategy and manage information security analysts",
+        "Plan and engineer security architecture for the T-Rex enterprise",
+        "Partial time on contract with Department of Education"
+      ],
+      "location": "Bethesda, MD - Remote"
+    },
+    {
+      "name": "U.S. Department of Education",
+      "position": "Network Security Manager",
+      "location": "Washington, D.C. - Remote",
+      "startDate": "2025-04-01",
+      "summary": "Contract role managing network security for the Department of Education."
+    },
+    {
+      "name": "U.S. Department of Education",
+      "position": "Cloud Engineer",
+      "location": "Washington, D.C. - Remote",
+      "startDate": "2024-09-01",
+      "endDate": "2025-04-01",
+      "summary": "Contract role supporting cloud engineering initiatives for the Department of Education."
+    },
+    {
+      "name": "T-Rex Solutions, LLC",
+      "position": "Security Engineer",
+      "url": "https://www.trexsolutionsllc.com",
+      "startDate": "2022-06-01",
+      "endDate": "2023-12-01",
+      "summary": "Security engineering role with primary assignment on contract with Palantir Technologies.",
+      "highlights": [
+        "Primary assignment on contract with Palantir Technologies as a Data Engineer",
+        "Re-architected SIEM platform for security event logging and detection"
+      ],
+      "location": "Bethesda, MD - Remote"
+    },
+    {
+      "name": "T-Rex Solutions, LLC",
+      "position": "Lead Information Security Analyst",
+      "url": "https://www.trexsolutionsllc.com",
+      "startDate": "2020-05-01",
+      "endDate": "2022-07-01",
+      "summary": "Senior analyst role with expanded responsibilities including penetration testing and security architecture.",
+      "highlights": [
+        "Periodic penetration testing, network infrastructure management, incident response exercise development",
+        "MITRE ATT&CK adoption, ISO 27001 preparation, and managing the information security intern",
+        "Surged for a research project using AWS CDK to orchestrate multi-account AWS architectures",
+        "Cross-training team members and support to cloud technology lab projects (TLPs)"
+      ],
+      "location": "Bethesda, MD - Remote"
+    },
+    {
+      "name": "T-Rex Solutions, LLC",
+      "position": "Cybersecurity Analyst",
+      "url": "https://www.trexsolutionsllc.com",
+      "startDate": "2019-08-01",
+      "endDate": "2020-05-01",
+      "summary": "Core analyst role reporting to CISO/CIO with responsibilities across multiple security domains.",
+      "highlights": [
+        "Report to CISO/CIO and lead malicious email analysis, vulnerability & patch management",
+        "Cloud security architecting, security awareness training, and network monitoring"
+      ],
+      "location": "Bethesda, MD - Remote"
+    },
+    {
+      "name": "T-Rex Solutions, LLC",
+      "position": "Cybersecurity Intern",
+      "url": "https://www.trexsolutionsllc.com",
+      "startDate": "2019-06-01",
+      "endDate": "2019-08-01",
+      "summary": "Initial internship role supporting the security team in foundational security implementations.",
+      "highlights": [
+        "Supported the security team in implementing Splunk and developing procedures, policies, compliance, and training"
+      ],
+      "location": "Bethesda, MD - Remote"
+    },
+    {
+      "name": "Palantir Technologies",
+      "position": "Data Engineer",
+      "url": "https://www.palantir.com",
+      "startDate": "2022-06-01",
+      "endDate": "2023-12-01",
+      "summary": "Data engineering role building pipelines in Palantir Foundry for government clients.",
+      "highlights": [
+        "Engineered data pipelines in Palantir Foundry using Python/PySpark/TypeScript for ETL of critical government data",
+        "Build data pipelines to clean, normalize, and create value from data"
+      ],
+      "location": "Washington D.C. - Remote"
+    },
+    {
+      "name": "Synack Red Team",
+      "position": "Security Researcher",
+      "url": "https://www.synack.com/red-team",
+      "startDate": "2022-05-01",
+      "endDate": "2024-08-01",
+      "summary": "Exclusive bug bounty and penetration testing program member.",
+      "highlights": [
+        "The Synack Red Team (SRT) is a selective bug bounty and penetration testing program",
+        "Test security vulnerabilities on web, host, and mobile platforms for Synack's clients",
+        "Team members must complete a series of technical assessments and interviews to join"
+      ],
+      "location": "Freelance"
+    },
+    {
+      "name": "Mobius Intelligent Systems",
+      "position": "Applications Tester & Developer",
+      "url": "https://mis.systems/",
+      "startDate": "2019-05-01",
+      "endDate": "2019-09-01",
+      "summary": "Tested and developed business intelligence applications for customers.",
+      "highlights": [
+        "Tested and assisted in developing JavaScript, PHP, MySQL, and Python business intelligence applications for customers"
+      ],
+      "location": "Laurel, MD - Remote"
+    },
+    {
+      "name": "Capitol Technology University Cyber Lab",
+      "position": "SOC Analyst/Engineer",
+      "url": "https://www.captechu.edu/student-experience/centers-and-labs/cyber-lab",
+      "startDate": "2019-03-01",
+      "endDate": "2019-09-01",
+      "summary": "Managed and developed the university's Security Operations Center.",
+      "highlights": [
+        "Managed and developed the Cyber Lab's Security Operations Center (SOC) to keep the lab network secure",
+        "Promote a learning environment for other students",
+        "Created Splunk rules and dashboards for analysis"
+      ],
+      "location": "Laurel, MD"
+    },
+    {
+      "name": "ADNET Systems, Inc.",
+      "position": "Data Technician",
+      "url": "https://www.adnet-sys.com",
+      "startDate": "2018-12-01",
+      "endDate": "2019-05-01",
+      "summary": "Supported NASA heliophysics satellite missions through system management.",
+      "highlights": [
+        "Managed CentOS and macOS systems and their logs to support heliophysics satellite missions (SDO, SOHO, STEREO)"
+      ],
+      "location": "NASA GSFC, Greenbelt, MD"
+    },
+    {
+      "name": "CSRA, Inc.",
+      "position": "IT Intern",
+      "url": "https://www.gdit.com",
+      "startDate": "2017-12-01",
+      "endDate": "2018-01-01",
+      "summary": "IT support for government contract effort.",
+      "highlights": [
+        "Managed documents and IT resources to assist the government contract effort",
+        "Imaged and prepped Windows 10 systems and Android phones for deployment"
+      ],
+      "location": "Falls Church, VA"
+    }
+  ],
+  "volunteer": [],
+  "education": [
+    {
+      "institution": "SANS Technology Institute",
+      "url": "https://www.sans.edu",
+      "area": "Information Security Engineering",
+      "studyType": "Master of Science",
+      "startDate": "2024-10-01",
+      "score": "4.0",
+      "courses": [
+        "National Cyber League (NCL) Fall 2024 Scholarship Winner",
+        "National Cyber League (NCL) Spring 2025 Scholarship Winner",
+        "Synopsis: Industry-leading technical courses and certifications with emphasis on depth in key security engineering topics."
+      ]
+    },
+    {
+      "institution": "Wilmington University",
+      "url": "https://www.wilmu.edu",
+      "area": "Cybersecurity",
+      "studyType": "Master of Science",
+      "startDate": "2021-08-01",
+      "endDate": "2023-08-01",
+      "score": "4.0",
+      "courses": [
+        "Epsilon Pi Tau Honor Society",
+        "Synopsis: Research-oriented classes with focus on technical writing, security architecture and cybersecurity leadership."
+      ]
+    },
+    {
+      "institution": "Capitol Technology University",
+      "url": "https://www.captechu.edu",
+      "area": "Cyber & Information Security",
+      "studyType": "Bachelor of Science",
+      "startDate": "2016-08-01",
+      "endDate": "2020-05-01",
+      "score": "3.8",
+      "courses": [
+        "Dean's List (x4)",
+        "Magna Cum Laude",
+        "Upsilon Pi Epsilon Honor Society",
+        "Synopsis: Highly technical courses aimed at building core programming, networking, and security analysis skills."
+      ]
+    },
+    {
+      "institution": "Sussex Technical High School",
+      "url": "https://www.sussexvt.org",
+      "area": "Electronics/Computer Information Systems Engineering",
+      "studyType": "Certificate",
+      "startDate": "2012-08-01",
+      "endDate": "2016-05-01",
+      "score": "3.8",
+      "courses": [
+        "Key Club",
+        "HAM Radio",
+        "SkillsUSA"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "SANS DFIR NetWars Tournament @ SANS Security West",
+      "date": "2026-05-15",
+      "awarder": "SANS Institute",
+      "summary": "1st Place - Team Game"
+    },
+    {
+      "title": "SANS Core NetWars Tournament @ SANS Security West",
+      "date": "2026-05-15",
+      "awarder": "SANS Institute",
+      "summary": "1st Place - Team Game"
+    },
+    {
+      "title": "National Cyber League (NCL) Spring 2026 Team Game",
+      "date": "2026-04-28",
+      "awarder": "National Cyber League",
+      "summary": "1st Place - Experienced Students Bracket",
+      "url": "https://www.sans.org/press/announcements/edu-dominates-experienced-division-spring-2026-national-cyber-league-competition"
+    },
+    {
+      "title": "SANS NetWars Tournament of Champions @ Cyber Defense Initiative",
+      "date": "2025-12-16",
+      "awarder": "SANS Institute",
+      "summary": "5th Place - Solo",
+      "url": "https://www.credly.com/badges/4e20e06d-2de6-4ece-8492-7ae4f23dac48/public_url"
+    },
+    {
+      "title": "National Cyber League (NCL) Fall 2025 Team Game",
+      "date": "2025-11-01",
+      "awarder": "National Cyber League",
+      "summary": "3rd Place - Experienced Students Bracket",
+      "url": "https://www.sans.org/press/announcements/sentinels-excel-fall-2025-national-cyber-league-competition"
+    },
+    {
+      "title": "SANS Core NetWars Tournament @ SANSFIRE",
+      "date": "2025-07-18",
+      "awarder": "SANS Institute",
+      "summary": "1st Place - Solo",
+      "url": "https://nicpjones.com/awards/core-netwars-sansfire-2025.pdf"
+    },
+    {
+      "title": "National Cyber League (NCL) Spring 2025 Team Game",
+      "date": "2025-05-01",
+      "awarder": "National Cyber League",
+      "summary": "4th Place - Experienced Students Bracket",
+      "url": "https://nicpjones.com/awards/ncl-spring-2025-team-game.pdf"
+    },
+    {
+      "title": "Parsons Cyber CTF",
+      "date": "2024-09-01",
+      "awarder": "Parsons",
+      "summary": "2nd Place"
+    },
+    {
+      "title": "Parsons Cyber CTF",
+      "date": "2024-06-01",
+      "awarder": "Parsons",
+      "summary": "2nd Place"
+    },
+    {
+      "title": "CT Cubed CTF @ DEFCON",
+      "date": "2023-08-01",
+      "awarder": "DEFCON",
+      "summary": "1st Place"
+    },
+    {
+      "title": "BSides Charm Exabeam CTF",
+      "date": "2023-04-01",
+      "awarder": "BSides Charm",
+      "summary": "1st Place"
+    },
+    {
+      "title": "Maryland Cyber Challenge",
+      "date": "2019-12-01",
+      "awarder": "Maryland Cyber Challenge",
+      "summary": "3rd Place"
+    },
+    {
+      "title": "Parsons Cyber CTF",
+      "date": "2019-11-01",
+      "awarder": "Parsons",
+      "summary": "3rd Place"
+    },
+    {
+      "title": "Parsons Cyber CTF",
+      "date": "2019-10-01",
+      "awarder": "Parsons",
+      "summary": "1st Place"
+    },
+    {
+      "title": "SkillsUSA Delaware Web Design Competition",
+      "date": "2016-06-01",
+      "awarder": "SkillsUSA Delaware",
+      "summary": "1st Place"
+    },
+    {
+      "title": "SkillsUSA National Web Design Competition",
+      "date": "2016-06-01",
+      "awarder": "SkillsUSA",
+      "summary": "Represented Delaware in Louisville, KY"
+    },
+    {
+      "title": "SkillsUSA Delaware Web Design Competition",
+      "date": "2015-06-01",
+      "awarder": "SkillsUSA Delaware",
+      "summary": "1st Place"
+    },
+    {
+      "title": "SkillsUSA National Web Design Competition",
+      "date": "2015-06-01",
+      "awarder": "SkillsUSA",
+      "summary": "Represented Delaware in Louisville, KY"
+    },
+    {
+      "title": "Boy Scouts of America Eagle Scout Award",
+      "date": "2014-12-01",
+      "awarder": "Boy Scouts of America",
+      "summary": "3 additional palms"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "GIAC Certified Intrusion Analyst (GCIA)",
+      "date": "2026-01-31",
+      "issuer": "GIAC",
+      "url": "https://www.credly.com/earner/earned/badge/db30bb8a-ff18-405f-9f1b-9df306d49a09",
+      "expirationDate": "2030"
+    },
+    {
+      "name": "SANS Security Awareness Professional (SSAP)",
+      "date": "2025-10-01",
+      "issuer": "SANS Institute",
+      "url": "https://www.credly.com/badges/30f8038c-b11c-4fee-a528-1d09f6b9e22c",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "GIAC Defensible Security Architecture (GDSA)",
+      "date": "2025-08-01",
+      "issuer": "GIAC",
+      "url": "https://www.credly.com/badges/3ea89efc-5c42-424b-8eac-14993834f7ae",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "GIAC Strategic Planning, Policy, and Leadership (GSTRT)",
+      "date": "2025-06-13",
+      "issuer": "GIAC",
+      "url": "https://www.credly.com/earner/earned/badge/f72400c8-9501-4533-8cde-4f4359562925",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "GIAC Certified Incident Handler (GCIH)",
+      "date": "2025-01-01",
+      "issuer": "GIAC",
+      "url": "https://www.credly.com/badges/18b1719d-757b-41e7-a03d-f7efb4420c49",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "GIAC Security Essentials (GSEC)",
+      "date": "2024-01-01",
+      "issuer": "GIAC",
+      "url": "https://www.credly.com/badges/77b0aae3-1ab5-4c49-b9eb-2cdcf9362642",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "ISC2 CISSP",
+      "date": "2024-01-01",
+      "issuer": "ISC2",
+      "url": "https://www.credly.com/badges/560ed8db-b774-4e82-8739-16e3d4f5ef3f",
+      "expirationDate": "2027"
+    },
+    {
+      "name": "GitHub Foundations",
+      "date": "2024-01-01",
+      "issuer": "GitHub",
+      "url": "https://www.credly.com/badges/708d4cbb-14c9-4df2-ac99-5c244d60b5e5",
+      "expirationDate": "2027"
+    },
+    {
+      "name": "GitHub Actions",
+      "date": "2024-01-01",
+      "issuer": "GitHub",
+      "url": "https://www.credly.com/badges/27b80a71-a37d-48a9-8da5-5a25d66632b7",
+      "expirationDate": "2027"
+    },
+    {
+      "name": "ISACA CMMI Associate",
+      "date": "2024-01-01",
+      "issuer": "ISACA",
+      "expirationDate": "2027"
+    },
+    {
+      "name": "AWS Certified Solutions Architect Professional",
+      "date": "2023-01-01",
+      "issuer": "Amazon Web Services",
+      "url": "https://www.credly.com/badges/41c69366-9c82-4a9a-808c-ba752a0e9da2",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "CompTIA CySA+",
+      "date": "2022-01-01",
+      "issuer": "CompTIA",
+      "url": "https://www.credly.com/badges/facfd8f5-5a14-4882-9abb-8ec3700753c6",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "ISC2 CC",
+      "date": "2022-01-01",
+      "issuer": "ISC2",
+      "url": "https://www.credly.com/badges/aecc6db8-b949-4ab3-aa00-9838934663e7",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "AWS Certified Security Specialty",
+      "date": "2022-01-01",
+      "issuer": "Amazon Web Services",
+      "url": "https://www.credly.com/badges/d39908cf-2441-4b2d-9713-b69c96f0b422",
+      "expirationDate": "2025"
+    },
+    {
+      "name": "OSCP",
+      "date": "2021-01-01",
+      "issuer": "Offensive Security",
+      "url": "https://www.credly.com/badges/c854a9a8-65d6-49e0-99cc-4185431ffbe1"
+    },
+    {
+      "name": "CEH",
+      "date": "2020-01-01",
+      "issuer": "EC-Council",
+      "url": "https://aspen.eccouncil.org/VerifyBadge?type=certification&a=kwThnOZRxPYI9uNmvx1awPJNuF+UI30UkmnnwhXV4vE=",
+      "expirationDate": "2026"
+    },
+    {
+      "name": "AWS Certified Solutions Architect Associate",
+      "date": "2020-01-01",
+      "issuer": "Amazon Web Services",
+      "url": "https://www.credly.com/badges/2683baf7-4512-4afd-b5e2-41a294fe4a9f",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "Azure Security Engineer Associate (AZ-500)",
+      "date": "2020-01-01",
+      "issuer": "Microsoft",
+      "url": "https://learn.microsoft.com/api/credentials/share/en-us/NicPJones/3192E98671159E7B?sharingId=D82E446A8052F8AA",
+      "expirationDate": "2027"
+    },
+    {
+      "name": "Azure Fundamentals (AZ-900)",
+      "date": "2020-01-01",
+      "issuer": "Microsoft",
+      "url": "https://learn.microsoft.com/api/credentials/share/en-us/NicPJones/85F4F1A7BD1BECC7?sharingId=D82E446A8052F8AA"
+    },
+    {
+      "name": "CompTIA Security+",
+      "date": "2019-01-01",
+      "issuer": "CompTIA",
+      "url": "https://www.credly.com/badges/b7a679ec-9e89-4c38-8365-0c5bb455fb96",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "AWS Certified Cloud Practitioner",
+      "date": "2019-01-01",
+      "issuer": "Amazon Web Services",
+      "url": "https://www.credly.com/badges/257fb17c-7afb-40e2-9d84-2270199b555b",
+      "expirationDate": "2029"
+    },
+    {
+      "name": "ITIL v4 Foundation",
+      "date": "2019-01-01",
+      "issuer": "AXELOS"
+    },
+    {
+      "name": "CompTIA Network+",
+      "date": "2017-01-01",
+      "issuer": "CompTIA",
+      "url": "https://www.credly.com/badges/f63e1a16-90f8-407f-bab7-54c0307e1109",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "CompTIA A+",
+      "date": "2017-01-01",
+      "issuer": "CompTIA",
+      "url": "https://www.credly.com/badges/78ab4d15-6dfe-4cae-81d3-736fa15d216d",
+      "expirationDate": "2028"
+    },
+    {
+      "name": "CompTIA ITF+",
+      "date": "2017-01-01",
+      "issuer": "CompTIA",
+      "url": "https://www.credly.com/badges/f44688b9-39af-4ccb-a299-b4f312f784d8"
+    }
+  ],
+  "publications": [
+    {
+      "name": "CVE-2024-43404",
+      "publisher": "NIST National Vulnerability Database",
+      "releaseDate": "2024-08-01",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43404",
+      "summary": "Python Code Injection vulnerability discovered and reported"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Information Security Engineering",
+      "keywords": [
+        "Cloud-native technologies",
+        "SIEMs",
+        "Splunk",
+        "Sentinel",
+        "Penetration Testing",
+        "Incident Response"
+      ]
+    },
+    {
+      "name": "Cloud Architecture & Engineering",
+      "keywords": [
+        "AWS",
+        "Azure",
+        "Serverless Technologies",
+        "AWS CDK",
+        "Multi-account Architectures"
+      ]
+    },
+    {
+      "name": "Software Development",
+      "keywords": [
+        "Python",
+        "TypeScript",
+        "JavaScript",
+        "PySpark",
+        "PHP",
+        "MySQL"
+      ]
+    },
+    {
+      "name": "DevSecOps",
+      "keywords": [
+        "CI/CD",
+        "GitHub Workflows",
+        "Infrastructure as Code"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native speaker"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Cybersecurity",
+      "keywords": [
+        "Capture The Flag Competitions",
+        "Bug Bounty",
+        "Offensive Security",
+        "Vulnerability Research"
+      ]
+    },
+    {
+      "name": "Technology",
+      "keywords": [
+        "Amateur Radio",
+        "Cloud Computing",
+        "Software Engineering"
+      ]
+    }
+  ],
+  "references": [],
+  "projects": [
+    {
+      "name": "HAMRadioWallet.com",
+      "startDate": "2024-07-01",
+      "endDate": "2024-09-01",
+      "description": "An app to add FCC Amateur Radio Licenses to Apple Wallet and Google Wallet.",
+      "highlights": [
+        "Built with Next.JS and TypeScript",
+        "Integrated with Apple Wallet and Google Wallet APIs",
+        "Deployed using SST (Serverless Stack)"
+      ],
+      "url": "https://github.com/NicPWNs/hamradiowallet.com"
+    },
+    {
+      "name": "GitHub Discord Bot",
+      "startDate": "2024-01-01",
+      "endDate": "2024-06-01",
+      "description": "I created this serverless Discord bot to help developers subscribe a Discord channel to events in their GitHub repositories automatically.",
+      "highlights": [
+        "Built with AWS Lambda and AWS SQS",
+        "Integrated GitHub Webhooks and Discord APIs",
+        "Serverless architecture for scalability"
+      ],
+      "url": "https://github.com/NicPWNs/GitHub-Discord-Bot"
+    },
+    {
+      "name": "UNICORD",
+      "startDate": "2022-05-01",
+      "description": "Security research organization developing proof-of-concept exploits for known CVEs.",
+      "highlights": [
+        "CVE-2025-29927: Next.js Middleware Authorization Bypass",
+        "CVE-2022-25765: pdfkit Command Injection",
+        "CVE-2021-22204: ExifTool Arbitrary Code Execution",
+        "CVE-2020-5844: Pandora FMS Remote Code Execution",
+        "CVE-2021-3560: Polkit Local Privilege Escalation"
+      ],
+      "url": "https://github.com/UNICORDev"
+    },
+    {
+      "name": "Portable User Interface For Cyber Security Awareness",
+      "startDate": "2015-12-01",
+      "endDate": "2016-06-01",
+      "description": "My Portable User Interface For Cyber Security Awareness was the example of mastery to graduate my senior year at Sussex Technical High School. It has a physical aspect which is a portable kiosk engineered specifically to view the website with a touchscreen interface.",
+      "highlights": [
+        "Built with Linux and Raspberry Pi",
+        "Custom touchscreen kiosk interface",
+        "Information Security Awareness training platform",
+        "Senior capstone project"
+      ],
+      "url": "https://github.com/NicPWNs/STHS-STSP"
+    }
+  ]
+}
+

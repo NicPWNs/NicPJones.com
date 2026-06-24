@@ -1,55 +1,81 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next'
+import {
+  Caveat,
+  Geist,
+  Geist_Mono,
+  Libre_Baskerville,
+  Permanent_Marker,
+} from 'next/font/google'
+import './globals.css'
+import { ConsoleEgg } from '@/components/console-egg'
 
-const inter = Inter({ subsets: ["latin"] });
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+const libreBaskerville = Libre_Baskerville({
+  variable: '--font-libre',
+  subsets: ['latin'],
+  weight: ['400', '700'],
+})
+const permanentMarker = Permanent_Marker({
+  variable: '--font-permanent-marker',
+  subsets: ['latin'],
+  weight: '400',
+})
+const caveat = Caveat({
+  variable: '--font-caveat',
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+})
 
 export const metadata: Metadata = {
-  title: "Nic Jones",
+  metadataBase: new URL('https://nicpjones.com'),
+  title: 'NicPJones / NicPWNs',
   description:
-    "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing. Information Security Manager at T-Rex Solutions.",
-  keywords: [
-    "cybersecurity",
-    "information security",
-    "security engineer",
-    "penetration testing",
-    "cloud security",
-    "AWS",
-    "OSCP",
-    "CISSP",
-  ],
-  authors: [{ name: "Nicholas Jones", url: "https://nicpjones.com" }],
-  creator: "Nicholas Jones",
-  metadataBase: new URL("https://nicpjones.com"),
+    'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards, filed as a dossier.',
   openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://nicpjones.com",
-    title: "Nic Jones",
+    type: 'website',
+    url: 'https://nicpjones.com',
+    siteName: 'NicPJones',
+    title: 'NicPJones / NicPWNs',
     description:
-      "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing.",
-    siteName: "NicPJones.com",
+      'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards, filed as a dossier.',
   },
   twitter: {
-    card: "summary",
-    title: "Nic Jones",
+    card: 'summary_large_image',
+    title: 'NicPJones / NicPWNs',
     description:
-      "Cybersecurity professional with experience in security engineering, cloud architecture, and penetration testing.",
+      'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder.',
   },
-  robots: {
-    index: true,
-    follow: true,
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
-};
+}
+
+export const viewport: Viewport = {
+  colorScheme: 'light dark',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${libreBaskerville.variable} ${permanentMarker.variable} ${caveat.variable} bg-noir`}
+    >
+      <body className="font-sans antialiased caret-transparent">
+        <ConsoleEgg />
+        {children}
+      </body>
     </html>
-  );
+  )
 }

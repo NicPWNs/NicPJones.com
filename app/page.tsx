@@ -1,24 +1,23 @@
-import { getAllResumeData } from "@/lib/resume-data";
-import HomeClient from "./home-client";
+import type { Metadata } from "next"
+import { FolderLanding } from "@/components/dossier/folder-landing"
+import { PersonJsonLd } from "@/components/person-jsonld"
+import { getResume } from "@/lib/resume"
+import { getWriteups } from "@/lib/writeups"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "/notes/feed.xml" },
+  },
+}
 
 export default async function Page() {
-  const {
-    certifications,
-    education,
-    workExperience,
-    awards,
-    cves,
-    projects,
-  } = await getAllResumeData();
-
+  const resume = await getResume()
+  const writeups = getWriteups()
   return (
-    <HomeClient
-      certifications={certifications}
-      education={education}
-      workExperience={workExperience}
-      awards={awards}
-      cves={cves}
-      projects={projects}
-    />
-  );
+    <>
+      <PersonJsonLd resume={resume} />
+      <FolderLanding resume={resume} writeups={writeups} />
+    </>
+  )
 }
