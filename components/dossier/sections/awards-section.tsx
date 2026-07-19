@@ -29,7 +29,7 @@ export function AwardsSection({
             key={`${a.title}-${i}`}
             className="relative flex flex-wrap items-baseline gap-x-4 gap-y-1 py-4"
           >
-            {/tournament of champions|sansfire/i.test(a.title) && (
+            {/tournament of champions|core netwars.*sansfire/i.test(a.title) && (
               <span
                 aria-hidden="true"
                 className="absolute right-full top-3.5 mr-4 rotate-[-10deg] font-marker text-3xl font-bold leading-none text-stamp sm:text-4xl"
