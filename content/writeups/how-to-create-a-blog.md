@@ -7,78 +7,249 @@ source: https://blog.nicpwns.com/how-to-create-a-blog-4b0d416f07b7
 tags: ["cloud"]
 ---
 
-<h3>Using WordPress on AWS Lightsail</h3>
-<p>Hey! Welcome to my new cyber security blog. Here I plan on sharing my latest projects, findings, write-ups, and walkthroughs! If you want to know more about me, check out my <a href="/profile">Whoami</a> page. I thought a good first post on my cyber security blog would be about how to create one, so here we go!</p>
-<h3>What You Need</h3>
-<ul><li>An AWS Account</li><li>A custom domain name</li><li>A few dollars a month</li><li>A want/need to create a blog!</li></ul>
-<h3>Set Up Your Blog’s Domain</h3>
-<p>If you’re going to publish your blog to the Internet you’re going to want a public domain name to make it easy to reach. I recommend trying to buy a domain on <a href="https://aws.amazon.com/route53/">AWS Route 53</a> because their prices are consistent, regardless of how <em>desired</em> a domain name may be. Domain privacy is also included for free, keeping the domain owner’s name and address private from the Internet. Their renewal prices stay consistent when it comes time for your yearly renewal too. No increased prices after each year!</p>
-<p><strong>Buy a domain on AWS Route 53:</strong></p>
-<ul><li>Log into your AWS account as an IAM user that has full permissions to the Route 53 service.</li><li>Go to the Route 53 service at this page: <a href="https://us-east-1.console.aws.amazon.com/route53/">https://us-east-1.console.aws.amazon.com/route53/</a></li><li>Make sure you’re in the <em>us-east-1</em> AWS region! Route 53 domain registration <a href="https://docs.aws.amazon.com/general/latest/gr/r53.html#r53_region_domain_registration">only works in <em>us-east-1</em></a>.</li><li>Go to “Registered Domains” and then “Register Domain”.</li><li>Here, you can search for your desired domain name and can select from a variety of top-level domains (TLDs).</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-1.png" alt=""  decoding="async" width="1024" height="102" loading="eager" fetchpriority="high" /><figcaption>Searching for a domain name to purchase and register.</figcaption></figure>
-<ul><li>Don’t see the domain or TLD you want? Check on <a href="https://www.name.com/">other domain providers</a> on the Internet! You can always transfer a domain from another provider into Route 53. Just make sure <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html">Route 53 supports your desired TLD</a> first.</li><li>Once you have purchased your domain and have it in Route 53, you’re ready to make it official!</li></ul>
-<h3>Pick Hosting for your Blog</h3>
-<p>There are two main things to consider when setting up a new blog: (1) What content management system you will use and (2) where you will host it.</p>
-<p><strong>Pick a Content Management System for Creating your Blog</strong></p>
-<p>When searching for platforms for a new blog, the two names that will consistently come up are WordPress and Medium. WordPress has the advantages of being more configurable and SEO friendly, while Medium has benefits of being easier to use without any hosting needed. There’s also always the debate about who <em>actually</em> owns the content posted on Medium. You or Medium?</p>
-<p>In the end, I chose to go with WordPress to host my blog. However, I will be cross-posting to Medium. The extra configuration and SEO ability was important for me, plus I <em>wanted</em> the extra hassle of setting up a hosting server for the learning experience. If I didn’t pick WordPress, this post wouldn’t exist!</p>
-<p><strong>Pick a Hosting Provider to Create your Blog On</strong></p>
-<p>These days it’s hard to beat the top 3 public cloud providers (AWS, Azure, GCP) for hosting. Any of these could be used but I chose AWS and this blog post will focus on set up in AWS Lightsail. AWS offers Lightsail which brings AWS’s typical IaaS EC2 service to the level of PaaS, making it much cheaper, easier, and faster to get up and running for something like WordPress. Let’s get up and running!</p>
-<h3>Create Lightsail Instance for the Blog</h3>
-<ul><li>You can get to AWS Lightsail through the link in your regular AWS web portal or by going to <a href="https://lightsail.aws.amazon.com/">https://lightsail.aws.amazon.com/</a>.</li><li>Select your instance location.</li><li>Select “Linux/Unix”.</li><li>Select “WordPress” under “Apps + OS”.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-2.png" alt="Selection of us-east-1a, Linux/Unix, and WordPress in Lightsail."  decoding="async" width="703" height="640" loading="lazy" /><figcaption>Selection of us-east-1a, Linux/Unix, and WordPress in Lightsail.</figcaption></figure>
-<ul><li>Check “Enable Automatic Snapshots”.</li><li>Select your desired instance type. Usually the lowest or second-lowest tier will be fine to create a blog like this.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-3.png" alt="Selection of the lowest instance plan in Lightsail for low cost."  decoding="async" width="609" height="475" loading="lazy" /><figcaption>Selection of the lowest instance plan in Lightsail.</figcaption></figure>
-<ul><li>Name your instance. I highly recommend naming your instance based on your domain. For example, “exampleblog.com” or “blog.example.com”.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-4.png" alt="Specifying the name of the Lightsail instance matching the name of the blog being created."  decoding="async" width="647" height="173" loading="lazy" /><figcaption>Specifying the name of the Lightsail instance.</figcaption></figure>
-<ul><li>Create your instance! It will then power on.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-5.png" alt="A running Lightsail instance after being created."  decoding="async" width="597" height="204" loading="lazy" /><figcaption>A running Lightsail instance after being created.</figcaption></figure>
-<h3>Create Static IP Address for the Blog</h3>
-<p>Your new Lightsail instance will automatically be assigned an IP address, but it is not static and is subject to change. You will want to assign a static IP address so that SSH to your Lightsail instance will stay consistent and your domain will always be pointing to the same IP address. Here’s how:</p>
-<ul><li>Navigate to the “Networking” tab within the AWS Lightsail dashboard.</li><li>Click “Create static IP”.</li><li>In the “Attach to an instance” drop down, select the Lightsail instance you just launched.</li><li>Name your static IP in a way that it can be easily recognized. Perhaps in the format of “static-ip.exampleblog.com” or similar.</li><li>Your static IP address is now ready and attached to your Lightsail instance! You can see if WordPress is ready by visiting the IP in a browser.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-6.png" alt="A static IP address attached to the Lightsail instance for creating the blog."  decoding="async" width="815" height="413" loading="lazy" /><figcaption>A static IP address attached to the Lightsail instance.</figcaption></figure>
-<h3>Create CloudFront Distribution for the Blog</h3>
-<p>An AWS CloudFront distribution is a content delivery network (CDN) that helps to cache your blog content in multiple physical locations to reduce latency. CloudFront is also necessary to set up HTTP<strong>S</strong> for your blog. Better speed and better security? Let’s do it!</p>
-<ul><li>Navigate to the “Networking” tab within the AWS Lightsail dashboard.</li><li>Click “Create distribution”.</li><li>In the “Choose your origin” drop down, again select the Lightsail instance you just launched.</li><li>If prompted to “Use the WordPress cache behavior preset”, click “Yes, apply”.</li><li><strong>Important:</strong> Be sure to edit the “Origin protocol policy” option from “HTTP” to “HTTPS only”.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-7.png" alt="Specifying HTTPS only for origin protocol policy for the created blog."  decoding="async" width="822" height="182" loading="lazy" /><figcaption>Specifying HTTPS only for origin protocol policy.</figcaption></figure>
-<ul><li>The lowest distribution plan tier should be adequate for a site of this type.</li><li>Name your distribution in a way that it can be easily recognized. Perhaps in the format of “distribution.exampleblog.com” or similar.</li><li>Your CloudFront distribution is now ready to go!</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-8.png" alt="Choosing the lowest distribution plan and naming the CloudFront distribution for creating a blog."  decoding="async" width="804" height="729" loading="lazy" /><figcaption>Choosing the lowest distribution plan and naming the CloudFront distribution.</figcaption></figure>
-<h3>Connect to Blog Instance</h3>
-<p>The great thing about AWS Lightsail is that it has already done the work of setting up WordPress for us. There’s not many reasons for needing to connect to the server directly, except for setting up certificates for HTTP<strong>S</strong>. Let’s connect to the instance to set this up!</p>
-<ul><li>On the “Instances” tab of the AWS Lightsail dashboard, click the instance you are working on. A “Connect” tab for the instance will then show.</li><li>At the bottom of the “Connect” page, a default SSH key is available for download. Download this SSH private key. Take note of the username too.</li><li>Save this SSH key in the “.ssh” directory of your home directory. This is <em>/home/username/.ssh/</em> on Linux or <em>C:Usersusernname.ssh</em> on Windows.</li><li>Open either a PowerShell or Linux terminal.</li><li>Run the following command, specifying your IP address and the location of your SSH key:</li></ul>
-<pre><code>ssh bitnami@34.194.46.152 -i C:Usersnicpa.sshLightsailDefaultKey-us-east-1.pem</code></pre>
-<figure><img src="/writeups/how-to-create-a-blog/img-9.png" alt="Logging into the Lightsail instance using SSH for creating blog."  decoding="async" width="1024" height="385" loading="lazy" /><figcaption>Logging into the Lightsail instance using SSH.</figcaption></figure>
-<p>You are now connected to the server! If you have any issues, make sure your local network is not blocking port 22/tcp outbound. The Lightsail instance allows port 22/tcp inbound by default.</p>
-<h3>Create DNS Entry for Blog</h3>
-<p>Now you need to point your custom domain name to your Lightsail instance. For now, you need to point it directly to the IP address of your Lightsail instance, rather than your CloudFront distribution. CloudFront will not work until the entire chain from client to server uses HTTPS, and your server is not configured for HTTPS, yet. The SSL certificate set up will also not work until your DNS resolves, so this is a temporary DNS configuration you need to make. You’ll come back and point it to your CloudFront distribution later. Here we go!</p>
-<ul><li>Access the AWS Route 53 dashboard in your AWS account.</li><li>Click “Hosted zones” and then select the domain you will be using for your blog.</li><li>Click “Create record”.</li><li>Make sure the type of record is “A” and enter a subdomain if you are using one. If not, just leave the “Record name” field blank.</li><li>Copy your static IP address from your Lightsail instance and enter it as the “Value” for this DNS record.</li><li>Finish by clicking “Create records”.</li><li>Your DNS record will then be ready to go. It points your domain to your Lightsail instance IP address! Visiting your domain should show WordPress.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-10.png" alt="DNS A record pointing to instance IP address for created blog."  decoding="async" width="1024" height="30" loading="lazy" /><figcaption>DNS A record pointing to instance IP address.</figcaption></figure>
-<h3>Create SSL Certificate for the Blog</h3>
-<p>Setting up certificates for HTTPS can often be confusing and complicated. Luckily, once again AWS Lightsail and Bitnami have made this very easy for us! You’ll make use of <a href="https://docs.bitnami.com/aws/how-to/generate-install-lets-encrypt-ssl/">Bitnami’s HTTPS Configuration Tool</a> to automatically configure the server with a free Let’s Encrypt certificate. Let’s encrypt!</p>
-<ul><li>Run the following command in an SSH session with your web server:</li></ul>
-<pre><code>sudo /opt/bitnami/bncert-tool</code></pre>
-<ul><li>You will be prompted for some information to set up your certificate. Type carefully!</li><li>Enter in your domain name like “exampleblog.com” or “blog.example.com”.</li><li>When prompted to use “www” subdomains, this is personal preference. You will need to add an additional DNS record. I prefer not to use it.</li><li>Enter “Y” to Enable HTTP to HTTPS redirection. You never want users of your blog to access it via plaintext HTTP.</li><li>Enter another “Y” to agree to the changes.</li><li>Enter your email address.</li><li>Enter “Y” to agree to the Let’s Encrypt agreement.</li><li>The script will take a minute or so to automatically configure HTTPS and certificates on your web server.</li><li>Once the script finishes with “Success”, you’re done with HTTPS! You should now be able to visit your site and be redirected to HTTPS.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-11.png" alt="Checking for valid HTTPS and certificate on domain for created blog."  decoding="async" width="411" height="320" loading="lazy" /><figcaption>Checking for valid HTTPS and certificate on domain.</figcaption></figure>
-<h3>Configure HTTPS in CloudFront</h3>
-<p>Although your site is working great with HTTPS directly on the server, you still need to make use of the CloudFront distribution for the speed and security benefits.</p>
-<ul><li>Under the “Networking” tab of the AWS Lightsail dashboard, click the CloudFront distribution for your instance.</li><li>In the menu for your distribution, click the “Custom domains” tab.</li><li>Under “Certificates”, click “Create certificate”.</li><li>Enter in the name of your domain as the <em>Primary Domain</em> and click “Create”. You will now need to validate that you own this domain.</li><li>Access the AWS Route 53 dashboard in your AWS account.</li><li>Click “Hosted zones” and then select the domain you will be using for your blog.</li><li>Click “Create record”.</li><li>Create a “CNAME” record with the record name and value provided in the Lightsail “Custom domains” page.</li><li>Click “Create records” and give the validation service some time to update. It will see that you added the record and verify your domain ownership.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-12.png" alt="Validating custom domain ownership in Lightsail in progress."  decoding="async" width="809" height="521" loading="lazy" /><figcaption>Validating custom domain ownership in Lightsail in progress.</figcaption></figure>
-<ul><li>Once your domain is successfully validated, your SSL certificate will be available for use in CloudFront.</li><li>Simply switch the “Custom domains” switch to the <em>On</em> position, and the SSL certificate will then be in use for your distribution!</li></ul>
-<h3>Reconfigure DNS for the Blog</h3>
-<p>Now that everything seems to be working, there’s just one more step. Remember, your DNS “A” record is still pointing directly to the IP address of your instance? That means it’s not getting the speed and security benefits of the CloudFront distribution. Let’s change this.</p>
-<ul><li>Access the AWS Route 53 dashboard in your AWS account.</li><li>Click “Hosted zones” and then select the domain you will be using for your blog.</li><li>First, delete the old DNS A record pointing directly to your Lightsail instance IP address.</li><li>Next, click “Create record”.</li><li>Make sure the type of record is CNAME and enter a subdomain if you are using one. If not, just leave the “Record name” field blank.</li><li>Copy the “Default domain” value from your CloudFront distribution in Lightsail. It will look something like: <em>d21sorbb9vb43g.cloudfront.net</em></li><li>Enter this copied value as the “Value” for the new CNAME DNS record.</li><li>Finish by clicking “Create records”.</li><li>Your DNS record will then be ready to go. It points your domain to your CloudFront Distribution!</li><li>After some time for DNS records and CloudFront distributions to update, your domain will route through AWS CloudFront.</li><li>Once it’s working, you will notice that your WordPress site loads <em>extremely</em> fast.</li><li>You can verify CloudFront is being used by checking that the SSL certificate is issued by Amazon, not Let’s Encrypt.</li></ul>
-<figure><img src="/writeups/how-to-create-a-blog/img-13.png" alt="Verifying SSL certificate issued by Amazon for created blog."  decoding="async" width="468" height="422" loading="lazy" /><figcaption>Verifying SSL certificate issued by Amazon.</figcaption></figure>
-<h3>Turn Off IPv6</h3>
-<p><em>This is optional.</em> Overall, it’s always best to reduce attack surface by disabling features not being used. IPv6 is one of those features.</p>
-<ul><li>Disable IPv6 under the “Networking” tab of your Lightsail instance.</li><li>Also, disable IPv6 under the “Networking” tab of your CloudFront distribution.</li></ul>
-<h3>Get Started With Your Created Blog!</h3>
-<p>To begin making use of your WordPress instance and using your blog, visit your site and add a “/wp-admin” to the end of the URL. This will take you to the administrator login for your WordPress instance.</p>
-<figure><img src="/writeups/how-to-create-a-blog/img-14.png" alt="The administrator login page for the created WordPress blog."  decoding="async" width="414" height="472" loading="lazy" /><figcaption>The administrator login page for WordPress.</figcaption></figure>
-<p>But what’s your username and password? On an SSH session to your Lightsail instance, there is a “bitnami_credentials” file containing initial data. You can print the initial username and password with the following command:</p>
-<pre><code>cat ~/bitnami_credentials</code></pre>
-<p>Copy and paste these credentials to log in to WordPress as the administrator and get started!</p>
-<h3>Basic Security</h3>
-<p>Right from the start you’ll want to implement these basic WordPress security measures:</p>
-<ul><li>Change the default administrator password to something new. Ensure the new password is long and complex.</li><li>Turn on automatic updates for WordPress core and all WordPress plugins.</li><li>Make sure regular snapshot backups are working properly in your Lightsail dashboard. I recommend taking a manual snapshot at this point too.</li></ul>
-<h3>From Here</h3>
-<p>Wow, this was a long first post. I hope it helps anyone interested in creating a blog. I’m excited to continue with more posts on my blog about other projects, discoveries, and studies that I make!</p>
+### Using WordPress on AWS Lightsail
+
+Hey! Welcome to my new cyber security blog. Here I plan on sharing my latest projects, findings, write-ups, and walkthroughs! If you want to know more about me, check out my [Whoami](/profile) page. I thought a good first post on my cyber security blog would be about how to create one, so here we go!
+
+### What You Need
+
+-   An AWS Account
+-   A custom domain name
+-   A few dollars a month
+-   A want/need to create a blog!
+
+### Set Up Your Blog’s Domain
+
+If you’re going to publish your blog to the Internet you’re going to want a public domain name to make it easy to reach. I recommend trying to buy a domain on [AWS Route 53](https://aws.amazon.com/route53/) because their prices are consistent, regardless of how *desired* a domain name may be. Domain privacy is also included for free, keeping the domain owner’s name and address private from the Internet. Their renewal prices stay consistent when it comes time for your yearly renewal too. No increased prices after each year!
+
+**Buy a domain on AWS Route 53:**
+
+-   Log into your AWS account as an IAM user that has full permissions to the Route 53 service.
+-   Go to the Route 53 service at this page: [https://us-east-1.console.aws.amazon.com/route53/](https://us-east-1.console.aws.amazon.com/route53/)
+-   Make sure you’re in the *us-east-1* AWS region! Route 53 domain registration [only works in *us-east-1*](https://docs.aws.amazon.com/general/latest/gr/r53.html#r53_region_domain_registration).
+-   Go to “Registered Domains” and then “Register Domain”.
+-   Here, you can search for your desired domain name and can select from a variety of top-level domains (TLDs).
+
+![](/writeups/how-to-create-a-blog/img-1.png)
+
+*Searching for a domain name to purchase and register.*
+
+-   Don’t see the domain or TLD you want? Check on [other domain providers](https://www.name.com/) on the Internet! You can always transfer a domain from another provider into Route 53. Just make sure [Route 53 supports your desired TLD](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html) first.
+-   Once you have purchased your domain and have it in Route 53, you’re ready to make it official!
+
+### Pick Hosting for your Blog
+
+There are two main things to consider when setting up a new blog: (1) What content management system you will use and (2) where you will host it.
+
+**Pick a Content Management System for Creating your Blog**
+
+When searching for platforms for a new blog, the two names that will consistently come up are WordPress and Medium. WordPress has the advantages of being more configurable and SEO friendly, while Medium has benefits of being easier to use without any hosting needed. There’s also always the debate about who *actually* owns the content posted on Medium. You or Medium?
+
+In the end, I chose to go with WordPress to host my blog. However, I will be cross-posting to Medium. The extra configuration and SEO ability was important for me, plus I *wanted* the extra hassle of setting up a hosting server for the learning experience. If I didn’t pick WordPress, this post wouldn’t exist!
+
+**Pick a Hosting Provider to Create your Blog On**
+
+These days it’s hard to beat the top 3 public cloud providers (AWS, Azure, GCP) for hosting. Any of these could be used but I chose AWS and this blog post will focus on set up in AWS Lightsail. AWS offers Lightsail which brings AWS’s typical IaaS EC2 service to the level of PaaS, making it much cheaper, easier, and faster to get up and running for something like WordPress. Let’s get up and running!
+
+### Create Lightsail Instance for the Blog
+
+-   You can get to AWS Lightsail through the link in your regular AWS web portal or by going to [https://lightsail.aws.amazon.com/](https://lightsail.aws.amazon.com/).
+-   Select your instance location.
+-   Select “Linux/Unix”.
+-   Select “WordPress” under “Apps + OS”.
+
+![Selection of us-east-1a, Linux/Unix, and WordPress in Lightsail.](/writeups/how-to-create-a-blog/img-2.png)
+
+*Selection of us-east-1a, Linux/Unix, and WordPress in Lightsail.*
+
+-   Check “Enable Automatic Snapshots”.
+-   Select your desired instance type. Usually the lowest or second-lowest tier will be fine to create a blog like this.
+
+![Selection of the lowest instance plan in Lightsail for low cost.](/writeups/how-to-create-a-blog/img-3.png)
+
+*Selection of the lowest instance plan in Lightsail.*
+
+-   Name your instance. I highly recommend naming your instance based on your domain. For example, “exampleblog.com” or “blog.example.com”.
+
+![Specifying the name of the Lightsail instance matching the name of the blog being created.](/writeups/how-to-create-a-blog/img-4.png)
+
+*Specifying the name of the Lightsail instance.*
+
+-   Create your instance! It will then power on.
+
+![A running Lightsail instance after being created.](/writeups/how-to-create-a-blog/img-5.png)
+
+*A running Lightsail instance after being created.*
+
+### Create Static IP Address for the Blog
+
+Your new Lightsail instance will automatically be assigned an IP address, but it is not static and is subject to change. You will want to assign a static IP address so that SSH to your Lightsail instance will stay consistent and your domain will always be pointing to the same IP address. Here’s how:
+
+-   Navigate to the “Networking” tab within the AWS Lightsail dashboard.
+-   Click “Create static IP”.
+-   In the “Attach to an instance” drop down, select the Lightsail instance you just launched.
+-   Name your static IP in a way that it can be easily recognized. Perhaps in the format of “static-ip.exampleblog.com” or similar.
+-   Your static IP address is now ready and attached to your Lightsail instance! You can see if WordPress is ready by visiting the IP in a browser.
+
+![A static IP address attached to the Lightsail instance for creating the blog.](/writeups/how-to-create-a-blog/img-6.png)
+
+*A static IP address attached to the Lightsail instance.*
+
+### Create CloudFront Distribution for the Blog
+
+An AWS CloudFront distribution is a content delivery network (CDN) that helps to cache your blog content in multiple physical locations to reduce latency. CloudFront is also necessary to set up HTTP**S** for your blog. Better speed and better security? Let’s do it!
+
+-   Navigate to the “Networking” tab within the AWS Lightsail dashboard.
+-   Click “Create distribution”.
+-   In the “Choose your origin” drop down, again select the Lightsail instance you just launched.
+-   If prompted to “Use the WordPress cache behavior preset”, click “Yes, apply”.
+-   **Important:** Be sure to edit the “Origin protocol policy” option from “HTTP” to “HTTPS only”.
+
+![Specifying HTTPS only for origin protocol policy for the created blog.](/writeups/how-to-create-a-blog/img-7.png)
+
+*Specifying HTTPS only for origin protocol policy.*
+
+-   The lowest distribution plan tier should be adequate for a site of this type.
+-   Name your distribution in a way that it can be easily recognized. Perhaps in the format of “distribution.exampleblog.com” or similar.
+-   Your CloudFront distribution is now ready to go!
+
+![Choosing the lowest distribution plan and naming the CloudFront distribution for creating a blog.](/writeups/how-to-create-a-blog/img-8.png)
+
+*Choosing the lowest distribution plan and naming the CloudFront distribution.*
+
+### Connect to Blog Instance
+
+The great thing about AWS Lightsail is that it has already done the work of setting up WordPress for us. There’s not many reasons for needing to connect to the server directly, except for setting up certificates for HTTP**S**. Let’s connect to the instance to set this up!
+
+-   On the “Instances” tab of the AWS Lightsail dashboard, click the instance you are working on. A “Connect” tab for the instance will then show.
+-   At the bottom of the “Connect” page, a default SSH key is available for download. Download this SSH private key. Take note of the username too.
+-   Save this SSH key in the “.ssh” directory of your home directory. This is */home/username/.ssh/* on Linux or *C:Usersusernname.ssh* on Windows.
+-   Open either a PowerShell or Linux terminal.
+-   Run the following command, specifying your IP address and the location of your SSH key:
+
+```
+ssh bitnami@34.194.46.152 -i C:Usersnicpa.sshLightsailDefaultKey-us-east-1.pem
+```
+
+![Logging into the Lightsail instance using SSH for creating blog.](/writeups/how-to-create-a-blog/img-9.png)
+
+*Logging into the Lightsail instance using SSH.*
+
+You are now connected to the server! If you have any issues, make sure your local network is not blocking port 22/tcp outbound. The Lightsail instance allows port 22/tcp inbound by default.
+
+### Create DNS Entry for Blog
+
+Now you need to point your custom domain name to your Lightsail instance. For now, you need to point it directly to the IP address of your Lightsail instance, rather than your CloudFront distribution. CloudFront will not work until the entire chain from client to server uses HTTPS, and your server is not configured for HTTPS, yet. The SSL certificate set up will also not work until your DNS resolves, so this is a temporary DNS configuration you need to make. You’ll come back and point it to your CloudFront distribution later. Here we go!
+
+-   Access the AWS Route 53 dashboard in your AWS account.
+-   Click “Hosted zones” and then select the domain you will be using for your blog.
+-   Click “Create record”.
+-   Make sure the type of record is “A” and enter a subdomain if you are using one. If not, just leave the “Record name” field blank.
+-   Copy your static IP address from your Lightsail instance and enter it as the “Value” for this DNS record.
+-   Finish by clicking “Create records”.
+-   Your DNS record will then be ready to go. It points your domain to your Lightsail instance IP address! Visiting your domain should show WordPress.
+
+![DNS A record pointing to instance IP address for created blog.](/writeups/how-to-create-a-blog/img-10.png)
+
+*DNS A record pointing to instance IP address.*
+
+### Create SSL Certificate for the Blog
+
+Setting up certificates for HTTPS can often be confusing and complicated. Luckily, once again AWS Lightsail and Bitnami have made this very easy for us! You’ll make use of [Bitnami’s HTTPS Configuration Tool](https://docs.bitnami.com/aws/how-to/generate-install-lets-encrypt-ssl/) to automatically configure the server with a free Let’s Encrypt certificate. Let’s encrypt!
+
+-   Run the following command in an SSH session with your web server:
+
+```
+sudo /opt/bitnami/bncert-tool
+```
+
+-   You will be prompted for some information to set up your certificate. Type carefully!
+-   Enter in your domain name like “exampleblog.com” or “blog.example.com”.
+-   When prompted to use “www” subdomains, this is personal preference. You will need to add an additional DNS record. I prefer not to use it.
+-   Enter “Y” to Enable HTTP to HTTPS redirection. You never want users of your blog to access it via plaintext HTTP.
+-   Enter another “Y” to agree to the changes.
+-   Enter your email address.
+-   Enter “Y” to agree to the Let’s Encrypt agreement.
+-   The script will take a minute or so to automatically configure HTTPS and certificates on your web server.
+-   Once the script finishes with “Success”, you’re done with HTTPS! You should now be able to visit your site and be redirected to HTTPS.
+
+![Checking for valid HTTPS and certificate on domain for created blog.](/writeups/how-to-create-a-blog/img-11.png)
+
+*Checking for valid HTTPS and certificate on domain.*
+
+### Configure HTTPS in CloudFront
+
+Although your site is working great with HTTPS directly on the server, you still need to make use of the CloudFront distribution for the speed and security benefits.
+
+-   Under the “Networking” tab of the AWS Lightsail dashboard, click the CloudFront distribution for your instance.
+-   In the menu for your distribution, click the “Custom domains” tab.
+-   Under “Certificates”, click “Create certificate”.
+-   Enter in the name of your domain as the *Primary Domain* and click “Create”. You will now need to validate that you own this domain.
+-   Access the AWS Route 53 dashboard in your AWS account.
+-   Click “Hosted zones” and then select the domain you will be using for your blog.
+-   Click “Create record”.
+-   Create a “CNAME” record with the record name and value provided in the Lightsail “Custom domains” page.
+-   Click “Create records” and give the validation service some time to update. It will see that you added the record and verify your domain ownership.
+
+![Validating custom domain ownership in Lightsail in progress.](/writeups/how-to-create-a-blog/img-12.png)
+
+*Validating custom domain ownership in Lightsail in progress.*
+
+-   Once your domain is successfully validated, your SSL certificate will be available for use in CloudFront.
+-   Simply switch the “Custom domains” switch to the *On* position, and the SSL certificate will then be in use for your distribution!
+
+### Reconfigure DNS for the Blog
+
+Now that everything seems to be working, there’s just one more step. Remember, your DNS “A” record is still pointing directly to the IP address of your instance? That means it’s not getting the speed and security benefits of the CloudFront distribution. Let’s change this.
+
+-   Access the AWS Route 53 dashboard in your AWS account.
+-   Click “Hosted zones” and then select the domain you will be using for your blog.
+-   First, delete the old DNS A record pointing directly to your Lightsail instance IP address.
+-   Next, click “Create record”.
+-   Make sure the type of record is CNAME and enter a subdomain if you are using one. If not, just leave the “Record name” field blank.
+-   Copy the “Default domain” value from your CloudFront distribution in Lightsail. It will look something like: *d21sorbb9vb43g.cloudfront.net*
+-   Enter this copied value as the “Value” for the new CNAME DNS record.
+-   Finish by clicking “Create records”.
+-   Your DNS record will then be ready to go. It points your domain to your CloudFront Distribution!
+-   After some time for DNS records and CloudFront distributions to update, your domain will route through AWS CloudFront.
+-   Once it’s working, you will notice that your WordPress site loads *extremely* fast.
+-   You can verify CloudFront is being used by checking that the SSL certificate is issued by Amazon, not Let’s Encrypt.
+
+![Verifying SSL certificate issued by Amazon for created blog.](/writeups/how-to-create-a-blog/img-13.png)
+
+*Verifying SSL certificate issued by Amazon.*
+
+### Turn Off IPv6
+
+*This is optional.* Overall, it’s always best to reduce attack surface by disabling features not being used. IPv6 is one of those features.
+
+-   Disable IPv6 under the “Networking” tab of your Lightsail instance.
+-   Also, disable IPv6 under the “Networking” tab of your CloudFront distribution.
+
+### Get Started With Your Created Blog!
+
+To begin making use of your WordPress instance and using your blog, visit your site and add a “/wp-admin” to the end of the URL. This will take you to the administrator login for your WordPress instance.
+
+![The administrator login page for the created WordPress blog.](/writeups/how-to-create-a-blog/img-14.png)
+
+*The administrator login page for WordPress.*
+
+But what’s your username and password? On an SSH session to your Lightsail instance, there is a “bitnami\_credentials” file containing initial data. You can print the initial username and password with the following command:
+
+```
+cat ~/bitnami_credentials
+```
+
+Copy and paste these credentials to log in to WordPress as the administrator and get started!
+
+### Basic Security
+
+Right from the start you’ll want to implement these basic WordPress security measures:
+
+-   Change the default administrator password to something new. Ensure the new password is long and complex.
+-   Turn on automatic updates for WordPress core and all WordPress plugins.
+-   Make sure regular snapshot backups are working properly in your Lightsail dashboard. I recommend taking a manual snapshot at this point too.
+
+### From Here
+
+Wow, this was a long first post. I hope it helps anyone interested in creating a blog. I’m excited to continue with more posts on my blog about other projects, discoveries, and studies that I make!

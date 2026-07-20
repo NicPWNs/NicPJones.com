@@ -7,4 +7,118 @@ source: https://medium.com/@NicPWNs/what-is-cyberthreat-intelligence-9474b90e507
 tags: ["threatintelligence"]
 ---
 
-<figure><img alt="What is Cyberthreat Intelligence?" src="/writeups/what-is-cyberthreat-intelligence/img-1.jpg"  decoding="async" width="770" height="300" loading="eager" fetchpriority="high" /></figure><p>Cyberthreat intelligence (CTI) can be defined as “an analysis of an adversary’s intent, opportunity, and capability to do harm” (Bautista, 2018). CTI is a particular focus area within the field of information security as a whole, and requires specific skills and tooling to take advantage of it. CTI might encompass knowledge of a specific cyber incident, trends for different threat actors, or even just new security vulnerabilities that are opportunities for adversaries. With this broad range of CTI, there are many specialized tools and methodologies that come with it to help track the valuable data that CTI is.</p><h2>Types of Cyberthreat Intelligence</h2><h3>OSINT</h3><p>One commonly known type of CTI is OSINT or open-source intelligence. OSINT is information that is publicly available, but specifically collected for the purpose of serving as intelligence (Bautista, 2018). Some examples of OSINT are social media, public records, or published documents. OSINT is useful for gathering specific details about individuals and companies. Check out the <a href="https://osintframework.com/">OSINT Framework</a>, a free tool that lists a lot of OSINT sources.</p><h3>IMINT</h3><p>Another information source that can serve as CTI is IMINT or image intelligence. Image intelligence is less about regular taken photos (which would be considered OSINT) and more about higher-level imagery. This includes image data from satellites or other types of aerial reconnaissance (Bautista, 2018). IMINT is particularly useful for identifying or becoming familiar with a geographical area. <a href="https://earth.google.com/web/@0,0,0a,22251752.77375655d,35y,0h,0t,0r">Google Earth</a> is the best example of IMINT.</p><h3>HUMINT</h3><p>Another interesting type of intelligence is human intelligence, known as HUMINT. HUMINT is generally information that was collected by a person trained to do so (Bautista, 2018). This often comes into play with the collection of foreign information (like spies!). HUMINT often involves individuals trained in other languages and culture to mix in with the source of the intelligence (Bautista, 2018). HUMINT is useful for gathering information that would typically only be accessible to those with privileges to it.</p><h2>Cyberthreat Intelligence Platforms</h2><p>CTI platforms are tools that help with the overall collection, management, categorization, and use of cyberthreat intelligence. There are many of these platforms that exist, so I’ll point out a few here.</p><h3>Cyware CSAP</h3><p>Cyware’s Situational Awareness Platform (<a href="https://cyware.com/cyber-security-situational-awareness-platform-csap">CSAP</a>) is a threat intelligence platform that captures threat intelligence information in real-time for action to be taken against threats (Cyware Labs, n.d). The CSAP platform specializes in aggregation of unstructured and structured intelligence, with multiple different paths of intelligence sharing. This includes automatically updating other security tools with the latest threat intelligence available and also collecting new threat intelligence from those same tools (Cyware Labs, n.d). All of the CTI in the platform is categorized and managed for human intervention and alerting as well.</p><h3>IBM X-Force Exchange</h3><p>IBM’s <a href="https://www.ibm.com/products/xforce-exchange">X-Force Exchange</a> is a cloud-based threat intelligence platform focused on the consumption of CTI for action. X-Force Exchange seems to have an emphasis on the sharing of intelligence throughout the community, not just within one’s own enterprise. X-Force exchange supports typical threat intelligence standards for integration with other security tooling, and aims to improve the speed and accuracy of security operations overall (IBM, n.d).</p><h3>Anomali ThreatStream</h3><p>Anomali’s <a href="https://www.anomali.com/products/threatstream">ThreatStream</a> is another threat intelligence platform that assists with automating the collection and lifecycle of CTI. ThreatStream aims to increase security operations’ productivity and shorten the time to detection of threats. This platform, much like the others, attempts to remove the extraneous data and noise from bulk amounts of intelligence, and filter it to relevant intelligence that action can be taken on (Anomali, n.d).</p><h2>CVSS Scores</h2><p>CVSS scores are often a component of CTI that is focused on a specific vulnerability or CVE that exists. CVSS stands for Common Vulnerability Scoring System, and like the name suggests, is a system for normalizing the severity and impact of security vulnerabilities in a standard and recognizable format. While there are many, the main CVSS scoring used is the base metric group which is made up of multiple factors to calculate the overall score. Some of these sections are Attack Vector, Attack Complexity, Privileges Required, User Interaction, and CIA (confidentiality, integrity, availability) impact (NIST, n.d). Each of these is rated at different levels to calculate the overall CVSS score. The CVSS score can then be used as CTI to determine how quickly a vulnerability needs to be patched, or to prioritize it against other present vulnerabilities.</p><h2>CVSS Examples</h2><h3>CVE-2008–4250 (MS08–067)</h3><figure><img alt="Microsoft" src="/writeups/what-is-cyberthreat-intelligence/img-2.png"  decoding="async" width="1024" height="904" loading="lazy" /></figure><p>MS08–067 almost has a maximum score, but falls short with a scope of “unchanged”.</p><p><strong>Base Score</strong>: 9.8</p><p><strong>Attack Vector (AV)</strong>: Network — This is a “remote” code execution vulnerability.<br><strong>Attack Complexity (AC)</strong>: Low — Very specialized skills are not needed to exploit this vulnerability.<br><strong>Privileges Required (PR)</strong>: None — No preexisting privileges are needed to exploit this vulnerability.<br><strong>User Interaction (UI)</strong>: None — No end-user interaction is required to exploit this vulnerability.<br><strong>Scope</strong>: Unchanged — The exploited vulnerability only impacts resources at the immediate target.<br><strong>Confidentiality Impact</strong>: High — The vulnerability has a high likelihood to impact the confidentiality of data.<br><strong>Integrity Impact</strong>: High — The vulnerability has a high likelihood to impact the integrity of data.<br><strong>Availability Impact</strong>: High — The vulnerability has a high likelihood to impact the availability of data.</p><p><a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=(AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:O/RC:C)">Link to NIST CVSS calculation.</a></p><h3>CVE-2014–0160 (Heartbleed)</h3><figure><img alt="Heartbleed" src="/writeups/what-is-cyberthreat-intelligence/img-3.png"  decoding="async" width="856" height="1024" loading="lazy" /></figure><p>Heartbleed has a high CVSS, but loses some points because it only reads data and doesn’t write any.</p><p><strong>Base Score</strong>: 7.5</p><p><strong>Attack Vector (AV)</strong>: Network — This is a “remote” buffer over-read vulnerability.<br><strong>Attack Complexity (AC)</strong>: Low — Very specialized skills are not needed to exploit this vulnerability.<br><strong>Privileges Required (PR)</strong>: None — No preexisting privileges are needed to exploit this vulnerability.<br><strong>User Interaction (UI)</strong>: None — No end-user interaction is required to exploit this vulnerability.<br><strong>Scope</strong>: Unchanged — The exploited vulnerability only impacts resources at the immediate target.<br><strong>Confidentiality Impact</strong>: High — The vulnerability has a high likelihood to impact the confidentiality of data.<br><strong>Integrity Impact</strong>: Low — The vulnerability has a low likelihood to impact the integrity of data because it only reads it.<br><strong>Availability Impact</strong>: Low — The vulnerability has a low likelihood to impact the availability of data because it only reads it.</p><p><a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?name=CVE-2014-0160&amp;vector=AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N&amp;version=3.1&amp;source=NIST">Link to NIST CVSS calculation.</a></p><h3>CVE-2021–44228 (Log4j)</h3><figure><img alt="Log4j" src="/writeups/what-is-cyberthreat-intelligence/img-4.png"  decoding="async" width="800" height="331" loading="lazy" /></figure><p>Log4j hits a maximum CVSS score with a worst case scenario vulnerability.</p><p><strong>Base Score</strong>: 10.0</p><p><strong>Attack Vector (AV)</strong>: Network — This is a “remote” arbitrary code execution vulnerability.<br><strong>Attack Complexity (AC)</strong>: Low — Very specialized skills are not needed to exploit this vulnerability.<br><strong>Privileges Required (PR)</strong>: None — No preexisting privileges are needed to exploit this vulnerability.<br><strong>User Interaction (UI)</strong>: None — No end-user interaction is required to exploit this vulnerability.<br><strong>Scope</strong>: Changed — The exploited vulnerability can impact other resources beyond the typical scope that it is related to.<br><strong>Confidentiality Impact</strong>: High — The vulnerability has a high likelihood to impact the confidentiality of data.<br><strong>Integrity Impact</strong>: High — The vulnerability has a high likelihood to impact the integrity of data.<br><strong>Availability Impact</strong>: High — The vulnerability has a high likelihood to impact the availability of data.</p><p><a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?name=CVE-2021-44228&amp;vector=AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H&amp;version=3.1&amp;source=NIST">Link to NIST CVSS calculation.</a></p><h2>More</h2><p>Thank you for reading my post about cyberthreat intelligence! Be sure to check out my other and future <a href="/notes?tag=threatintelligence">posts about CTI</a>.</p><h2>References</h2><p>Anomali. (n.d.). <em>Anomali ThreatStream Threat Intelligence Management</em>. Anomali. Retrieved September 12, 2022, from <br> <a href="https://www.anomali.com/products/threatstream">https://www.anomali.com/products/threatstream</a></p><p>Bautista, W. (2018). <em>Practical cyber intelligence: How action-based intelligence can be an effective response to incidents;how action-based </em><br> <em>intelligence can be an</em>. PACKT Publishing.</p><p>Cyware Labs. (n.d.). <em>Cyber Security Situational Awareness: Strategic threat intelligence and management: Cyware</em>. Cyware Labs. Retrieved <br> September 12, 2022, from <a href="https://cyware.com/cyber-security-situational-awareness-platform-csap">https://cyware.com/cyber-security-situational-awareness-platform-csap</a></p><p>IBM. (n.d.). <em>IBM X-Force Exchange</em>. IBM. Retrieved September 12, 2022, from <a href="https://www.ibm.com/products/xforce-exchange">https://www.ibm.com/products/xforce-exchange</a></p><p>NIST. (n.d.). <em>National Vulnerability Database</em>. NVD. Retrieved September 12, 2022, from <a href="https://nvd.nist.gov/">https://nvd.nist.gov/</a></p>
+![What is Cyberthreat Intelligence?](/writeups/what-is-cyberthreat-intelligence/img-1.jpg)
+
+Cyberthreat intelligence (CTI) can be defined as “an analysis of an adversary’s intent, opportunity, and capability to do harm” (Bautista, 2018). CTI is a particular focus area within the field of information security as a whole, and requires specific skills and tooling to take advantage of it. CTI might encompass knowledge of a specific cyber incident, trends for different threat actors, or even just new security vulnerabilities that are opportunities for adversaries. With this broad range of CTI, there are many specialized tools and methodologies that come with it to help track the valuable data that CTI is.
+
+## Types of Cyberthreat Intelligence
+
+### OSINT
+
+One commonly known type of CTI is OSINT or open-source intelligence. OSINT is information that is publicly available, but specifically collected for the purpose of serving as intelligence (Bautista, 2018). Some examples of OSINT are social media, public records, or published documents. OSINT is useful for gathering specific details about individuals and companies. Check out the [OSINT Framework](https://osintframework.com/), a free tool that lists a lot of OSINT sources.
+
+### IMINT
+
+Another information source that can serve as CTI is IMINT or image intelligence. Image intelligence is less about regular taken photos (which would be considered OSINT) and more about higher-level imagery. This includes image data from satellites or other types of aerial reconnaissance (Bautista, 2018). IMINT is particularly useful for identifying or becoming familiar with a geographical area. [Google Earth](https://earth.google.com/web/@0,0,0a,22251752.77375655d,35y,0h,0t,0r) is the best example of IMINT.
+
+### HUMINT
+
+Another interesting type of intelligence is human intelligence, known as HUMINT. HUMINT is generally information that was collected by a person trained to do so (Bautista, 2018). This often comes into play with the collection of foreign information (like spies!). HUMINT often involves individuals trained in other languages and culture to mix in with the source of the intelligence (Bautista, 2018). HUMINT is useful for gathering information that would typically only be accessible to those with privileges to it.
+
+## Cyberthreat Intelligence Platforms
+
+CTI platforms are tools that help with the overall collection, management, categorization, and use of cyberthreat intelligence. There are many of these platforms that exist, so I’ll point out a few here.
+
+### Cyware CSAP
+
+Cyware’s Situational Awareness Platform ([CSAP](https://cyware.com/cyber-security-situational-awareness-platform-csap)) is a threat intelligence platform that captures threat intelligence information in real-time for action to be taken against threats (Cyware Labs, n.d). The CSAP platform specializes in aggregation of unstructured and structured intelligence, with multiple different paths of intelligence sharing. This includes automatically updating other security tools with the latest threat intelligence available and also collecting new threat intelligence from those same tools (Cyware Labs, n.d). All of the CTI in the platform is categorized and managed for human intervention and alerting as well.
+
+### IBM X-Force Exchange
+
+IBM’s [X-Force Exchange](https://www.ibm.com/products/xforce-exchange) is a cloud-based threat intelligence platform focused on the consumption of CTI for action. X-Force Exchange seems to have an emphasis on the sharing of intelligence throughout the community, not just within one’s own enterprise. X-Force exchange supports typical threat intelligence standards for integration with other security tooling, and aims to improve the speed and accuracy of security operations overall (IBM, n.d).
+
+### Anomali ThreatStream
+
+Anomali’s [ThreatStream](https://www.anomali.com/products/threatstream) is another threat intelligence platform that assists with automating the collection and lifecycle of CTI. ThreatStream aims to increase security operations’ productivity and shorten the time to detection of threats. This platform, much like the others, attempts to remove the extraneous data and noise from bulk amounts of intelligence, and filter it to relevant intelligence that action can be taken on (Anomali, n.d).
+
+## CVSS Scores
+
+CVSS scores are often a component of CTI that is focused on a specific vulnerability or CVE that exists. CVSS stands for Common Vulnerability Scoring System, and like the name suggests, is a system for normalizing the severity and impact of security vulnerabilities in a standard and recognizable format. While there are many, the main CVSS scoring used is the base metric group which is made up of multiple factors to calculate the overall score. Some of these sections are Attack Vector, Attack Complexity, Privileges Required, User Interaction, and CIA (confidentiality, integrity, availability) impact (NIST, n.d). Each of these is rated at different levels to calculate the overall CVSS score. The CVSS score can then be used as CTI to determine how quickly a vulnerability needs to be patched, or to prioritize it against other present vulnerabilities.
+
+## CVSS Examples
+
+### CVE-2008–4250 (MS08–067)
+
+![Microsoft](/writeups/what-is-cyberthreat-intelligence/img-2.png)
+
+MS08–067 almost has a maximum score, but falls short with a scope of “unchanged”.
+
+**Base Score**: 9.8
+
+**Attack Vector (AV)**: Network — This is a “remote” code execution vulnerability.  
+**Attack Complexity (AC)**: Low — Very specialized skills are not needed to exploit this vulnerability.  
+**Privileges Required (PR)**: None — No preexisting privileges are needed to exploit this vulnerability.  
+**User Interaction (UI)**: None — No end-user interaction is required to exploit this vulnerability.  
+**Scope**: Unchanged — The exploited vulnerability only impacts resources at the immediate target.  
+**Confidentiality Impact**: High — The vulnerability has a high likelihood to impact the confidentiality of data.  
+**Integrity Impact**: High — The vulnerability has a high likelihood to impact the integrity of data.  
+**Availability Impact**: High — The vulnerability has a high likelihood to impact the availability of data.
+
+[Link to NIST CVSS calculation.](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=\(AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:O/RC:C\))
+
+### CVE-2014–0160 (Heartbleed)
+
+![Heartbleed](/writeups/what-is-cyberthreat-intelligence/img-3.png)
+
+Heartbleed has a high CVSS, but loses some points because it only reads data and doesn’t write any.
+
+**Base Score**: 7.5
+
+**Attack Vector (AV)**: Network — This is a “remote” buffer over-read vulnerability.  
+**Attack Complexity (AC)**: Low — Very specialized skills are not needed to exploit this vulnerability.  
+**Privileges Required (PR)**: None — No preexisting privileges are needed to exploit this vulnerability.  
+**User Interaction (UI)**: None — No end-user interaction is required to exploit this vulnerability.  
+**Scope**: Unchanged — The exploited vulnerability only impacts resources at the immediate target.  
+**Confidentiality Impact**: High — The vulnerability has a high likelihood to impact the confidentiality of data.  
+**Integrity Impact**: Low — The vulnerability has a low likelihood to impact the integrity of data because it only reads it.  
+**Availability Impact**: Low — The vulnerability has a low likelihood to impact the availability of data because it only reads it.
+
+[Link to NIST CVSS calculation.](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?name=CVE-2014-0160&vector=AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N&version=3.1&source=NIST)
+
+### CVE-2021–44228 (Log4j)
+
+![Log4j](/writeups/what-is-cyberthreat-intelligence/img-4.png)
+
+Log4j hits a maximum CVSS score with a worst case scenario vulnerability.
+
+**Base Score**: 10.0
+
+**Attack Vector (AV)**: Network — This is a “remote” arbitrary code execution vulnerability.  
+**Attack Complexity (AC)**: Low — Very specialized skills are not needed to exploit this vulnerability.  
+**Privileges Required (PR)**: None — No preexisting privileges are needed to exploit this vulnerability.  
+**User Interaction (UI)**: None — No end-user interaction is required to exploit this vulnerability.  
+**Scope**: Changed — The exploited vulnerability can impact other resources beyond the typical scope that it is related to.  
+**Confidentiality Impact**: High — The vulnerability has a high likelihood to impact the confidentiality of data.  
+**Integrity Impact**: High — The vulnerability has a high likelihood to impact the integrity of data.  
+**Availability Impact**: High — The vulnerability has a high likelihood to impact the availability of data.
+
+[Link to NIST CVSS calculation.](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?name=CVE-2021-44228&vector=AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H&version=3.1&source=NIST)
+
+## More
+
+Thank you for reading my post about cyberthreat intelligence! Be sure to check out my other and future [posts about CTI](/notes?tag=threatintelligence).
+
+## References
+
+Anomali. (n.d.). *Anomali ThreatStream Threat Intelligence Management*. Anomali. Retrieved September 12, 2022, from  
+[https://www.anomali.com/products/threatstream](https://www.anomali.com/products/threatstream)
+
+Bautista, W. (2018). *Practical cyber intelligence: How action-based intelligence can be an effective response to incidents;how action-based*  
+*intelligence can be an*. PACKT Publishing.
+
+Cyware Labs. (n.d.). *Cyber Security Situational Awareness: Strategic threat intelligence and management: Cyware*. Cyware Labs. Retrieved  
+September 12, 2022, from [https://cyware.com/cyber-security-situational-awareness-platform-csap](https://cyware.com/cyber-security-situational-awareness-platform-csap)
+
+IBM. (n.d.). *IBM X-Force Exchange*. IBM. Retrieved September 12, 2022, from [https://www.ibm.com/products/xforce-exchange](https://www.ibm.com/products/xforce-exchange)
+
+NIST. (n.d.). *National Vulnerability Database*. NVD. Retrieved September 12, 2022, from [https://nvd.nist.gov/](https://nvd.nist.gov/)
