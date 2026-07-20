@@ -565,11 +565,18 @@
   ],
   "publications": [
     {
+      "name": "CVE-2026-62183",
+      "publisher": "MITRE CVE Program",
+      "releaseDate": "2026-07-20",
+      "url": "https://www.cve.org/CVERecord?id=CVE-2026-62183",
+      "summary": "Apache Syncope: User self-service privilege escalation. Improper privilege management vulnerability discovered and reported; authenticated users could grant themselves administrator roles via a REST API call."
+    },
+    {
       "name": "CVE-2024-43404",
-      "publisher": "NIST National Vulnerability Database",
-      "releaseDate": "2024-08-01",
-      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43404",
-      "summary": "Python Code Injection vulnerability discovered and reported"
+      "publisher": "MITRE CVE Program",
+      "releaseDate": "2024-08-20",
+      "url": "https://www.cve.org/CVERecord?id=CVE-2024-43404",
+      "summary": "Remote Code Execution Vulnerability in MEGABOT. Python code injection vulnerability discovered and reported; an eval() in the Discord bot's /math command allowed arbitrary code execution."
     }
   ],
   "skills": [
