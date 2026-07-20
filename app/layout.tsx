@@ -8,6 +8,7 @@ import {
 } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
+import 'highlight.js/styles/github-dark.css'
 import { ConsoleEgg } from '@/components/console-egg'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })

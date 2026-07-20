@@ -375,6 +375,15 @@
   border-radius: 4px;
   background: color-mix(in srgb, var(--color-ink) 8%, transparent);
 }
+/* highlight.js: let token colors sit on the existing noir <pre>, not the
+   theme's own background/padding. */
+.writeup-prose pre code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  overflow-x: visible;
+}
 .writeup-prose hr {
   margin: 2em 0;
   border: none;

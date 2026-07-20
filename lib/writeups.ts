@@ -1,6 +1,29 @@
 import fs from "node:fs"
 import path from "node:path"
 import { marked } from "marked"
+import { markedHighlight } from "marked-highlight"
+import hljs from "highlight.js"
+
+// Syntax highlighting for fenced code blocks. Migrated posts carry no language
+// hints, so fall back to auto-detection; new posts can tag the fence (```java).
+// Auto-detect is restricted to a likely subset — CSS/SCSS are excluded because
+// they false-match short shell commands (e.g. `# nmap -sV`) as selectors.
+const AUTODETECT_LANGS = [
+  "bash", "shell", "powershell", "python", "javascript", "typescript",
+  "java", "c", "cpp", "csharp", "go", "rust", "ruby", "php", "sql",
+  "json", "yaml", "xml", "http", "dockerfile", "ini", "diff", "perl",
+]
+marked.use(
+  markedHighlight({
+    emptyLangClass: "hljs",
+    langPrefix: "hljs language-",
+    highlight(code, lang) {
+      return lang && hljs.getLanguage(lang)
+        ? hljs.highlight(code, { language: lang }).value
+        : hljs.highlightAuto(code, AUTODETECT_LANGS).value
+    },
+  }),
+)
 
 const DIR = path.join(process.cwd(), "content", "writeups")
 
