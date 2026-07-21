@@ -7,9 +7,9 @@ source: https://blog.nicpwns.com/hackthebox-search-write-up-245e93750cfe
 tags: ["hackthebox"]
 ---
 
-The Search machine on HackTheBox has just retired! This is my write-up for Search on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is Windows, categorized as hard, and was retired on April 30, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+The Search machine on HackTheBox has just retired! This is my write-up for Search on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is Windows, categorized as hard, and was retired on April 30, 2022.
 
 ## Search Summary
 
@@ -508,5 +508,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 2.  Never underestimate the exposure of just a username. With just the usernames available on the website and other easy to access locations we were able to make a lot of progress on this box.
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Search machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

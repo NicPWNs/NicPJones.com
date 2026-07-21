@@ -7,9 +7,9 @@ source: https://blog.nicpwns.com/hackthebox-backdoor-write-up-29d3d448d322
 tags: ["hackthebox"]
 ---
 
-The Backdoor machine on HackTheBox has just retired! This is my write-up about the Backdoor machine on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as easy and was retired on April 23, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+The Backdoor machine on HackTheBox has just retired! This is my write-up about the Backdoor machine on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as easy and was retired on April 23, 2022.
 
 ## Backdoor Summary
 
@@ -320,5 +320,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 2.  [Pspy](https://github.com/DominicBreuker/pspy) is awesome. As much as Pspy always seems to be a last resort for me, it always wins. The tool gives visibility into activity on the box that you would never see otherwise.
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Backdoor machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

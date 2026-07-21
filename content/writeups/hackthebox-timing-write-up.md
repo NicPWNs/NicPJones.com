@@ -7,9 +7,9 @@ source: https://medium.com/@NicPWNs/hackthebox-timing-write-up-76c07ce2b107?sour
 tags: ["hackthebox"]
 ---
 
-This is my write-up for the Timing machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *easy* difficulty and was retired on June 4th, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+This is my write-up for the Timing machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *easy* difficulty and was retired on June 4th, 2022.
 
 ## Timing Summary
 
@@ -512,5 +512,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 2.  Simple vulnerabilities/exploits used earlier in your attack chain can prove to be very useful later in the chain. In this case, we ended up using that same LFI vulnerability from the very beginning all the way to the point where we had to use it to execute our custom PHP code on the server.
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Timing machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

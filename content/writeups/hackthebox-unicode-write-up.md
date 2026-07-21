@@ -7,9 +7,9 @@ source: https://blog.nicpwns.com/hackthebox-unicode-write-up-320d5af4103d
 tags: ["hackthebox"]
 ---
 
-This is my write-up for the Unicode machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *medium* difficulty and was retired on May 7, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+This is my write-up for the Unicode machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *medium* difficulty and was retired on May 7, 2022.
 
 ## Unicode Summary
 
@@ -291,5 +291,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 2.  [Unicode normalization](https://book.hacktricks.xyz/pentesting-web/unicode-normalization-vulnerability) is an effective way to bypass web applications that filter for local file inclusion attempts. There’s more documented about it on this [blog post](https://lazarv.com/posts/unicode-normalization-vulnerabilities/).
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Unicode machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

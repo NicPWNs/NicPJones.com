@@ -7,9 +7,9 @@ source: https://medium.com/@NicPWNs/hackthebox-paper-write-up-b77d4c2989d7?sourc
 tags: ["hackthebox"]
 ---
 
-This is my write-up for the Paper machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This box is special because it makes use of an exploit I’ve developed in my [UNICORD](https://unicord.dev/) project. This machine is categorized as *easy* difficulty and was retired on June 18th, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+This is my write-up for the Paper machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This box is special because it makes use of an exploit I’ve developed in my [UNICORD](https://unicord.dev/) project. This machine is categorized as *easy* difficulty and was retired on June 18th, 2022.
 
 ## Paper Summary
 
@@ -420,5 +420,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 1.  CVEs! Not all systems on HackTheBox are going to be directly vulnerable to specific CVEs with related exploits, but when they are they are very easy to research about to take advantage of them.
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Paper machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

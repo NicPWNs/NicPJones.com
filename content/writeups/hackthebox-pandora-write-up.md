@@ -7,9 +7,9 @@ source: https://medium.com/@NicPWNs/hackthebox-pandora-write-up-9c1d409c69dd?sou
 tags: ["hackthebox"]
 ---
 
-This is my write-up for the Pandora machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *easy* difficulty and was retired on May 21, 2022.
-
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+This is my write-up for the Pandora machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *easy* difficulty and was retired on May 21, 2022.
 
 ## Pandora Summary
 
@@ -212,5 +212,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 2.  Creating Exploits — Creating your own exploits and tools is often a great way to learn a lot about a particular vulnerability while also practicing coding along the way. I do this through my [UNICORD](https://unicord.dev/) project which I will describe further in a future post.
 
 [![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
+Found this helpful? Drop some [respect](https://app.hackthebox.com/users/72382) on my HackTheBox profile!
 
 Thank you for reading my write-up for the Pandora machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!
