@@ -9,6 +9,8 @@ tags: ["hackthebox"]
 
 This is my write-up for the Paper machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This box is special because it makes use of an exploit I’ve developed in my [UNICORD](https://unicord.dev/) project. This machine is categorized as *easy* difficulty and was retired on June 18th, 2022.
 
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
 ## Paper Summary
 
 ![](/writeups/hackthebox-paper-write-up/img-1.png)

@@ -9,6 +9,8 @@ tags: ["hackthebox"]
 
 The Search machine on HackTheBox has just retired! This is my write-up for Search on HackTheBox. Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is Windows, categorized as hard, and was retired on April 30, 2022.
 
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
 ## Search Summary
 
 ![Search Avatar](/writeups/hackthebox-search-write-up/img-1.png)

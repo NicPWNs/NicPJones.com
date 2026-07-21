@@ -9,6 +9,8 @@ tags: ["hackthebox"]
 
 This is my write-up for the Unicode machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege escalate on this target machine. This machine is categorized as *medium* difficulty and was retired on May 7, 2022.
 
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
+
 ## Unicode Summary
 
 ![Unicode Avatar](/writeups/hackthebox-unicode-write-up/img-1.png)
