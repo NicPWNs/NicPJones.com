@@ -10,6 +10,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
+    "new:writeup": "node scripts/new-writeup.mjs",
+    "check:writeups": "node scripts/check-writeups.mjs",
     "start": "next start"
   },
   "dependencies": {

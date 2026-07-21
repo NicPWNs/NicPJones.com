@@ -13,10 +13,16 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Validate write-ups
+        run: node scripts/check-writeups.mjs
 
       - name: Deploy app
         env:
@@ -29,3 +35,9 @@ jobs:
           npm i --legacy-peer-deps
           npx sst@latest refresh --stage production
           npx sst@latest deploy --stage production
+
+      - name: Ping IndexNow
+        if: success()
+        env:
+          INDEXNOW_BEFORE: ${{ github.event.before }}
+        run: node scripts/indexnow.mjs
