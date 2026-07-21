@@ -34,6 +34,9 @@ const caveat = Caveat({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nicpjones.com'),
+  alternates: {
+    types: { 'application/rss+xml': '/notes/feed.xml' },
+  },
   title: 'NicPJones / NicPWNs',
   description:
     'Nic P. Jones (NicPWNs) — cybersecurity professional, hacker, and builder. Work, projects, CVEs, and awards.',
