@@ -2,7 +2,7 @@
 title: "HackTheBox Backdoor Write-Up"
 date: 2022-04-23
 slug: hackthebox-backdoor-write-up
-excerpt: "The Backdoor machine on HackTheBox has just retired! This is my write-up about the Backdoor machine on HackTheBox. Here I detail the penetration testing steps…"
+excerpt: "A full walkthrough of the Backdoor machine (easy) on HackTheBox: WordPress LFI, GDB remote debugging for a shell, and abusing screen's SUID bit for root."
 source: https://blog.nicpwns.com/hackthebox-backdoor-write-up-29d3d448d322
 tags: ["hackthebox"]
 ---
@@ -30,7 +30,7 @@ A vulnerable WordPress plugin allows for local file inclusion. Local file inclus
 
 The Nmap scan shows that there is an HTTP server on port `80/tcp` and some interesting service on port `1337/tcp`.
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.125
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-22 17:41 EDT
 Nmap scan report for 10.10.11.125
@@ -64,7 +64,7 @@ We can see that the website is a plain site running on port `80/tcp`. Nothing he
 
 Nikto tells us that there is WordPress running on the target and that a few interesting directories are available.
 
-```
+```bash
 # nikto --host http://10.10.11.125/
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
@@ -98,7 +98,7 @@ Nikto tells us that there is WordPress running on the target and that a few inte
 
 Gobuster shows a few more interesting WordPress directories to check out.
 
-```
+```bash
 # gobuster dir -u http://10.10.11.125/ -w /usr/share/wordlists/dirpwn.txt
 ===============================================================
 Gobuster v3.1.0
@@ -136,7 +136,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 WPScan provided a lot of information, some of which I cut here to save space. The key information it found was a vulnerable ebook-download plugin.
 
-```
+```bash
 # wpscan --url http://10.10.11.125/ -e ap,u --plugins-detection aggressive
 _______________________________________________________________
          __          _______   _____
@@ -218,7 +218,7 @@ A directory traversal vulnerability is present in “ebook-download” version 1
 
 ### WordPress Plugin eBook Download 1.1 — Directory Traversal
 
-```
+```bash
 # Exploit Title: Wordpress eBook Download 1.1 | Directory Traversal
 # Exploit Author: Wadeek
 # Website Author: https://github.com/Wad-Deek
@@ -301,7 +301,7 @@ At first, attempting this in my Meterpreter shell caused some issues, so I had t
 
 Setting a terminal type then running the following command worked!
 
-```
+```bash
 export TERM=xterm
 screen -x root/root
 ```
@@ -319,6 +319,6 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 1.  Using file read vulnerabilities to check for running processes in `/proc` is extremely valuable! The methodology used for this box, and other methodologies like the one [mentioned here](https://xen0vas.github.io/Exploiting-the-LFI-vulnerability-using-the-proc-self-stat-method/#) are very useful when trying to gain initial access from a file read vulnerability.
 2.  [Pspy](https://github.com/DominicBreuker/pspy) is awesome. As much as Pspy always seems to be a last resort for me, it always wins. The tool gives visibility into activity on the box that you would never see otherwise.
 
-![](/writeups/hackthebox-backdoor-write-up/img-16.png)
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Backdoor machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

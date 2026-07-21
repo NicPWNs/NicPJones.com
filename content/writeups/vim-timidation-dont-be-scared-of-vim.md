@@ -2,7 +2,7 @@
 title: "Vim-timidation: Don’t Be Scared of Vim"
 date: 2022-04-19
 slug: vim-timidation-dont-be-scared-of-vim
-excerpt: "Have you ever found yourself on a Linux terminal without Nano or another GUI text editor to save you from Vim? Maybe you’ve found yourself in Vim with no…"
+excerpt: "Stuck in Vim with no other editor? A friendly beginner's guide to Vim basics: modes, editing, saving, and quitting, so the terminal never traps you again."
 source: https://blog.nicpwns.com/vim-timidation-dont-be-scared-of-vim-ad8c1d1ba7d
 tags: ["linux"]
 ---

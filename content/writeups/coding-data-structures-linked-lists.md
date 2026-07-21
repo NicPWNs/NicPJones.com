@@ -2,7 +2,7 @@
 title: "Coding Data Structures: Linked Lists"
 date: 2022-05-03
 slug: coding-data-structures-linked-lists
-excerpt: "Let’s cover a basic coding data structure: linked lists. Linked lists are a basic data structure that are a different approach to traditional lists and arrays.…"
+excerpt: "An introduction to linked lists: how this dynamic data structure works, how it compares to arrays, and its Big-O time and space complexity, with examples."
 source: https://blog.nicpwns.com/coding-data-structures-linked-lists-2f5ff40b14d5
 tags: ["coding"]
 ---

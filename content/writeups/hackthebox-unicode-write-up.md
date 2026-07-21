@@ -2,7 +2,7 @@
 title: "HackTheBox Unicode Write-Up"
 date: 2022-05-07
 slug: hackthebox-unicode-write-up
-excerpt: "This is my write-up for the Unicode machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege…"
+excerpt: "A full walkthrough of the Unicode machine (medium) on HackTheBox: a JWT JKU spoofing bypass and Unicode-normalization LFI, escalating step by step to root."
 source: https://blog.nicpwns.com/hackthebox-unicode-write-up-320d5af4103d
 tags: ["hackthebox"]
 ---
@@ -31,7 +31,7 @@ A vulnerable JWT cookie can be spoofed using a custom JKU server to access a web
 
 The Nmap scan shows that there is an HTTP Nginx server on port `80/tcp` .
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.126
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-19 19:08 EDT
 Nmap scan report for 10.10.11.126
@@ -56,7 +56,7 @@ Nmap done: 1 IP address (1 host up) scanned in 27.64 seconds
 
 Nikto does not give us much useful information about the target website.
 
-```
+```bash
 # nikto --host http://10.10.11.126/
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
@@ -113,7 +113,7 @@ First, we need to generate our own valid pair of RSA keys and determine our new 
 
 ### Command Line Route
 
-```
+```bash
 openssl genrsa -out keypair.pem 2048
 openssl rsa -in keypair.pem -pubout -out publickey.crt
 openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out pkcs8.key
@@ -289,5 +289,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 
 1.  JKU claim misuse was a very interesting way of spoofing the JWT. It’s certainly worth learning more about [JWT, JWK, and JKU](https://datatracker.ietf.org/doc/html/rfc7515).
 2.  [Unicode normalization](https://book.hacktricks.xyz/pentesting-web/unicode-normalization-vulnerability) is an effective way to bypass web applications that filter for local file inclusion attempts. There’s more documented about it on this [blog post](https://lazarv.com/posts/unicode-normalization-vulnerabilities/).
+
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Unicode machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

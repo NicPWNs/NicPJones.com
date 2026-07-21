@@ -2,7 +2,7 @@
 title: "What is Cyberthreat Intelligence?"
 date: 2022-09-15
 slug: what-is-cyberthreat-intelligence
-excerpt: "Cyberthreat intelligence (CTI) can be defined as \u201can analysis of an adversary\u2019s intent, opportunity, and capability to do harm\u201d (Bautista, 2018). CTI is a\u2026"
+excerpt: "What is cyber threat intelligence (CTI)? A clear definition, analyzing an adversary's intent, opportunity, and capability, and why CTI matters for defense."
 source: https://medium.com/@NicPWNs/what-is-cyberthreat-intelligence-9474b90e507f?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---

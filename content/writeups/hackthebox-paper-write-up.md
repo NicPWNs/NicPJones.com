@@ -2,7 +2,7 @@
 title: "HackTheBox Paper Write-Up"
 date: 2022-06-24
 slug: hackthebox-paper-write-up
-excerpt: "This is my write-up for the Paper machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege\u2026"
+excerpt: "A full walkthrough of the Paper machine (easy) on HackTheBox: leaking WordPress secret drafts, a chat-bot file disclosure, and a polkit CVE for root."
 source: https://medium.com/@NicPWNs/hackthebox-paper-write-up-b77d4c2989d7?source=rss-57a2a039424d------2
 tags: ["hackthebox"]
 ---
@@ -13,7 +13,7 @@ This is my write-up for the Paper machine on HackTheBox that just retired! Here 
 
 ## Paper Summary
 
-![](/writeups/hackthebox-paper-write-up/img-1.png)
+![HackTheBox Paper machine avatar](/writeups/hackthebox-paper-write-up/img-1.png)
 
 ## Target Information
 
@@ -31,7 +31,7 @@ A hidden hostname must be discovered to access a WordPress site running on the t
 
 Nmap scans show SSH open on port 22/tcp, HTTP open on port 80/tcp, and HTTPS open on port 443/tcp.
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.143
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-06-19 22:47 GMT
 Nmap scan report for 10.10.11.143
@@ -62,9 +62,6 @@ PORT    STATE SERVICE  VERSION
 |_Not valid after:  2022-07-08T10:32:34
 |_ssl-date: TLS randomness does not represent time
 |_http-server-header: Apache/2.4.37 (centos) OpenSSL/1.1.1k mod_fcgid/2.3.9
-```
-
-```
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 41.97 seconds
 ```
@@ -81,7 +78,7 @@ The website on the two web ports is a basic HTTP server test page.
 
 Nikto scans of the website don’t show anything significant.
 
-```
+```bash
 # nikto --host http://10.10.11.143
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
@@ -112,7 +109,7 @@ Nikto scans of the website don’t show anything significant.
 
 Gobuster scans also don’t show anything significant on the site.
 
-```
+```bash
 # gobuster dir -u http://10.10.11.143/ -w /usr/share/wordlists/dirpwn.txt
 ===============================================================
 Gobuster v3.1.0
@@ -142,7 +139,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Perhaps there is a different hostname we should be using to access a different site? We can check the server’s response headers with Curl. It shows us there is a different host named office.paper.
 
-```
+```bash
 # curl --head http://10.10.11.143/
 HTTP/1.1 403 Forbidden
 Date: Sun, 19 Jun 2022 22:50:02 GMT
@@ -159,14 +156,11 @@ Content-Type: text/html; charset=UTF-8
 
 To view the site at the newly found hostname, office.paper should be added to /etc/hosts.
 
-```
+```bash
 # cat /etc/hosts
 127.0.0.1       localhost
 127.0.1.1       kali
 10.10.11.143    office.paper
-```
-
-```
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
@@ -185,7 +179,7 @@ The website at office.paper looks different and looks like a blog. At the bottom
 
 WPscan shows us that the target WordPress site is running WordPress core version 5.2.3 which is vulnerable.
 
-```
+```bash
 # wpscan --url http://office.paper/ --enumerate u,ap
 _______________________________________________________________
          __          _______   _____
@@ -194,26 +188,14 @@ _______________________________________________________________
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
-```
-
-```
          WordPress Security Scanner by the WPScan Team
                          Version 3.8.20
        Sponsored by Automattic - https://automattic.com/
        @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
 _______________________________________________________________
-```
-
-```
 [+] URL: http://office.paper/ [10.10.11.143]
 [+] Started: Sun Jun 19 22:53:56 2022
-```
-
-```
 Interesting Finding(s):
-```
-
-```
 [+] Headers
  | Interesting Entries:
  |  - Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k mod_fcgid/2.3.9
@@ -221,22 +203,13 @@ Interesting Finding(s):
  |  - X-Backend-Server: office.paper
  | Found By: Headers (Passive Detection)
  | Confidence: 100%
-```
-
-```
 [+] WordPress readme found: http://office.paper/readme.html
  | Found By: Direct Access (Aggressive Detection)
  | Confidence: 100%
-```
-
-```
 [+] WordPress version 5.2.3 identified (Insecure, released on 2019-09-05).
  | Found By: Rss Generator (Passive Detection)
  |  - http://office.paper/index.php/feed/, <generator>https://wordpress.org/?v=5.2.3</generator>
  |  - http://office.paper/index.php/comments/feed/, <generator>https://wordpress.org/?v=5.2.3</generator>
-```
-
-```
 [+] WordPress theme in use: construction-techup
  | Location: http://office.paper/wp-content/themes/construction-techup/
  | Last Updated: 2021-07-17T00:00:00.000Z
@@ -253,26 +226,11 @@ Interesting Finding(s):
  | Version: 1.1 (80% confidence)
  | Found By: Style (Passive Detection)
  |  - http://office.paper/wp-content/themes/construction-techup/style.css?ver=1.1, Match: 'Version: 1.1'
-```
-
-```
 [+] Enumerating All Plugins (via Passive Methods)
-```
-
-```
 [i] No plugins Found.
-```
-
-```
 [+] Enumerating Users (via Passive and Aggressive Methods)
  Brute Forcing Author IDs - Time: 00:00:01 <==============================================================================> (10 / 10) 100.00% Time: 00:00:01
-```
-
-```
 [i] User(s) Identified:
-```
-
-```
 [+] prisonmike
  | Found By: Author Posts - Author Pattern (Passive Detection)
  | Confirmed By:
@@ -281,29 +239,17 @@ Interesting Finding(s):
  |   - http://office.paper/index.php/wp-json/wp/v2/users/?per_page=100&page=1
  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
  |  Login Error Messages (Aggressive Detection)
-```
-
-```
 [+] nick
  | Found By: Wp Json Api (Aggressive Detection)
  |  - http://office.paper/index.php/wp-json/wp/v2/users/?per_page=100&page=1
  | Confirmed By:
  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
  |  Login Error Messages (Aggressive Detection)
-```
-
-```
 [+] creedthoughts
  | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
  | Confirmed By: Login Error Messages (Aggressive Detection)
-```
-
-```
 [!] No WPScan API Token given, as a result vulnerability data has not been output.
 [!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
-```
-
-```
 [+] Finished: Sun Jun 19 22:54:01 2022
 [+] Requests Done: 15
 [+] Cached Requests: 49
@@ -329,14 +275,11 @@ WordPress version 5.2.3 is vulnerable to this [basic proof-of-concept exploit](h
 
 The /etc/hosts file needs to be edited again to add chat.office.paper to the file in order to visit it.
 
-```
+```bash
 # cat /etc/hosts
 127.0.0.1       localhost
 127.0.1.1       kali
 10.10.11.143    office.paper chat.office.paper
-```
-
-```
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
@@ -378,13 +321,10 @@ Knowing the bot needs some credentials to login itself, these are the credential
 
 Lucky for us, this password of Queenofblad3s!23 is reused and the username of dwight from /etc/passwd can be used for SSH access!
 
-```
+```bash
 # ssh dwight@office.paper
 dwight@office.paper's password:
 Activate the web console with: systemctl enable --now cockpit.socket
-```
-
-```
 Last login: Tue Feb  1 09:14:33 2022 from 10.10.14.23
 [dwight@paper ~]$
 ```
@@ -406,13 +346,7 @@ The go-to Linux privilege escalation script LinPEAS should help identify any eas
 
 ```
 [dwight@paper nicpwns]$ ./linpeas.sh 
-```
-
-```
 --- SNIP ---
-```
-
-```
     /---------------------------------------------------------------------------\
     |                             Do you like PEASS?                            |
     |---------------------------------------------------------------------------|
@@ -423,13 +357,7 @@ The go-to Linux privilege escalation script LinPEAS should help identify any eas
     |                                 Thank you!                                |
     \---------------------------------------------------------------------------/
           linpeas-ng by carlospolop
-```
-
-```
 ADVISORY: This script should be used for authorized penetration testing and/or educational purposes only. Any misuse of this software will not be the responsibility of the author or of any other collaborator. Use it at your own computers and/or with the computer owner's permission.
-```
-
-```
 Linux Privesc Checklist: https://book.hacktricks.xyz/linux-hardening/linux-privilege-escalation-checklist
  LEGEND:
   RED/YELLOW: 95% a PE vector
@@ -438,13 +366,7 @@ Linux Privesc Checklist: https://book.hacktricks.xyz/linux-hardening/linux-privi
   Blue: Users without console & mounted devs
   Green: Common things (users, groups, SUID/SGID, mounts, .sh scripts, cronjobs)
   LightMagenta: Your username
-```
-
-```
  Starting linpeas. Caching Writable Folders...
-```
-
-```
                                          ╔═══════════════════╗
 ═════════════════════════════════════════╣ Basic information ╠═════════════════════════════════════════
                                          ╚═══════════════════╝
@@ -454,13 +376,7 @@ Hostname: paper
 Writable folder: /dev/shm
 [+] /usr/bin/ping is available for network discovery (linpeas can discover hosts, learn more with -h)
 [+] /usr/bin/nc is available for network discover & port scanning (linpeas can discover hosts and scan ports, learn more with -h)
-```
-
-```
 Caching directories . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . DONE
-```
-
-```
                                         ╔════════════════════╗
 ════════════════════════════════════════╣ System Information ╠════════════════════════════════════════
                                         ╚════════════════════╝
@@ -468,15 +384,9 @@ Caching directories . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 ╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#kernel-exploits
 Linux version 4.18.0-348.7.1.el8_5.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 8.5.0 20210514 (Red Hat 8.5.0-4) (GCC)) #1 SMP Wed Dec 22 13:25:12 UTC 2021
 lsb_release Not Found
-```
-
-```
 ╔══════════╣ Sudo version
 ╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#sudo-version
 Sudo version 1.8.29
-```
-
-```
 ╔══════════╣ CVEs Check
 Vulnerable to CVE-2021-3560
 ```
@@ -508,5 +418,7 @@ ba249807e708bc4adf7bf1a6b3f348f8
 Other than the points on HackTheBox, the lessons learned are the real treasures for this box.
 
 1.  CVEs! Not all systems on HackTheBox are going to be directly vulnerable to specific CVEs with related exploits, but when they are they are very easy to research about to take advantage of them.
+
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Paper machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

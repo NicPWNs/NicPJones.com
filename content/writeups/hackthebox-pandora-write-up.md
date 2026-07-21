@@ -2,7 +2,7 @@
 title: "HackTheBox Pandora Write-Up"
 date: 2022-05-21
 slug: hackthebox-pandora-write-up
-excerpt: "This is my write-up for the Pandora machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege\u2026"
+excerpt: "A full walkthrough of the Pandora machine (easy) on HackTheBox: SNMP enumeration, a Pandora FMS SQLi and RCE, and a PATH-hijack SUID binary for root."
 source: https://medium.com/@NicPWNs/hackthebox-pandora-write-up-9c1d409c69dd?source=rss-57a2a039424d------2
 tags: ["hackthebox"]
 ---
@@ -13,7 +13,7 @@ This is my write-up for the Pandora machine on HackTheBox that just retired! Her
 
 ## Pandora Summary
 
-![](/writeups/hackthebox-pandora-write-up/img-1.png)
+![HackTheBox Pandora machine avatar](/writeups/hackthebox-pandora-write-up/img-1.png)
 
 ### Target Information
 
@@ -31,7 +31,7 @@ Open SNMP with a default community string allows for enumeration which reveals S
 
 The Nmap scan shows that there is an Apache httpd server on port 80/tcp and SSH open on port 22/tcp.
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.136
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-20 23:18 GMT
 Nmap scan report for 10.10.11.136
@@ -47,9 +47,6 @@ PORT   STATE SERVICE VERSION
 |_http-title: Play | Landing
 |_http-server-header: Apache/2.4.41 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-```
-
-```
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 33.34 seconds
 ```
@@ -70,7 +67,7 @@ There is a basic site on port 80/tcp. There is not much interesting to note abou
 
 With no leads on any of the ports and services, it’s worth running a slow UDP scan with Nmap. SNMP is found to be open on port 161/udp.
 
-```
+```bash
 # nmap -sU 10.10.11.136
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-20 23:07 GMT
 Nmap scan report for 10.10.11.136
@@ -78,9 +75,6 @@ Host is up (0.053s latency).
 Not shown: 999 closed udp ports (port-unreach)
 PORT    STATE SERVICE
 161/udp open  snmp
-```
-
-```
 Nmap done: 1 IP address (1 host up) scanned in 1058.34 seconds
 ```
 
@@ -88,7 +82,7 @@ Nmap done: 1 IP address (1 host up) scanned in 1058.34 seconds
 
 SNMPWalk is a tool on Kali that can be used to scan the SNMP protocol. It requires a community string which usually is default as “public” for SNMP. The “public” community string is correct and SNMPwalk is able to print tons of information from SNMP on the target. Including a username and password of daniel:HotelBabylon23.
 
-```
+```bash
 # snmpwalk -v 1 -c public 10.10.11.136
 iso.3.6.1.2.1.1.1.0 = STRING: "Linux pandora 5.4.0-91-generic #102-Ubuntu SMP Fri Nov 5 16:31:28 UTC 2021 x86_64"
 iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10
@@ -125,7 +119,7 @@ This daniel user isn't yet the user that gives us the user.txt flag, so there's 
 
 In order to access the new web site on the target machine with our host’s web browser and tools, we must first establish a tunnel to the target machine, and then proxy any web browsers and tools to that established tunnel. A tunnel can be quickly set up using the SSH access we have. In a new SSH session, simply adding -D 80 creates a dynamic tunnel to port 80/tcp on our localhost.
 
-```
+```bash
 # sudo ssh -D 80 daniel@10.10.11.136
 ```
 
@@ -183,7 +177,7 @@ Matt also has user.txt, so that's one flag down!
 
 One of the first things I always check when enumerating for privilege escalation is SUID binaries. We can check the entire system for SUID binaries with the command below. There’s one particular SUID binary that stands out at /usr/bin/pandora\_backup.
 
-```
+```bash
 $ find / -perm -u=s -type f 2>/dev/null
 /usr/bin/sudo
 /usr/bin/pkexec
@@ -216,5 +210,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 
 1.  Missing Absolute Paths — A script or binary not referencing the absolute path such as /usr/bin/tar for one of its dependencies is an easy mistake and a crucial one in the case of an SUID binary.
 2.  Creating Exploits — Creating your own exploits and tools is often a great way to learn a lot about a particular vulnerability while also practicing coding along the way. I do this through my [UNICORD](https://unicord.dev/) project which I will describe further in a future post.
+
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Pandora machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

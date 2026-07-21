@@ -2,14 +2,14 @@
 title: "Purple Teaming"
 date: 2022-10-16
 slug: purple-teaming
-excerpt: "Purple Teaming is a concept where both red and blue teams within an organization work closely together for better security. The improvement to an\u2026"
+excerpt: "What purple teaming is and why it works: red and blue teams collaborating to improve security, with a worked example against the threat actor APT27."
 source: https://medium.com/@NicPWNs/purple-teaming-2af5e5cab617?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---
 
 Purple Teaming is a concept where both red and blue teams within an organization work closely together for better security. The improvement to an organization’s security through purple teaming comes from continuous collaboration, knowledge sharing, and feedback with one another. Purple teaming can be seen as one-time events or a continuous effort within an organization.
 
-![](/writeups/purple-teaming/img-1.png)
+![A hand from a blue side and a hand from a red side reaching toward a glowing portal, representing red and blue teams forming a purple team](/writeups/purple-teaming/img-1.png)
 
 ## Red & Blue
 

@@ -2,7 +2,7 @@
 title: "Coding Algorithms: Bubble Sort"
 date: 2022-04-28
 slug: coding-algorithms-bubble-sort
-excerpt: "Let’s cover a basic coding algorithm: bubble sort. Bubble sort is a basic sorting algorithm that steps through a list or array of elements and compares two…"
+excerpt: "A beginner-friendly guide to the bubble sort algorithm: how it steps through and compares elements to sort a list, with a Python example and Big-O analysis."
 source: https://blog.nicpwns.com/coding-algorithms-bubble-sort-e403bdc7ae51
 tags: ["coding"]
 ---

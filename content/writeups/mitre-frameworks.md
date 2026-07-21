@@ -2,7 +2,7 @@
 title: "MITRE Frameworks"
 date: 2022-10-16
 slug: mitre-frameworks
-excerpt: "MITRE ATT&amp;CK has become a major centerpiece of the cyber security industry over recent years. In addition to MITRE ATT&amp;CK, there are other similar\u2026"
+excerpt: "A tour of MITRE's matrix frameworks beyond ATT&CK, including Engage for active defense and D3FEND, and how they work together in security operations."
 source: https://medium.com/@NicPWNs/mitre-frameworks-b17ef7235b0a?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---
@@ -15,19 +15,19 @@ MITRE ATT&CK has become a major centerpiece of the cyber security industry over 
 
 ## MITRE ATT&CK
 
-![](/writeups/mitre-frameworks/img-2.png)
+![MITRE ATT&CK logo](/writeups/mitre-frameworks/img-2.png)
 
 [MITRE ATT&CK](https://attack.mitre.org/) is an open-source collection of known cyber adversary tactics, techniques, and procedures (TTPs). MITRE ATT&CK is visualized in the form of a matrix where the tactics are the high-level goals of an adversary, techniques are the methods in which the tactics are achieved, and procedures are the specific tools or steps followed to perform a technique. MITRE ATT&CK also maps the TTPs to other forms of cyber threat intelligence (CTI) like software and threat actor groups. Generally, MITRE ATT&CK is often used as a common language between tools and organizations when discussing how attacks are performed and mitigated.
 
 ## MITRE Engage
 
-![](/writeups/mitre-frameworks/img-3.png)
+![MITRE Engage logo](/writeups/mitre-frameworks/img-3.png)
 
 [MITRE Engage](https://engage.mitre.org/matrix/), formerly known as [MITRE SHIELD](https://shield.mitre.org/resources/downloads/Introduction_to_MITRE_Shield.pdf), is similar to MITRE ATT&CK with a matrix format, but the Engage framework is a knowledgebase of active defense TTPs. Active cyber defense is different from traditional systems security in that it involves active tactics such as cyber deception and disruption to stop attacks. Some of the high-level tactics of the MITRE Engage framework include detect, direct, disrupt, reassure, and motivate. Some techniques for disruption include lures like honeypots or [canary tokens](https://canarytokens.org/generate). MITRE Engage can also be filtered against relevant ATT&CK TTPs.
 
 ## MITRE D3FEND
 
-![](/writeups/mitre-frameworks/img-4.png)
+![MITRE D3FEND logo](/writeups/mitre-frameworks/img-4.png)
 
 [MITRE D3FEND](https://d3fend.mitre.org/) is another matrix-formatted framework that focuses on more traditional cyber defense TTPs. D3FEND includes the primary tactics of harden, detect, isolate, deceive, and evict. These include traditional defensive technique capabilities like disk encryption, file hashing, URL analysis, DNS denylisting, and many more. In comparison with MITRE Engage, MITRE D3FEND seems to be a much smaller project with much less focus on active defense countermeasures. Although D3FEND does have a small section of the matrix dedicated to deception, MITRE Engage is the better framework for those types of defenses.
 

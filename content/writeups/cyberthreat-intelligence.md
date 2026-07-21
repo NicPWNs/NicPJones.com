@@ -2,14 +2,14 @@
 title: "Cyberthreat Intelligence"
 date: 2022-11-06
 slug: cyberthreat-intelligence
-excerpt: "Cyberthreat intelligence (CTI) is a very complex topic within the realm of cybersecurity. CTI is not as simple as just downloading some indicators of\u2026"
+excerpt: "A deep dive into cyber threat intelligence (CTI): what it really is beyond feeds of indicators, the intelligence lifecycle, and how it strengthens defense."
 source: https://medium.com/@NicPWNs/cyberthreat-intelligence-5c9bbb1493bd?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---
 
 Cyberthreat intelligence (CTI) is a very complex topic within the realm of cybersecurity. CTI is not as simple as just downloading some indicators of compromise (IOCs) from the Internet anymore. CTI has many facets now to include jobs, policies, procedures, varying types, tools, and organizations.
 
-![](/writeups/cyberthreat-intelligence/img-1.png)
+![A padlock formed from a glowing network mesh, representing cyberthreat intelligence](/writeups/cyberthreat-intelligence/img-1.png)
 
 ## CTI Jobs
 

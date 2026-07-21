@@ -2,7 +2,7 @@
 title: "CTI in the SOC"
 date: 2022-10-03
 slug: cti-in-the-soc
-excerpt: "Cyberthreat intelligence (CTI) is a very important component of any organization\u2019s security operations center (SOC). A SOC usually handles many facets of\u2026"
+excerpt: "How cyber threat intelligence (CTI) supports a security operations center (SOC), enriching detection, incident response, and decision-making with real context."
 source: https://medium.com/@NicPWNs/cti-in-the-soc-154d3cd1accc?source=rss-57a2a039424d------2
 tags: ["threatintelligence"]
 ---

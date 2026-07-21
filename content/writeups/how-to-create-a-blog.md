@@ -2,7 +2,7 @@
 title: "How to Create a Blog"
 date: 2022-04-16
 slug: how-to-create-a-blog
-excerpt: "Hey! Welcome to my new cyber security blog. Here I plan on sharing my latest projects, findings, write-ups, and walkthroughs! If you want to know more about…"
+excerpt: "How I built my cybersecurity blog, and a practical guide to making your own: choosing a domain, picking a platform, and publishing your first post."
 source: https://blog.nicpwns.com/how-to-create-a-blog-4b0d416f07b7
 tags: ["cloud"]
 ---
@@ -30,7 +30,7 @@ If you’re going to publish your blog to the Internet you’re going to want a 
 -   Go to “Registered Domains” and then “Register Domain”.
 -   Here, you can search for your desired domain name and can select from a variety of top-level domains (TLDs).
 
-![](/writeups/how-to-create-a-blog/img-1.png)
+![Choosing a domain name: a registration form with 'exampleblog' entered and a .com option](/writeups/how-to-create-a-blog/img-1.png)
 
 *Searching for a domain name to purchase and register.*
 
@@ -127,7 +127,7 @@ The great thing about AWS Lightsail is that it has already done the work of sett
 -   Open either a PowerShell or Linux terminal.
 -   Run the following command, specifying your IP address and the location of your SSH key:
 
-```
+```bash
 ssh bitnami@34.194.46.152 -i C:Usersnicpa.sshLightsailDefaultKey-us-east-1.pem
 ```
 
@@ -159,7 +159,7 @@ Setting up certificates for HTTPS can often be confusing and complicated. Luckil
 
 -   Run the following command in an SSH session with your web server:
 
-```
+```bash
 sudo /opt/bitnami/bncert-tool
 ```
 
@@ -236,7 +236,7 @@ To begin making use of your WordPress instance and using your blog, visit your s
 
 But what’s your username and password? On an SSH session to your Lightsail instance, there is a “bitnami\_credentials” file containing initial data. You can print the initial username and password with the following command:
 
-```
+```bash
 cat ~/bitnami_credentials
 ```
 
