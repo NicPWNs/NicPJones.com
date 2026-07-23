@@ -24,7 +24,7 @@
     "highlight.js": "^11.11.1",
     "marked": "^18.0.5",
     "marked-highlight": "^2.2.4",
-    "next": "16.2.10",
+    "next": "16.2.11",
     "pulumi": "^3.249.0",
     "react": "^19",
     "react-dom": "^19",
